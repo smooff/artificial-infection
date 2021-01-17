@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,6 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MapContainer from "../../components/mapContainer/MapContainer";
+
 import {
     BottomNavigation,
     BottomNavigationAction,
@@ -30,6 +31,7 @@ import {
 import FolderIcon from '@material-ui/icons/Folder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import ReactTooltip from "react-tooltip";
 
 
 const drawerWidth = 240;
@@ -68,6 +70,7 @@ function MainPage(props) {
         setValue(newValue);
     };
 
+
 //modal
     const [open, setOpen] = React.useState(false);
 
@@ -78,9 +81,13 @@ function MainPage(props) {
         setOpen(false);
     };
 
+    //react-tooltip
+    const [content, setContent] = useState("");
+
+
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <Typography variant="h6" noWrap>
@@ -89,7 +96,7 @@ function MainPage(props) {
                 </Toolbar>
             </AppBar>
             <main className={classes.content}>
-                <div className={classes.toolbar} />
+                <div className={classes.toolbar}/>
                 <Grid
                     container
                     direction="column"
@@ -97,14 +104,16 @@ function MainPage(props) {
                     alignItems="center"
                     spacing={2}
                 >
-                    <Grid item xs={12}>
-                        <MapContainer/>
-                    </Grid>
+                    {/*<MapContainer/>*/}
+                    <MapContainer setTooltipContent={setContent} />
+                    <ReactTooltip>{content}</ReactTooltip>
+
                     <Grid item xs={12}>
                         <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-                            <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon/>} onClick={handleClickOpen} />
-                            <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
-                            <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon />} />
+                            <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon/>}
+                                                    onClick={handleClickOpen}/>
+                            <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon/>}/>
+                            <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon/>}/>
                         </BottomNavigation>
                     </Grid>
                 </Grid>
@@ -117,55 +126,54 @@ function MainPage(props) {
                 }}
                 anchor="right"
             >
-                <div className={classes.toolbar} />
-                <Divider />
+                <div className={classes.toolbar}/>
+                <Divider/>
                 <List>
                     {['Date', 'Game Speed', 'Trust Level', 'Game Money'].map((text, index) => (
                         <ListItem button key={text}>
                             {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text}/>
                         </ListItem>
                     ))}
                 </List>
-                <Divider />
+                <Divider/>
                 <List>
-                    {[1, 2, 3,4,5,6].map((text, index) => (
+                    {[1, 2, 3, 4, 5, 6].map((text, index) => (
                         <ListItem button key={text}>
                             {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text}/>
                         </ListItem>
                     ))}
                 </List>
             </Drawer>
 
-                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                    <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                        Modal title
-                    </DialogTitle>
-                    <DialogContent dividers>
-                        <Typography gutterBottom>
-                            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-                            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                        </Typography>
-                        <Typography gutterBottom>
-                            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-                            lacus vel augue laoreet rutrum faucibus dolor auctor.
-                        </Typography>
-                        <Typography gutterBottom>
-                            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-                            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-                            auctor fringilla.
-                        </Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button autoFocus onClick={handleClose} color="primary">
-                            Save changes
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    Modal title
+                </DialogTitle>
+                <DialogContent dividers>
+                    <Typography gutterBottom>
+                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
+                        in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
+                        lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
+                        scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
+                        auctor fringilla.
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={handleClose} color="primary">
+                        Save changes
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
         </div>
-
 
 
     );

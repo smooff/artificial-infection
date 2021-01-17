@@ -8,6 +8,9 @@ import {
     Sphere,
     Graticule, ZoomableGroup
 } from "react-simple-maps";
+import {mapContainerState} from "./MapContainerState";
+import {useRecoilState} from "recoil";
+
 
 const geoUrl =
     "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -16,8 +19,23 @@ const colorScale = scaleLinear()
     .domain([0.29, 0.68])
     .range(["#ffedea", "#ff5233"]);
 
-const MapContainer = (props) => {
+const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
+
+    //react-tooltip->population rounding
+    const rounded = num => {
+        if (num > 1000000000) {
+            return Math.round(num / 100000000) / 10 + "Bn";
+        } else if (num > 1000000) {
+            return Math.round(num / 100000) / 10 + "M";
+        } else {
+            return Math.round(num / 100) / 10 + "K";
+        }
+    };
+
+    // function centerMap(){
+    //
+    // }
 
     useEffect(() => {
         csv(`/vulnerability.csv`).then((data) => {
@@ -25,36 +43,78 @@ const MapContainer = (props) => {
         });
     }, []);
 
+    const [mapData, setMapData] = useRecoilState(mapContainerState);
+
+    useEffect(() => {
+        console.log(mapData);
+    }, [mapData]);
+
     return (
         <ComposableMap
             projectionConfig={{
                 rotate: [-10, 0, 0],
-                scale: 155
+                scale: 150
             }}
             width={800}
             height={400}
-            style={{ width: "90%", height: "auto", marginLeft:"5%" }}
+            style={{
+                width: "80%",
+                height: "auto",
+                marginLeft: "5%",
+                backgroundImage: "radial-gradient(skyBlue, cornflowerBlue, royalBlue )"
+            }}
         >
-            <Sphere stroke="#E4E5E6" strokeWidth={0.5}/>
-            <Graticule stroke="#E4E5E6" strokeWidth={0.5}/>
-            {data.length > 0 && (
-                <Geographies geography={geoUrl}>
-                    {({geographies}) =>
-                        geographies.map((geo) => {
-                            const d = data.find((s) => s.ISO3 === geo.properties.ISO_A3);
-                            return (
-                                <Geography
-                                    key={geo.rsmKey}
-                                    geography={geo}
-                                    fill={d ? colorScale(d["2017"]) : "#F5F4F6"}
-                                />
-                            );
-                        })
-                    }
-                </Geographies>
-            )}
+            <ZoomableGroup zoom={1}>
+                {/*<Sphere stroke="#E4E5E6" strokeWidth={0.5}/>*/}
+                {/*<Graticule stroke="#E4E5E6" strokeWidth={0.5}/>*/}
+                {data.length > 0 && (
+                    <Geographies geography={geoUrl}>
+                        {({geographies}) =>
+                            geographies.map((geo) => {
+                                const d = mapData.find((s) => s.ISO3 === geo.properties.ISO_A3);
+                                return (
+                                    <Geography
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                        fill={d ? colorScale(d["Population"]) : "#F5F4F6"}
+
+                                        onMouseEnter={() => {
+                                            const {NAME, POP_EST} = geo.properties;
+                                            setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(POP_EST)}` : "");
+                                        }}
+                                        onMouseLeave={() => {
+                                            setTooltipContent("");
+                                        }}
+                                        style={{
+                                            default: {
+                                                // fill: "#D6D6DA",
+                                                // outline: "none"
+                                                stroke: "grey",
+                                                strokeOpacity: 0.2
+                                            },
+                                            hover: {
+                                                fill: "#F53",
+                                                outline: "none",
+                                                stroke: "black",
+                                                strokeOpacity: 1
+                                            },
+                                            pressed: {
+                                                fill: "#E42",
+                                                outline: "none"
+                                            }
+                                        }}
+                                    />
+                                );
+                            })
+                        }
+                    </Geographies>
+                )}
+            </ZoomableGroup>
+
         </ComposableMap>
+
+
     );
 };
-
+//memo
 export default MapContainer;

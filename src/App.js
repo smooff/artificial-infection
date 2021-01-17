@@ -1,9 +1,10 @@
 // import './App.css';
-import Status from "./components/Status";
+
 import WelcomePage from "./pages/welcomePage/WelcomePage";
 import {BrowserRouter as Router} from "react-router-dom";
 import {Route, Switch} from "react-router-dom";
 import MainPage from "./pages/mainPage/MainPage";
+import {RecoilRoot} from "recoil";
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
         //   </div>
 
         <Router>
+            {/*vsetko co je v recoilroute, dane komponenty mozu zdielat state*/}
+            <RecoilRoot>
             <Switch>
                 <Route exact path="/">
                     <WelcomePage />
@@ -28,7 +31,7 @@ function App() {
                     <MainPage/>
                 </Route>
             </Switch>
-
+            </RecoilRoot>
         </Router>
 
 

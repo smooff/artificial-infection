@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {mapContainerState} from "../../components/mapContainer/MapContainerState";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +22,6 @@ function WelcomePage(props) {
     const classes = useStyles();
     return (
         <Container fixed>
-
                 <Grid
                     container
                     direction="column"

@@ -1,0 +1,8 @@
+instalacie:
+-node js
+-material ui
+-react simple maps (+ d3 fetch/scale)
+-react router dom
+-d3
+-react tooltip
+-recoil js
