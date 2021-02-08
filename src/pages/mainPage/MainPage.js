@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
+    downInfoBar: {
+        marginLeft:'-15%'
+    },
     appBar: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginRight: drawerWidth,
@@ -58,7 +61,10 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: 'lightgrey',
+        position:'absolute',
+        width: '100% !important',
+        height: '100% !important',
         padding: theme.spacing(3),
     },
 }));
@@ -163,7 +169,7 @@ function MainPage(props) {
 
                     <DataContainer/>
 
-                    <Grid item xs={12}>
+                    <Grid className={classes.downInfoBar} item xs={12}>
                         <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
                             <BottomNavigationAction label="Susceptible" value="susceptible" icon={<FolderIcon/>}/>
                             <BottomNavigationAction label="Infected" value="infected" icon={<FolderIcon/>}/>

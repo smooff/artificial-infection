@@ -60,7 +60,7 @@ const MapContainer = ({setTooltipContent}) => {
             style={{
                 width: "80%",
                 height: "auto",
-                marginLeft: "5%",
+                marginLeft: "-15%",
                 backgroundImage: "radial-gradient(skyBlue, cornflowerBlue, royalBlue )"
             }}
         >

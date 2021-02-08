@@ -7,16 +7,16 @@ import {Link} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {mapContainerState} from "../../components/mapContainer/MapContainerState";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         flexGrow: 1,
+//     },
+//     paper: {
+//         padding: theme.spacing(2),
+//         textAlign: 'center',
+//         color: theme.palette.text.secondary,
+//     },
+// }));
 
 const theme = createMuiTheme({
     typography: {
@@ -34,10 +34,13 @@ const theme = createMuiTheme({
     },
 });
 
+
+
 function WelcomePage(props) {
-    const classes = useStyles();
+    // const classes = useStyles();
     return (
-        <Container fixed>
+        <div className="welcomePageCss">
+        <Container fixed >
                 <Grid
                     container
                     direction="column"
@@ -66,7 +69,7 @@ function WelcomePage(props) {
                 </Grid>
 
         </Container>
-
+        </div>
         );
 }
 
