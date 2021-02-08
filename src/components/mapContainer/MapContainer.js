@@ -16,8 +16,8 @@ const geoUrl =
     "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
 const colorScale = scaleLinear()
-    .domain([0.29, 0.68])
-    .range(["#ffedea", "#ff5233"]);
+    .domain([10000, 500000000])
+    .range(["#ffedea", "#FF2A05"]);
 
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
@@ -46,7 +46,7 @@ const MapContainer = ({setTooltipContent}) => {
     const [mapData, setMapData] = useRecoilState(mapContainerState);
 
     useEffect(() => {
-        console.log(mapData);
+        // console.log(mapData);
     }, [mapData]);
 
     return (
@@ -71,16 +71,17 @@ const MapContainer = ({setTooltipContent}) => {
                     <Geographies geography={geoUrl}>
                         {({geographies}) =>
                             geographies.map((geo) => {
-                                const d = mapData.find((s) => s.ISO3 === geo.properties.ISO_A3);
+                                const d = mapData[geo.properties.ISO_A3];
                                 return (
                                     <Geography
                                         key={geo.rsmKey}
                                         geography={geo}
-                                        fill={d ? colorScale(d["Population"]) : "#F5F4F6"}
+                                        fill={d?.Infectious ? colorScale(d?.Infectious) : "#F5F4F6"}
 
                                         onMouseEnter={() => {
                                             const {NAME, POP_EST} = geo.properties;
-                                            setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(POP_EST)}` : "");
+                                            // setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(POP_EST)}` : "");
+                                            setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(d.Population)} - ${d.Infectious}` : "");
                                         }}
                                         onMouseLeave={() => {
                                             setTooltipContent("");

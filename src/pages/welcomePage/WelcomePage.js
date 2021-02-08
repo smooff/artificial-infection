@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Container, Typography} from "@material-ui/core";
+import {Button, Container, createMuiTheme, Typography, ThemeProvider } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +18,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const theme = createMuiTheme({
+    typography: {
+        // In Chinese and Japanese the characters are usually larger,
+        // so a smaller fontsize may be appropriate.
+        fontSize: 20,
+        h1: {
+            color: 'white',
+            opacity:0.8,
+        },
+        h2:{
+            color:'#F8F8FF',
+            opacity:0.7,
+        },
+    },
+});
+
 function WelcomePage(props) {
     const classes = useStyles();
     return (
@@ -30,9 +46,14 @@ function WelcomePage(props) {
                     spacing={5}
                 >
                     <Grid item xs={12}>
-                        <Typography variant="h1" component="h2">
-                            Bakalarska praca - Simulacna hra
+                        <ThemeProvider theme={theme}>
+                        <Typography  variant="h1" component="h2">
+                            Bakalárska práca
                         </Typography>
+                        <Typography variant="h2" component="h2">
+                           Strategická hra založená na simulácii epidémie
+                        </Typography>
+                        </ThemeProvider>
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained">

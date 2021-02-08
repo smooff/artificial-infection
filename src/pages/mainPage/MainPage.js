@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 
@@ -32,6 +32,9 @@ import FolderIcon from '@material-ui/icons/Folder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ReactTooltip from "react-tooltip";
+import DataContainer from "../../components/dataContainer/DataContainer";
+import {useRecoilState} from "recoil";
+import {mapContainerState} from "../../components/mapContainer/MapContainerState";
 
 
 const drawerWidth = 240;
@@ -62,6 +65,28 @@ const useStyles = makeStyles((theme) => ({
 
 
 function MainPage(props) {
+
+    function useInterval(callback, delay) {
+        const savedCallback = useRef();
+
+        // Remember the latest callback.
+        useEffect(() => {
+            savedCallback.current = callback;
+        }, [callback]);
+
+        // Set up the interval.
+        useEffect(() => {
+            function tick() {
+                savedCallback.current();
+            }
+
+            if (delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id);
+            }
+        }, [delay]);
+    }
+
     const classes = useStyles();
 
     const [value, setValue] = React.useState('recents');
@@ -85,15 +110,43 @@ function MainPage(props) {
     const [content, setContent] = useState("");
 
 
+    //
+    const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
+
+    const valueChange = (countryName) => {
+        const data = allCountries[countryName];
+
+        setAllCountries({
+            ...allCountries,
+            ...{
+                [countryName]: {...data, Infectious: infectiousIncrement}
+            }
+        });
+    };
+
+    const [infectiousIncrement, setInfectiousIncrement] = useState(0);
+    const [selectedState, ] = useState(() => {
+        const countryCodes = Object.keys(allCountries);
+        const firstCountryIndex = Math.floor(Math.random() * countryCodes.length);
+        return countryCodes[firstCountryIndex]
+    });
+
+    useInterval(() => {
+        setInfectiousIncrement(infectiousIncrement + 1000000);
+        valueChange(selectedState);
+
+    }, 1000);
+
+
     return (
         <div className={classes.root}>
             <CssBaseline/>
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Permanent drawer
-                    </Typography>
-                </Toolbar>
+                {/*<Toolbar>*/}
+                {/*    <Typography variant="h6" noWrap>*/}
+                {/*        Main Page*/}
+                {/*    </Typography>*/}
+                {/*</Toolbar>*/}
             </AppBar>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
@@ -105,15 +158,17 @@ function MainPage(props) {
                     spacing={2}
                 >
                     {/*<MapContainer/>*/}
-                    <MapContainer setTooltipContent={setContent} />
+                    <MapContainer setTooltipContent={setContent}/>
                     <ReactTooltip>{content}</ReactTooltip>
+
+                    <DataContainer/>
 
                     <Grid item xs={12}>
                         <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-                            <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon/>}
-                                                    onClick={handleClickOpen}/>
-                            <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon/>}/>
-                            <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon/>}/>
+                            <BottomNavigationAction label="Susceptible" value="susceptible" icon={<FolderIcon/>}/>
+                            <BottomNavigationAction label="Infected" value="infected" icon={<FolderIcon/>}/>
+                            <BottomNavigationAction label="Recovered" value="recovered" icon={<FolderIcon/>}/>
+                            <BottomNavigationAction label="Deceased" value="deceased" icon={<FolderIcon/>}/>
                         </BottomNavigation>
                     </Grid>
                 </Grid>
@@ -141,7 +196,7 @@ function MainPage(props) {
                     {[1, 2, 3, 4, 5, 6].map((text, index) => (
                         <ListItem button key={text}>
                             {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                            <ListItemText primary={text}/>
+                            <ListItemText primary={text} onClick={handleClickOpen}/>
                         </ListItem>
                     ))}
                 </List>
