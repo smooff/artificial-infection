@@ -81,7 +81,7 @@ const MapContainer = ({setTooltipContent}) => {
                                         onMouseEnter={() => {
                                             const {NAME, POP_EST} = geo.properties;
                                             // setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(POP_EST)}` : "");
-                                            setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(d.Population)} - ${d.Infectious}` : "");
+                                            setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(d.Population)} SUS- ${d.Susceptible} INF- ${d.Infectious} REC- ${d.Recovered} DEC- ${d.Deceased}` : "");
                                         }}
                                         onMouseLeave={() => {
                                             setTooltipContent("");

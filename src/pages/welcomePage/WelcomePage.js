@@ -34,6 +34,10 @@ const theme = createMuiTheme({
     },
 });
 
+//resetuje aplikaciu (ak pouzivatel isiel z mainpage do welcomepage a spustil hru)
+function refreshPage() {
+    window.location.reload(false);
+}
 
 
 function WelcomePage(props) {
@@ -59,7 +63,7 @@ function WelcomePage(props) {
                         </ThemeProvider>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button variant="contained">
+                        <Button onClick={refreshPage} variant="contained">
                             <Link to="/game">Play game</Link>
                         </Button>
                     </Grid>

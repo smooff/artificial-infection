@@ -59,7 +59,7 @@
 
 
 .welcomePageCss {
-    background: url("images/backTestVirus.gif") no-repeat; background-size: cover;
+    background: url("images/virusBackground.gif") no-repeat; background-size: cover;
     position: absolute;
     width: 100% !important;
     height: 100% !important;
