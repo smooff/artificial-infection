@@ -1,0 +1,1 @@
+mapCoordsDataFetch.json obsahuje data z https://github.com/zcreativelabs/react-simple-maps/blob/master/topojson-maps/world-110m.json

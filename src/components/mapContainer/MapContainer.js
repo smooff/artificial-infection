@@ -13,7 +13,7 @@ import {useRecoilState} from "recoil";
 
 
 const geoUrl =
-    "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
+    "https://raw.githubusercontent.com/smooff/mapData/main/mapCoordsDataFetch.json";
 
 const colorScale = scaleLinear()
     .domain([10000, 500000000])
