@@ -553,9 +553,9 @@ export const mapContainerState = atom({
             subregion: 'Eastern Africa'
         },
         KHM: {
-            NAME: 'Cameroon',
-            Population: 26545863,
-            Susceptible: 26545863,
+            NAME: 'Cambodia',
+            Population: 16718965,
+            Susceptible: 16718965,
             Infectious: 0,
             Recovered: 0,
             Deceased: 0,
