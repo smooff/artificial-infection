@@ -39,6 +39,7 @@ import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
 import {FastForward, Pause, PlayArrow} from "@material-ui/icons";
 import NewsBar from "../../components/newsBar/NewsBar";
+import {bottomInfoBarState} from "../../components/bottomInfoBar/BottomInfoBarState";
 
 
 const drawerWidth = 240;
@@ -124,6 +125,9 @@ function MainPage(props) {
 
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
+
+    // state na udrzanie kompartmentovych stavov celej populacie - statitika na spodnej strane main page
+    const [allStats, setAllStats] = useRecoilState(bottomInfoBarState);
 
     //HERNY CAS------------
     //herny cas v jednotke den
@@ -455,7 +459,18 @@ function MainPage(props) {
 
             let countries = {};
 
+            let SusceptiblesCountInterval = 0;
+            let InfectiousCountInterval = 0;
+            let RecoveredCountInterval = 0;
+            let DeceasedCountInterval = 0;
+
             Object.keys(allCountries).forEach(currentCountry => {
+
+                SusceptiblesCountInterval += allCountries[currentCountry].Susceptible;
+                InfectiousCountInterval += allCountries[currentCountry].Infectious;
+                RecoveredCountInterval += allCountries[currentCountry].Recovered;
+                DeceasedCountInterval += allCountries[currentCountry].Deceased;
+
 
                 if (allCountries[currentCountry].infectivity === 1) {
                     if (allCountries[currentCountry].Infectious > 50000) {
@@ -517,6 +532,16 @@ function MainPage(props) {
                     }
                 }
             })
+
+            setAllStats(
+                (prevStats) => ({
+                    ...{
+                        SusceptiblesCount: SusceptiblesCountInterval,
+                        InfectiousCount: InfectiousCountInterval,
+                        RecoveredCount: RecoveredCountInterval,
+                        DeceasedCount: DeceasedCountInterval
+                    }
+                }));
 
             setAllCountries((prevAllCountriesState) => {
                 // console.log(prevAllCountriesState);
@@ -593,16 +618,16 @@ function MainPage(props) {
                     <Grid container xs={12} direction="row" justify="space-around" alignItems="center" spacing="2"
                           className={classes.appBar}>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>
+                            <BottomInfoBar name="Susceptibles" type="Susceptibles" compartmentValue={allStats}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>
+                            <BottomInfoBar name="Infectious" type="Infectious" compartmentValue={allStats}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>
+                            <BottomInfoBar name="Recovered" type="Recovered" compartmentValue={allStats}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>
+                            <BottomInfoBar name="Deceased" type="Deceased" compartmentValue={allStats}/>
                         </Grid>
 
 
