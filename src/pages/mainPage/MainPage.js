@@ -18,7 +18,7 @@ import MapContainer from "../../components/mapContainer/MapContainer";
 import {
     BottomNavigation,
     BottomNavigationAction,
-    Button,
+    Button, Card, CardContent,
     Dialog,
     DialogActions,
     DialogContent,
@@ -35,16 +35,23 @@ import ReactTooltip from "react-tooltip";
 import DataContainer from "../../components/dataContainer/DataContainer";
 import {useRecoilState} from "recoil";
 import {mapContainerState} from "../../components/mapContainer/MapContainerState";
+import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
+import DateRightBar from "../../components/dateRightBar/DateRightBar";
+import {FastForward, Pause, PlayArrow} from "@material-ui/icons";
+import NewsBar from "../../components/newsBar/NewsBar";
 
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
+    root: {},
     downInfoBar: {
-        marginLeft: '-15%'
+        marginLeft: '-15%',
+    },
+    bottom: {
+        width: '100%',
+        position: 'fixed',
+        bottom: 15,
     },
     appBar: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -60,12 +67,12 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     content: {
-        flexGrow: 1,
+        // flexGrow: 1,
         backgroundColor: 'lightgrey',
         position: 'absolute',
         width: '100% !important',
         height: '100% !important',
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
     },
 }));
 
@@ -118,6 +125,43 @@ function MainPage(props) {
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
 
+    //HERNY CAS------------
+    //herny cas v jednotke den
+    const [days, setDays] = useState(0);
+
+    const [gameFlow, setgameFlow] = useState(true);
+
+    const [pauseColor, setPauseColor] = useState("default");
+
+    const [unpauseColor, setUnpauseColor] = useState("primary");
+
+    const [forwardColor, setForwardColor] = useState("default");
+
+    const [intervalSpeed, setIntervalSpeed] = useState(2500);
+
+    const gamePause = () => {
+        setgameFlow(false);
+        setPauseColor("primary");
+        setUnpauseColor("default");
+        setForwardColor("default");
+    }
+
+    const gameUnpause = () => {
+        setgameFlow(true);
+        setPauseColor("default");
+        setUnpauseColor("primary");
+        setForwardColor("default");
+        setIntervalSpeed(2500);
+    }
+
+    const gameForward = () => {
+        setgameFlow(true);
+        setIntervalSpeed(1000);
+        setPauseColor("default");
+        setUnpauseColor("default");
+        setForwardColor("primary");
+    }
+//---------------------------
 
     const susceptibleCalculate = (S, I, N, beta) => {
         // let nachylny = Math.round(S - (beta * S * I) / N);
@@ -135,16 +179,16 @@ function MainPage(props) {
     const infectiousCalculate = (S, I, N, beta, gamma, delta) => {
         let infekcny = (I + Math.ceil((beta * S * I) / N)) - Math.round(gamma * I) - Math.round(delta * I);
         // console.log('inf', data.Infectious);
-        console.log('round do R: ', Math.round(gamma * I));
-        console.log('bez do R: ', (gamma * I));
+        // console.log('round do R: ', Math.round(gamma * I));
+        // console.log('bez do R: ', (gamma * I));
 
         // console.log('ceil do R: ', Math.ceil(gamma * I));
-        console.log('ROZDIEL MEDZI I A INF', I - infekcny);
+        // console.log('ROZDIEL MEDZI I A INF', I - infekcny);
 
         let infekcnyVacsiNezPopulaciaCheck = 0;
         let povodnyInfekcny = 0;
         if (infekcny > N) {
-            console.log('INFEKCNY JE VASCI', N - Math.round(gamma * I) - Math.round(delta * I));
+            // console.log('INFEKCNY JE VASCI', N - Math.round(gamma * I) - Math.round(delta * I));
             infekcny = N - Math.round(gamma * N) - Math.round(delta * N);
             infekcnyVacsiNezPopulaciaCheck = 1;
         } else if (infekcny < 0) {
@@ -161,7 +205,7 @@ function MainPage(props) {
                     povodnyInfekcny = infekcny;
                     infekcny = 0;
                 }
-             //ak nastane ze sa nemeni pocet infikovanych, a infikovany stahuju nachylnych(kvoli ceil z S do I) aj napriek tomu ze maju byt sami stiahnuty
+                //ak nastane ze sa nemeni pocet infikovanych, a infikovany stahuju nachylnych(kvoli ceil z S do I) aj napriek tomu ze maju byt sami stiahnuty
             }
             // else if((Math.ceil((beta * S * I) / N))===(Math.round(gamma * I) + Math.round(delta * I))){
             //     if(((beta * S * I) / N)<((gamma * I) + (delta * I))){
@@ -186,8 +230,8 @@ function MainPage(props) {
             let recoveredReduction = Math.round(gamma * splittedI2);
             let zotavenyZmena = R - recoveredReduction;
 
-            if(gamma===delta){
-              return R;
+            if (gamma === delta) {
+                return R;
             }
 
             return zotavenyZmena;
@@ -232,14 +276,14 @@ function MainPage(props) {
         return zotaveny;
     }
 
-    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N,beta ,S) => {
+    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S) => {
         //rovnake osetrenie ako vo funkcii vyssie
         if (I2 < 0) {
             let splittedI2 = I2 / (gamma + delta);
             let deceasedReduction = Math.round(delta * splittedI2);
-            let zosnulyZmena = D  - deceasedReduction;
+            let zosnulyZmena = D - deceasedReduction;
 
-            if(gamma===delta){
+            if (gamma === delta) {
             }
             return zosnulyZmena;
         }
@@ -286,29 +330,20 @@ function MainPage(props) {
     const compartmentsRecalculateValues = (countryName) => {
         const data = allCountries[countryName];
         const {beta, gamma, delta, Susceptible: S, Infectious: I, Recovered: R, Deceased: D, Population: N} = data;
-        console.log('data:', data);
-        console.log('sus: ', new Intl.NumberFormat('de-DE').format(data.Susceptible));
-        console.log('inf: ', new Intl.NumberFormat('de-DE').format(data.Infectious));
-        console.log('rec: ', new Intl.NumberFormat('de-DE').format(data.Recovered));
-        console.log('dec: ', new Intl.NumberFormat('de-DE').format(data.Deceased));
-        console.log('NovaPopulacia: ', new Intl.NumberFormat('de-DE').format(data.Susceptible + data.Infectious + data.Recovered + data.Deceased),
-            '\n rozdiel populacie: ', new Intl.NumberFormat('de-DE').format(data.Population - (data.Susceptible + data.Infectious + data.Recovered + data.Deceased)));
-        // const beta = data.beta;
-        // const gamma = data.gamma;
-        // const delta = data.delta;
-        // const S = data.Susceptible;
-        // const I = data.Infectious;
-        // const R = data.Recovered;
-        // const D = data.Deceased;
-        // const N = data.;
-        // let povodnyNachylny = 0;
+        // console.log('data:', data);
+        // console.log('sus: ', new Intl.NumberFormat('de-DE').format(data.Susceptible));
+        //console.log('inf: ', new Intl.NumberFormat('de-DE').format(data.Infectious));
+        // console.log('rec: ', new Intl.NumberFormat('de-DE').format(data.Recovered));
+        // console.log('dec: ', new Intl.NumberFormat('de-DE').format(data.Deceased));
+        // console.log('NovaPopulacia: ', new Intl.NumberFormat('de-DE').format(data.Susceptible + data.Infectious + data.Recovered + data.Deceased),
+        //     '\n rozdiel populacie: ', new Intl.NumberFormat('de-DE').format(data.Population - (data.Susceptible + data.Infectious + data.Recovered + data.Deceased)));
 
         const [susceptibleValue] = susceptibleCalculate(S, I, N, beta);
         const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking] = infectiousCalculate(S, I, N, beta, gamma, delta);
-        console.log(actualInfectiousNumber, negativeNumberInfectious);
+        // console.log(actualInfectiousNumber, negativeNumberInfectious);
         const infectiousValue = actualInfectiousNumber;
-        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N,beta,S);
-        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N,beta,S);
+        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S);
+        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S);
         // const infekcny = data.Infectious + +50000;
 
         // if (povodnyNachylny >= 0) {
@@ -340,6 +375,67 @@ function MainPage(props) {
 
     };
 
+    const infectingByBorders = (countryName) => {
+        const data = allCountries[countryName];
+        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
+        beta = 0.940961;
+        gamma = 0.0622677;
+        delta = 0.01559;
+        S = S - 10;
+        I = 10;
+
+        return {
+            ...data,
+            infectivity: 1,
+            Susceptible: S,
+            Infectious: I,
+            beta: beta,
+            gamma: gamma,
+            delta: delta,
+        };
+    }
+
+    const infectingByRegions = (countryName) => {
+        const data = allCountries[countryName];
+        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
+        beta = 0.940961;
+        gamma = 0.0622677;
+        delta = 0.01559;
+        S = S - 5;
+        I = 5;
+
+        return {
+            ...data,
+            infectivity: 1,
+            Susceptible: S,
+            Infectious: I,
+            beta: beta,
+            gamma: gamma,
+            delta: delta,
+        };
+    }
+
+    const infectingBySubRegions = (countryName) => {
+        const data = allCountries[countryName];
+        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
+        beta = 0.940961;
+        gamma = 0.0622677;
+        delta = 0.01559;
+        S = S - 8;
+        I = 8;
+
+        return {
+            ...data,
+            infectivity: 1,
+            Susceptible: S,
+            Infectious: I,
+            beta: beta,
+            gamma: gamma,
+            delta: delta,
+        };
+    }
+
+
     //
     const [infectiousIncrement, setInfectiousIncrement] = useState(0);
 
@@ -353,46 +449,82 @@ function MainPage(props) {
     useInterval(() => {
         // setInfectiousIncrement(infectiousIncrement + 1000000);
 
-        let countries = {};
+        if (gameFlow === true) {
 
-        Object.keys(allCountries).forEach(currentCountry => {
+            setDays(prevDays => prevDays + 1);
 
-            if (allCountries[currentCountry].infectivity === 1) {
-                if (allCountries[currentCountry].Infectious > 50000) {
+            let countries = {};
 
-                }
-                // setFirstInfectedCountry(...firstInfectedCountry, currentCountry);
-                // console.log(allCountries[currentCountry].Infectious, currentCountry);
-                countries[currentCountry] = compartmentsRecalculateValues(currentCountry);
-            } else {
-                if(Math.random()<0.005){
-                    const dataInfectivity = allCountries[currentCountry];
-                    setAllCountries((prevAllCountriesState) => ({
-                        ...prevAllCountriesState, ...{
-                            [currentCountry]: {
-                                ...dataInfectivity,
-                                infectivity:1,
-                                Susceptible: dataInfectivity.Susceptible-4,
-                                Infectious: 4,
-                                beta:0.940961,
-                                gamma:0.0622677,
-                                delta:0.01559
+            Object.keys(allCountries).forEach(currentCountry => {
+
+                if (allCountries[currentCountry].infectivity === 1) {
+                    if (allCountries[currentCountry].Infectious > 50000) {
+
+                    }
+                    // setFirstInfectedCountry(...firstInfectedCountry, currentCountry);
+                    // console.log(allCountries[currentCountry].Infectious, currentCountry);
+
+
+                    //INFIKOVANIE CEZ HRANICE
+                    allCountries[currentCountry].border.forEach(element => {
+                        if (allCountries[element].infectivity === 0) {
+                            if (Math.random() < 0.005) {
+                                countries[element] = infectingByBorders(element);
                             }
                         }
-                    }));
-                    console.log("SKOCIL SOM A INFIKOVAL SOM NOVU KRAJINU");
-                    console.log(currentCountry);
+                    });
+
+                    //INFIKOVANIE CEZ REGION A SUBREGION
+                    for (const property in allCountries) {
+
+                        //REGION
+                        if (allCountries[property].region === allCountries[currentCountry].region) {
+                            if (allCountries[property].infectivity === 0) {
+                                if (Math.random() < 0.005) {
+                                    countries[property] = infectingByRegions(property);
+                                }
+                            }
+                        }
+                        //SUBREGION
+                        if (allCountries[property].subregion === allCountries[currentCountry].subregion) {
+                            if (allCountries[property].infectivity === 0) {
+                                if (Math.random() < 0.005) {
+                                    countries[property] = infectingBySubRegions(property);
+                                }
+                            }
+                        }
+                    }
+
+                    countries[currentCountry] = compartmentsRecalculateValues(currentCountry);
+                } else {
+                    if (Math.random() < 0.005) {
+                        const dataInfectivity = allCountries[currentCountry];
+                        setAllCountries((prevAllCountriesState) => ({
+                            ...prevAllCountriesState, ...{
+                                [currentCountry]: {
+                                    ...dataInfectivity,
+                                    infectivity: 1,
+                                    Susceptible: dataInfectivity.Susceptible - 4,
+                                    Infectious: 4,
+                                    beta: 0.940961,
+                                    gamma: 0.0622677,
+                                    delta: 0.01559
+                                }
+                            }
+                        }));
+                        console.log("SKOCIL SOM A INFIKOVAL SOM NOVU KRAJINU");
+                        console.log(currentCountry);
+                    }
                 }
-            }
-        })
+            })
 
-        setAllCountries((prevAllCountriesState) => {
-            // console.log(prevAllCountriesState);
-            return {
-                ...prevAllCountriesState, ...countries
-            }
-        });
-
+            setAllCountries((prevAllCountriesState) => {
+                // console.log(prevAllCountriesState);
+                return {
+                    ...prevAllCountriesState, ...countries
+                }
+            });
+        }
         // setAllCountries((prevAllCountriesState) => ({
         //     ...prevAllCountriesState, ...{
         //         [countryName]: {
@@ -407,44 +539,92 @@ function MainPage(props) {
 
         // valueChange(firstInfectedCountry);
 
-    }, 500);
+    }, intervalSpeed);
 
 
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <AppBar position="fixed" className={classes.appBar}>
-                {/*<Toolbar>*/}
-                {/*    <Typography variant="h6" noWrap>*/}
-                {/*        Main Page*/}
-                {/*    </Typography>*/}
-                {/*</Toolbar>*/}
-            </AppBar>
+            {/*<AppBar position="fixed" className={classes.appBar}>*/}
+            {/*    <Toolbar>*/}
+            {/*        <Grid container xs={12}>*/}
+            {/*            <Grid item xs={3}>*/}
+            {/*            <Typography variant="h6" noWrap>*/}
+            {/*                Main Page*/}
+            {/*            </Typography>*/}
+            {/*            </Grid>*/}
+            {/*            <Grid xs={9}>*/}
+            {/*                <Typography variant="h6" noWrap>*/}
+            {/*                    <NewsBar msg="ahoj"/>*/}
+            {/*                </Typography>*/}
+            {/*            </Grid>*/}
+            {/*        </Grid>*/}
+            {/*    </Toolbar>*/}
+            {/*</AppBar>*/}
             <main className={classes.content}>
-                <div className={classes.toolbar}/>
+                {/*<div className={classes.toolbar}/>*/}
                 <Grid
                     container
-                    direction="column"
+                    direction="row"
                     justify="center"
                     alignItems="center"
-                    spacing={2}
+
+                    // spacing={2}
                 >
-                    {/*<MapContainer/>*/}
-                    <MapContainer setTooltipContent={setContent}/>
-                    <ReactTooltip>{content}</ReactTooltip>
-
-                    <DataContainer/>
-
-                    <Grid className={classes.downInfoBar} item xs={12}>
-                        <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-                            <BottomNavigationAction label="Susceptible" value="susceptible" icon={<FolderIcon/>}/>
-                            <BottomNavigationAction label="Infected" value="infected" icon={<FolderIcon/>}/>
-                            <BottomNavigationAction label="Recovered" value="recovered" icon={<FolderIcon/>}/>
-                            <BottomNavigationAction label="Deceased" value="deceased" icon={<FolderIcon/>}/>
-                        </BottomNavigation>
+                    <Grid item xs={12}
+                        // style={{maxHeight: '15rem'}}
+                          className={classes.appBar}
+                    >
+                        <MapContainer setTooltipContent={setContent}/>
                     </Grid>
+                    {/*<BottomNavigation*/}
+                    {/*    value={value}*/}
+                    {/*    onChange={(event, newValue) => {*/}
+                    {/*        setValue(newValue);*/}
+                    {/*    }}*/}
+                    {/*    showLabels*/}
+                    {/*    className={classes.appBar}*/}
+                    {/*>*/}
+                    {/*            <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>*/}
+                    {/*            <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>*/}
+                    {/*            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
+                    {/*            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
+                    {/*</BottomNavigation>*/}
+                    <Grid container xs={12} direction="row" justify="space-around" alignItems="center" spacing="2"
+                          className={classes.appBar}>
+                        <Grid item xs={3}>
+                            <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>
+                        </Grid>
+
+
+                    </Grid>
+                    {/*<MapContainer/>*/}
+
+                    {/*<ReactTooltip>{content}</ReactTooltip>*/}
+
+                    {/*<DataContainer/>*/}
+
                 </Grid>
+                {/*<Grid container className={classes.downInfoBar} xs={12} justify="center"*/}
+                {/*      alignItems="center">*/}
+
+                {/*    <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>*/}
+                {/*    <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>*/}
+                {/*    <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
+                {/*    <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
+
+                {/*</Grid>*/}
             </main>
+
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -456,12 +636,28 @@ function MainPage(props) {
                 <div className={classes.toolbar}/>
                 <Divider/>
                 <List>
-                    {['Date', 'Game Speed', 'Trust Level', 'Game Money'].map((text, index) => (
-                        <ListItem button key={text}>
-                            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                            <ListItemText primary={text}/>
-                        </ListItem>
-                    ))}
+                    <ListItem button>
+                        <ListItemText>
+                            <DateRightBar days={days}/>
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                        <Button onClick={gamePause} color={pauseColor}>
+                            <Pause/>
+                        </Button>
+                        <Button onClick={gameUnpause} color={unpauseColor}>
+                            <PlayArrow/>
+                        </Button>
+                        <Button onClick={gameForward} color={forwardColor}>
+                            <FastForward/>
+                        </Button>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemText primary="Trust Level"/>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemText primary="Game Money"/>
+                    </ListItem>
                 </List>
                 <Divider/>
                 <List>
