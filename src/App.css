@@ -58,6 +58,8 @@
 /*}*/
 
 
+/*html, body {margin: 0; height: 100%; overflow: hidden}*/
+
 .welcomePageCss {
     background: url("images/virusBackground.gif") no-repeat; background-size: cover;
     position: absolute;
