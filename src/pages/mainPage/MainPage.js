@@ -37,9 +37,14 @@ import {useRecoilState} from "recoil";
 import {mapContainerState} from "../../components/mapContainer/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
-import {FastForward, Pause, PlayArrow} from "@material-ui/icons";
+import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-ui/icons";
 import NewsBar from "../../components/newsBar/NewsBar";
 import {bottomInfoBarState} from "../../components/bottomInfoBar/BottomInfoBarState";
+import HromadneOblastneOpatrenia
+    from "../../components/gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatrenia";
+import {GameCurrencyState} from "../../data/GameCurrencyState.js";
+import {HromadneOblastneOpatreniaState} from "../../components/gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatreniaState";
+import ZoznamOpatreni from "../../components/gameActions/ZoznamOpatreni";
 
 
 const drawerWidth = 240;
@@ -64,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: drawerWidth,
+    },
+    gameSpeedButtons:{
+        margin: '2px',
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -119,9 +127,32 @@ function MainPage(props) {
         setOpen(false);
     };
 
+
+    //zoznam opatreni
+    const [openZoznamOpatreni, setOpenZoznamOpatreni] = React.useState(false);
+
+    const handleClickOpenZoznamOpatreni = () => {
+        setOpenZoznamOpatreni(true);
+    };
+    const handleClickCloseZoznamOpatreni = () => {
+        setOpenZoznamOpatreni(false);
+    };
+
+    //opatrenia modal 1
+    const [openOblastneOpatrenia, setOpenOblastneOpatrenia] = React.useState(false);
+
+    const handleClickOpenOblastneOpatrenia = () => {
+        setOpenOblastneOpatrenia(true);
+    };
+    const handleCloseOblastneOpatrenia = () => {
+        setOpenOblastneOpatrenia(false);
+    };
+
     //react-tooltip
     const [content, setContent] = useState("");
 
+    //game currency
+    const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
 
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
@@ -136,34 +167,53 @@ function MainPage(props) {
     const [gameFlow, setgameFlow] = useState(true);
 
     const [pauseColor, setPauseColor] = useState("default");
-
     const [unpauseColor, setUnpauseColor] = useState("primary");
-
     const [forwardColor, setForwardColor] = useState("default");
+
+    const [pauseOutline, setPauseOutline] = useState("outlined");
+    const [unpauseOutline, setUnpauseOutline] = useState("contained");
+    const [forwardOutline, setForwardOutline] = useState("outlined");
 
     const [intervalSpeed, setIntervalSpeed] = useState(2500);
 
     const gamePause = () => {
         setgameFlow(false);
+
         setPauseColor("primary");
         setUnpauseColor("default");
         setForwardColor("default");
+
+        setPauseOutline("contained");
+        setUnpauseOutline("outlined");
+        setForwardOutline("outlined");
     }
 
     const gameUnpause = () => {
         setgameFlow(true);
+
         setPauseColor("default");
         setUnpauseColor("primary");
         setForwardColor("default");
+
+        setPauseOutline("outlined");
+        setUnpauseOutline("contained");
+        setForwardOutline("outlined");
+
         setIntervalSpeed(2500);
     }
 
     const gameForward = () => {
         setgameFlow(true);
-        setIntervalSpeed(1000);
+
         setPauseColor("default");
         setUnpauseColor("default");
         setForwardColor("primary");
+
+        setPauseOutline("outlined");
+        setUnpauseOutline("outlined");
+        setForwardOutline("contained");
+
+        setIntervalSpeed(1000);
     }
 //---------------------------
 
@@ -667,31 +717,53 @@ function MainPage(props) {
                         </ListItemText>
                     </ListItem>
                     <ListItem button>
-                        <Button onClick={gamePause} color={pauseColor}>
+                        <Button onClick={gamePause} color={pauseColor} variant={pauseOutline} className={classes.gameSpeedButtons}>
                             <Pause/>
                         </Button>
-                        <Button onClick={gameUnpause} color={unpauseColor}>
+                        <Button onClick={gameUnpause} color={unpauseColor} variant={unpauseOutline} className={classes.gameSpeedButtons}>
                             <PlayArrow/>
                         </Button>
-                        <Button onClick={gameForward} color={forwardColor}>
+                        <Button onClick={gameForward} color={forwardColor} variant={forwardOutline} className={classes.gameSpeedButtons}>
                             <FastForward/>
                         </Button>
                     </ListItem>
                     <ListItem button>
-                        <ListItemText primary="Trust Level"/>
+                        <ListItemText>
+                            herna dovera
+                        </ListItemText>
                     </ListItem>
                     <ListItem button>
-                        <ListItemText primary="Game Money"/>
+                        <ListItemText>
+                            Herná mena: {gameCurrency}
+                        </ListItemText>
                     </ListItem>
                 </List>
                 <Divider/>
+                    <ListItem button>
+                        <ListItemText primary="Prehľad všetkých opatrení" onClick={handleClickOpenZoznamOpatreni}/>
+                    </ListItem>
+                <Divider/>
                 <List>
-                    {[1, 2, 3, 4, 5, 6].map((text, index) => (
-                        <ListItem button key={text}>
-                            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                            <ListItemText primary={text} onClick={handleClickOpen}/>
-                        </ListItem>
-                    ))}
+                    <ListItem button >
+                        <Public/>
+                        <ListItemText primary="Hromadné oblastné opatrenia" onClick={handleClickOpenOblastneOpatrenia}/>
+                    </ListItem>
+                    <ListItem button >
+                        <Contacts/>
+                        <ListItemText primary="Trasovanie kontaktov a testovanie" onClick={handleClickOpen}/>
+                    </ListItem>
+                    <ListItem button >
+                        <Apps/>
+                        <ListItemText primary="Prevencia" onClick={handleClickOpen}/>
+                    </ListItem>
+                    <ListItem button >
+                        <Apps/>
+                        <ListItemText primary="Liečba" onClick={handleClickOpen}/>
+                    </ListItem>
+                    <ListItem button >
+                        <Apps/>
+                        <ListItemText primary="Vakcína" onClick={handleClickOpen}/>
+                    </ListItem>
                 </List>
             </Drawer>
 
@@ -719,6 +791,20 @@ function MainPage(props) {
                         Save changes
                     </Button>
                 </DialogActions>
+            </Dialog>
+
+            <Dialog onClose={handleClickCloseZoznamOpatreni} aria-labelledby="customized-dialog-title" open={openZoznamOpatreni}>
+                <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
+                    Zoznam opatrení
+                </DialogTitle>
+                <ZoznamOpatreni/>
+            </Dialog>
+
+            <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title" open={openOblastneOpatrenia}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseOblastneOpatrenia}>
+                    Hromadné oblastné opatrenia
+                </DialogTitle>
+                <HromadneOblastneOpatrenia/>
             </Dialog>
 
         </div>

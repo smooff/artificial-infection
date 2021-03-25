@@ -120,6 +120,9 @@ const MapContainer = ({setTooltipContent}) => {
                                             // onMouseLeave={() => {
                                             //     setTooltipContent("");
                                             // }}
+                                            onClick={()=>{
+                                                console.log(d?.Population ? `${d.NAME} — ${rounded(d.Population)} SUS- ${d.Susceptible} INF- ${d.Infectious} REC- ${d.Recovered} DEC- ${d.Deceased}` : "");
+                                            }}
                                             style={{
                                                 default: {
                                                     // fill: "#D6D6DA",

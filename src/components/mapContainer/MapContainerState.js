@@ -8,6 +8,7 @@ export const mapContainerState = atom({
         //chybaju tu - Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC)
         //Francuzska Guiana (GUF) patri v mape pod Francuzsko (FRA), preto tu neni GUF zaznam
         //info - hranice/region/subregion https://raw.githubusercontent.com/mledoze/countries/master/countries.json
+        //regiony: Asia, Europe, Africa, Americas, Oceania, Antarctic
 
         AFG: {
             NAME: 'Afghanistan',
