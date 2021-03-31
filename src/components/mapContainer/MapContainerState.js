@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const mapContainerState = atom({
@@ -13,14 +13,14 @@ export const mapContainerState = atom({
         AFG: {
             NAME: 'Afghanistan',
             Population: 38928346,
-            Susceptible: 38928342,
-            Infectious: 4,
+            Susceptible: 38928346,
+            Infectious: 0,
             Recovered: 0,
             Deceased: 0,
-            beta: 0.240961,
-            gamma: 0.0195558,
-            delta: 0.00925,
-            infectivity: 1,
+            beta: 0,
+            gamma: 0,
+            delta: 0,
+            infectivity: 0,
             border: [
                 'IRN',
                 'PAK',
@@ -3874,3 +3874,50 @@ export const mapContainerState = atom({
     },
 });
 
+export const susceptiblesSelector = selector({
+    key: 'susceptiblesSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let sus = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            sus += bigState[currentCountry].Susceptible;
+        });
+        return sus;
+    },
+});
+
+export const infectiousSelector = selector({
+    key: 'infectiousSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let inf = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            inf += bigState[currentCountry].Infectious;
+        });
+        return inf;
+    },
+});
+
+export const recoveredSelector = selector({
+    key: 'recoveredSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let rec = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            rec += bigState[currentCountry].Recovered;
+        });
+        return rec;
+    },
+});
+
+export const deceasedSelector = selector({
+    key: 'deceasedSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let dec = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            dec += bigState[currentCountry].Deceased;
+        });
+        return dec;
+    },
+});

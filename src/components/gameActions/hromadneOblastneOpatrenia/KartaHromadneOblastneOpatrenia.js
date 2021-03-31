@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, CardContent, Grid, Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
@@ -31,6 +31,8 @@ function KartaHromadneOblastneOpatrenia(props) {
 
     }));
     const classes = useStyles();
+
+    useEffect(() => console.log(props.regionEN), [props.regionEN]);
 
     //modal po aktivacii opatrenia
     const [open, setOpen] = React.useState(false);
@@ -73,6 +75,7 @@ function KartaHromadneOblastneOpatrenia(props) {
     const handleButtonClick = (textMessage, buttonNumber) => {
         setText(textMessage);
 
+
         if (buttonNumber === 1) {
             setbutton1Color("primary");
             setbutton2Color("default");
@@ -103,9 +106,12 @@ function KartaHromadneOblastneOpatrenia(props) {
 
     const Results = (c) => (
         <Grid className={classes.activationButtons}>
-            {c.cislo === 1 ?<div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button onClick={handleDeactivationClickBorders}>Dektivovať</Button></div>  : c.cislo === 2 ?
-                <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button onClick={handleDeactivationClickAirports}>Dektivovať</Button></div> : c.cislo === 3 ?
-                    <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button onClick={handleDeactivationClickSeaports}>Deaktivovať</Button></div> : <div/>}
+            {c.cislo === 1 ? <div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button
+                onClick={handleDeactivationClickBorders}>Dektivovať</Button></div> : c.cislo === 2 ?
+                <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button
+                    onClick={handleDeactivationClickAirports}>Dektivovať</Button></div> : c.cislo === 3 ?
+                    <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button
+                        onClick={handleDeactivationClickSeaports}>Deaktivovať</Button></div> : <div/>}
 
 
         </Grid>
@@ -129,17 +135,17 @@ function KartaHromadneOblastneOpatrenia(props) {
     }
 
     const handleDeactivationClickBorders = () => {
-            if (measuresActualState[props.regionEN].borders === 1) {
-                setmeasuresActualState((prevStats) => {
-                    return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], borders: 0}};
-                });
-                setGameCurrency(prev => (prev + 5));
+        if (measuresActualState[props.regionEN].borders === 1) {
+            setmeasuresActualState((prevStats) => {
+                return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], borders: 0}};
+            });
+            setGameCurrency(prev => (prev + 5));
 
-                //alert o vykonani
-                setModalRegion(props.regionName);
-                setModalMessage("Deaktivoval si uzavretie hraníc pre daný región.")
-                handleOpen();
-            }
+            //alert o vykonani
+            setModalRegion(props.regionName);
+            setModalMessage("Deaktivoval si uzavretie hraníc pre daný región.")
+            handleOpen();
+        }
     }
 
     const handleActivationClickAirports = () => {
@@ -159,17 +165,17 @@ function KartaHromadneOblastneOpatrenia(props) {
     }
 
     const handleDeactivationClickAirports = () => {
-            if (measuresActualState[props.regionEN].airports === 1) {
-                setmeasuresActualState((prevStats) => {
-                    return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], airports: 0}};
-                });
-                setGameCurrency(prev => (prev + 4));
+        if (measuresActualState[props.regionEN].airports === 1) {
+            setmeasuresActualState((prevStats) => {
+                return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], airports: 0}};
+            });
+            setGameCurrency(prev => (prev + 4));
 
-                //alert o vykonani
-                setModalRegion(props.regionName);
-                setModalMessage("Deaktivoval si uzavretie letísk pre daný región.")
-                handleOpen();
-            }
+            //alert o vykonani
+            setModalRegion(props.regionName);
+            setModalMessage("Deaktivoval si uzavretie letísk pre daný región.")
+            handleOpen();
+        }
     }
 
     const handleActivationClickSeaports = () => {
@@ -189,20 +195,21 @@ function KartaHromadneOblastneOpatrenia(props) {
     }
 
     const handleDeactivationClickSeaports = () => {
-            if (measuresActualState[props.regionEN].seaports === 1) {
-                setmeasuresActualState((prevStats) => {
-                    return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], seaports: 0}};
-                });
-                setGameCurrency(prev => (prev + 3));
+        if (measuresActualState[props.regionEN].seaports === 1) {
+            setmeasuresActualState((prevStats) => {
+                return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], seaports: 0}};
+            });
+            setGameCurrency(prev => (prev + 3));
 
-                //alert o vykonani
-                setModalRegion(props.regionName);
-                setModalMessage("Deaktivoval si uzavretie ľodných prístavov pre daný región.")
-                handleOpen();
-            }
+            //alert o vykonani
+            setModalRegion(props.regionName);
+            setModalMessage("Deaktivoval si uzavretie ľodných prístavov pre daný región.")
+            handleOpen();
+        }
     }
 
     const bordersButtonActivated = () => {
+        console.log("rernder");
         if (measuresActualState[props.regionEN].borders === 1) {
             return "contained";
         } else {
@@ -264,7 +271,8 @@ function KartaHromadneOblastneOpatrenia(props) {
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
-                                <Button id={props.regionEN} color={button1Color} variant={bordersButtonActivated()}
+                                <Button id={props.regionEN} color={button1Color}
+                                        variant={measuresActualState[props.regionEN].borders === 1 ? "contained" : "outlined"}
                                         onClick={() => {
                                             handleButtonClick(props.measurestext1, 1);
                                         }}>
@@ -272,16 +280,20 @@ function KartaHromadneOblastneOpatrenia(props) {
                                 </Button>
                             </Grid>
                             <Grid item xs={3}>
-                                <Button color={button2Color} variant={airportsButtonActivated()} onClick={() => {
-                                    handleButtonClick(props.measurestext2, 2);
-                                }}>
+                                <Button color={button2Color}
+                                        variant={measuresActualState[props.regionEN].airports === 1 ? "contained" : "outlined"}
+                                        onClick={() => {
+                                            handleButtonClick(props.measurestext2, 2);
+                                        }}>
                                     Letiská
                                 </Button>
                             </Grid>
                             <Grid item xs={3}>
-                                <Button color={button3Color} variant={seaportsButtonActivated()} onClick={() => {
-                                    handleButtonClick(props.measurestext3, 3);
-                                }}>
+                                <Button color={button3Color}
+                                        variant={measuresActualState[props.regionEN].seaports === 1 ? "contained" : "outlined"}
+                                        onClick={() => {
+                                            handleButtonClick(props.measurestext3, 3);
+                                        }}>
                                     Prístavy
                                 </Button>
                             </Grid>

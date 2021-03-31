@@ -1,10 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
+import { useRecoilValue} from "recoil";
 
 
 
-function DateRightBar(props) {
+function DateRightBar({dateState}) {
+
+
+    const days = useRecoilValue(dateState);
+
     let tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() +props.days);
+    tomorrow.setDate(tomorrow.getDate() +days);
 
     return (
         <div>
