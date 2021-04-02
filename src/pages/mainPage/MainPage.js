@@ -35,15 +35,15 @@ import ReactTooltip from "react-tooltip";
 import DataContainer from "../../components/dataContainer/DataContainer";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {
-    deceasedSelector,
+    deceasedSelector, infectiousCountriesCountSelector,
     infectiousSelector,
     mapContainerState,
-    recoveredSelector, susceptiblesSelector
+    recoveredSelector, separateCountryByInfectivitySelector, susceptiblesSelector
 } from "../../components/mapContainer/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
 import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-ui/icons";
-import NewsBar from "../../components/newsBar/NewsBar";
+
 import HromadneOblastneOpatrenia
     from "../../components/gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatrenia";
 import {GameCurrencyState} from "../../data/GameCurrencyState.js";
@@ -395,7 +395,7 @@ function MainPage(props) {
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
                     Zoznam opatrení
                 </DialogTitle>
-                <ZoznamOpatreni/>
+                <ZoznamOpatreni dataSelector={separateCountryByInfectivitySelector} dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
             <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
