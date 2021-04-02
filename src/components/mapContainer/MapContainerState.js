@@ -6,9 +6,8 @@ export const mapContainerState = atom({
     default: {
         //204 krajin
         //chybaju tu - Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC)
-        //Francuzska Guiana (GUF) patri v mape pod Francuzsko (FRA), preto tu neni GUF zaznam
         //info - hranice/region/subregion https://raw.githubusercontent.com/mledoze/countries/master/countries.json
-        //regiony: Asia, Europe, Africa, Americas, Oceania, Antarctic
+        //regiony: Asia, Europe, Africa, Americas, Oceania
 
         AFG: {
             NAME: 'Afghanistan',
@@ -469,7 +468,8 @@ export const mapContainerState = atom({
                 'PER',
                 'SUR',
                 'URY',
-                'VEN'
+                'VEN',
+                'GUF'
             ],
             region: 'Americas',
             subregion: 'South America'
@@ -1150,6 +1150,24 @@ export const mapContainerState = atom({
             ],
             region: 'Europe',
             subregion: 'Western Europe'
+        },
+        GUF: {
+            NAME: 'French Guiana',
+            Population: 294071,
+            Susceptible: 294071,
+            Infectious: 0,
+            Recovered: 0,
+            Deceased: 0,
+            beta: 0,
+            gamma: 0,
+            delta: 0,
+            infectivity: 0,
+            border: [
+                'BRA',
+                'SUR'
+            ],
+            region: 'Americas',
+            subregion: 'South America'
         },
         GAB: {
             NAME: 'Gabon',
@@ -3103,7 +3121,8 @@ export const mapContainerState = atom({
             infectivity: 0,
             border: [
                 'BRA',
-                'GUY'
+                'GUY',
+                'GUF'
             ],
             region: 'Americas',
             subregion: 'South America'
@@ -3656,8 +3675,8 @@ export const mapContainerState = atom({
             delta: 0,
             infectivity: 0,
             border: [],
-            region: 'Antarctic',
-            subregion: ''
+            region: 'Africa',
+            subregion: 'Southern Africa'
         },
         GRL: {
             NAME: 'Greenland',
@@ -3919,5 +3938,40 @@ export const deceasedSelector = selector({
             dec += bigState[currentCountry].Deceased;
         });
         return dec;
+    },
+});
+
+export const separateCountryByInfectivitySelector = selector({
+    key: 'separateCountryByInfectivitySelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let countryName;
+        let countryInfectivity;
+        let countryList = [];
+        Object.keys(bigState).forEach(currentCountry => {
+
+
+            countryName = bigState[currentCountry].NAME;
+            countryInfectivity = bigState[currentCountry].infectivity;
+            countryList.push({countryName, countryInfectivity})
+        });
+        return countryList;
+    },
+});
+
+export const infectiousCountriesCountSelector = selector({
+    key: 'infectiousCountriesCountSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let infectedCountries = 0;
+        let nonInfectedCountries = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            if (bigState[currentCountry].infectivity === 1) {
+                infectedCountries++;
+            } else if (bigState[currentCountry].infectivity === 0) {
+                nonInfectedCountries++;
+            }
+        });
+        return [infectedCountries,nonInfectedCountries];
     },
 });
