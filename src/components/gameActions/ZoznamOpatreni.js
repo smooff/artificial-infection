@@ -101,21 +101,7 @@ function ZoznamOpatreni({dataSelector, dataSelectorCount}) {
                     <Typography>
                         Prístavy {measuresActualState.Oceania.seaports}
                     </Typography>
-                    <Divider/>
 
-                    <Typography>
-                        Antarktída
-                    </Typography>
-                    <Typography>
-                        Hranice {measuresActualState.Antarctic.borders}
-                    </Typography>
-                    <Typography>
-                        Letiská {measuresActualState.Antarctic.airports}
-                    </Typography>
-                    <Typography>
-                        Prístavy {measuresActualState.Antarctic.seaports}
-                    </Typography>
-                    <Divider/>
                 </Grid>
             </Grid>
         </DialogContent>

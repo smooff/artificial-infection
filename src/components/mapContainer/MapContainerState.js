@@ -4,7 +4,7 @@ import {atom, selector} from "recoil";
 export const mapContainerState = atom({
     key: 'mapContainer',
     default: {
-        //204 krajin
+        //205 krajin
         //chybaju tu - Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC)
         //info - hranice/region/subregion https://raw.githubusercontent.com/mledoze/countries/master/countries.json
         //regiony: Asia, Europe, Africa, Americas, Oceania

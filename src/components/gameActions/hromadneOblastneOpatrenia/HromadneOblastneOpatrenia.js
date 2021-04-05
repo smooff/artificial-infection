@@ -143,10 +143,6 @@ function HromadneOblastneOpatrenia(props) {
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
             />
-            <KartaHromadneOblastneOpatrenia regionEN="Antarctic" regionName="Antarktída" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
-                                            measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
-                                            measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
-            />
         </DialogContent>
 
     );
