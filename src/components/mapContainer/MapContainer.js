@@ -17,6 +17,9 @@ import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
 import {HromadneOblastneOpatreniaState} from "../gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatreniaState";
 import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
+import {BetaState} from "../../data/parameters/BetaState";
+import {GammaState} from "../../data/parameters/GammaState";
+import {DeltaState} from "../../data/parameters/DeltaState";
 
 
 const geoUrl = require('./topologies.json');
@@ -115,113 +118,65 @@ const MapContainer = ({setTooltipContent}) => {
 
 
 //---------------------------
+
+    //parametre
+    const [betaParameter, setBetaParameter] = useRecoilState(BetaState);
+    const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
+    const [deltaParameter, setDeltaParameter] = useRecoilState(DeltaState);
+
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
-    const infectingByBorders = (countryName) => {
+
+    //funkcia na infikovanie novej krajiny
+    const infectingNewCountry = (countryName, infectiousOrigin) => {
         const data = allCountries[countryName];
-        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
-        beta = 0.940961;
-        gamma = 0.0622677;
-        delta = 0.01559;
-        S = S - 10;
-        I = 10;
+        let {Susceptible: S, Infectious: I} = data;
+
+        switch (infectiousOrigin) {
+            case "initial":
+                S = S - 5;
+                I = 5;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+            case "border":
+                S = S - 10;
+                I = 10;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+            case "region":
+                S = S - 5;
+                I = 5;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+            case "subregion":
+                S = S - 8;
+                I = 8;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+            case "airTraffic":
+                S = S - 4;
+                I = 4;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+            case "seaTraffic":
+                S = S - 4;
+                I = 4;
+                //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
+                break;
+        }
 
         return {
             ...data,
             infectivity: 1,
             Susceptible: S,
             Infectious: I,
-            beta: beta,
-            gamma: gamma,
-            delta: delta,
         };
     }
 
-    const infectingByRegions = (countryName) => {
-        const data = allCountries[countryName];
-        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
-        beta = 0.940961;
-        gamma = 0.0622677;
-        delta = 0.01559;
-        S = S - 5;
-        I = 5;
-
-        return {
-            ...data,
-            infectivity: 1,
-            Susceptible: S,
-            Infectious: I,
-            beta: beta,
-            gamma: gamma,
-            delta: delta,
-        };
-    }
-
-    const infectingBySubRegions = (countryName) => {
-        const data = allCountries[countryName];
-        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
-        beta = 0.940961;
-        gamma = 0.0622677;
-        delta = 0.01559;
-        S = S - 8;
-        I = 8;
-
-        return {
-            ...data,
-            infectivity: 1,
-            Susceptible: S,
-            Infectious: I,
-            beta: beta,
-            gamma: gamma,
-            delta: delta,
-        };
-    }
-
-    const infectingByAirTraffic = (countryName) => {
-
-        const data = allCountries[countryName];
-        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
-        beta = 0.940961;
-        gamma = 0.0622677;
-        delta = 0.01559;
-        S = S - 4;
-        I = 4;
-
-        return {
-            ...data,
-            infectivity: 1,
-            Susceptible: S,
-            Infectious: I,
-            beta: beta,
-            gamma: gamma,
-            delta: delta,
-        };
-    }
-
-    const infectingBySeaTraffic = (countryName) => {
-
-        const data = allCountries[countryName];
-        let {beta, gamma, delta, Susceptible: S, Infectious: I} = data;
-        beta = 0.940961;
-        gamma = 0.0622677;
-        delta = 0.01559;
-        S = S - 4;
-        I = 4;
-
-        return {
-            ...data,
-            infectivity: 1,
-            Susceptible: S,
-            Infectious: I,
-            beta: beta,
-            gamma: gamma,
-            delta: delta,
-        };
-    }
 
     const susceptibleCalculate = (S, I, N, beta) => {
         // let nachylny = Math.round(S - (beta * S * I) / N);
-        let nachylny = (S - Math.ceil((beta * S * I) / N));
+        let nachylny = (S - Math.ceil((betaParameter * S * I) / N));
         // console.log('nach',nachylny);
 
 
@@ -233,7 +188,7 @@ const MapContainer = ({setTooltipContent}) => {
     }
 
     const infectiousCalculate = (S, I, N, beta, gamma, delta) => {
-        let infekcny = (I + Math.ceil((beta * S * I) / N)) - Math.round(gamma * I) - Math.round(delta * I);
+        let infekcny = (I + Math.ceil((betaParameter * S * I) / N)) - Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
         // console.log('inf', data.Infectious);
         // console.log('round do R: ', Math.round(gamma * I));
         // console.log('bez do R: ', (gamma * I));
@@ -245,7 +200,7 @@ const MapContainer = ({setTooltipContent}) => {
         let povodnyInfekcny = 0;
         if (infekcny > N) {
             // console.log('INFEKCNY JE VASCI', N - Math.round(gamma * I) - Math.round(delta * I));
-            infekcny = N - Math.round(gamma * N) - Math.round(delta * N);
+            infekcny = N - Math.round(gammaParameter * N) - Math.round(deltaParameter * N);
             infekcnyVacsiNezPopulaciaCheck = 1;
         } else if (infekcny < 0) {
             povodnyInfekcny = infekcny;
@@ -254,8 +209,8 @@ const MapContainer = ({setTooltipContent}) => {
 
         const infekcnyPushToRD = I - infekcny;
         if ((I - infekcny) === 0) {
-            if ((Math.round(gamma * I) + Math.round(delta * I)) === 0) {
-                infekcny = (I + Math.ceil((beta * S * I) / N) - Math.ceil(gamma * I) - Math.ceil(delta * I));
+            if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
+                infekcny = (I + Math.ceil((betaParameter * S * I) / N) - Math.ceil(gammaParameter * I) - Math.ceil(deltaParameter * I));
 
                 if (infekcny < 0) {
                     povodnyInfekcny = infekcny;
@@ -282,11 +237,11 @@ const MapContainer = ({setTooltipContent}) => {
         //if funkcny v pripade presunu z kompartmentu I do R,
         //kde I sa dostava do zapornej hodnoty a je potrebne to vykompenzovat v R (aj v D) upravenym-znizenym pripocitanim
         if (I2 < 0) {
-            let splittedI2 = I2 / (gamma + delta);
-            let recoveredReduction = Math.round(gamma * splittedI2);
+            let splittedI2 = I2 / (gammaParameter + deltaParameter);
+            let recoveredReduction = Math.round(gammaParameter * splittedI2);
             let zotavenyZmena = R - recoveredReduction;
 
-            if (gamma === delta) {
+            if (gammaParameter === deltaParameter) {
                 return R;
             }
 
@@ -294,21 +249,21 @@ const MapContainer = ({setTooltipContent}) => {
         }
 
         if (infekcnyVacsiNezPopulaciaCheckValue === 1) {
-            let zotaveny = Math.round(gamma * N);
+            let zotaveny = Math.round(gammaParameter * N);
             return zotaveny;
         }
 
         if (infekcnyPush === 0) {
-            if ((Math.round(gamma * I) + Math.round(delta * I)) === 0) {
+            if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
                 if (I === 1) {
-                    if (gamma > delta) {
-                        let zotaveny = Math.ceil(R + gamma * I);
+                    if (gammaParameter > deltaParameter) {
+                        let zotaveny = Math.ceil(R + gammaParameter * I);
                         return zotaveny;
-                    } else if (delta > gamma) {
+                    } else if (deltaParameter > gammaParameter) {
                         return R;
                     }
                 }
-                let zotaveny = Math.ceil(R + gamma * I);
+                let zotaveny = Math.ceil(R + gammaParameter * I);
                 return zotaveny;
             }
             // else if((Math.ceil((beta * S * I) / N))===(Math.round(gamma * I) + Math.round(delta * I))){
@@ -327,7 +282,7 @@ const MapContainer = ({setTooltipContent}) => {
             // }
         }
 
-        let zotaveny = Math.round(R + gamma * I);
+        let zotaveny = Math.round(R + gammaParameter * I);
 
         return zotaveny;
     }
@@ -335,31 +290,31 @@ const MapContainer = ({setTooltipContent}) => {
     const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S) => {
         //rovnake osetrenie ako vo funkcii vyssie
         if (I2 < 0) {
-            let splittedI2 = I2 / (gamma + delta);
-            let deceasedReduction = Math.round(delta * splittedI2);
+            let splittedI2 = I2 / (gammaParameter + deltaParameter);
+            let deceasedReduction = Math.round(deltaParameter * splittedI2);
             let zosnulyZmena = D - deceasedReduction;
 
-            if (gamma === delta) {
+            if (gammaParameter === deltaParameter) {
             }
             return zosnulyZmena;
         }
 
         if (infekcnyVacsiNezPopulaciaCheckValue === 1) {
-            let zosnuly = Math.round(delta * N);
+            let zosnuly = Math.round(deltaParameter * N);
             return zosnuly;
         }
 
         if (infekcnyPush === 0) {
-            if ((Math.round(gamma * I) + Math.round(delta * I)) === 0) {
+            if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
                 if (I === 1) {
-                    if (delta > gamma) {
-                        let zosnuly = Math.ceil(D + delta * I);
+                    if (deltaParameter > gammaParameter) {
+                        let zosnuly = Math.ceil(D + deltaParameter * I);
                         return zosnuly;
-                    } else if (gamma > delta) {
+                    } else if (gammaParameter > deltaParameter) {
                         return D;
                     }
                 }
-                let zosnuly = Math.ceil(D + delta * I);
+                let zosnuly = Math.ceil(D + deltaParameter * I);
                 return zosnuly;
             }
             // else if((Math.ceil((beta * S * I) / N))===(Math.round(gamma * I) + Math.round(delta * I))){
@@ -378,7 +333,7 @@ const MapContainer = ({setTooltipContent}) => {
             // }
         }
 
-        let zosnuly = Math.round(D + delta * I);
+        let zosnuly = Math.round(D + deltaParameter * I);
 
         return zosnuly;
     }
@@ -448,9 +403,9 @@ const MapContainer = ({setTooltipContent}) => {
             const countryCodes = Object.keys(allCountries);
 
             //nahodne nakazenie prvej krajiny
-            if(pickFirstInfectedCountry===0){
+            if (pickFirstInfectedCountry === 0) {
                 const firstCountry = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
-                countries[firstCountry] = infectingByBorders(firstCountry);
+                countries[firstCountry] = infectingNewCountry(firstCountry,"initial");
                 setPickFirstInfectedCountry(1);
             }
 
@@ -470,12 +425,12 @@ const MapContainer = ({setTooltipContent}) => {
                                         //check ci su hranice v regione otvorene, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je "normalna"
                                         if (oblastneOpatrenia[region].borders === 0) {
                                             if (Math.random() < 0.005) {
-                                                countries[element] = infectingByBorders(element);
+                                                countries[element] = infectingNewCountry(element,"border");
                                             }
                                             //check ci su hranice v regione uzavrete, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je mensia
                                         } else if (oblastneOpatrenia[region].borders === 1) {
                                             if (Math.random() < 0.003) {
-                                                countries[element] = infectingByBorders(element);
+                                                countries[element] = infectingNewCountry(element,"border");
                                             }
                                         }
                                     }
@@ -499,14 +454,14 @@ const MapContainer = ({setTooltipContent}) => {
                                     //check ci su v regione otvorene hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v regione je "normalna"
                                     if (oblastneOpatrenia[allCountries[property].region].borders === 0) {
                                         if (Math.random() < 0.002) {
-                                            countries[property] = infectingByRegions(property);
+                                            countries[property] = infectingNewCountry(property,"region");
                                             //break pre for, aby sa v jednom for infikovala len jedna nova krajina, tym znizime vysoky prirastok novo-nakazenych krajin
                                             break;
                                         }
                                         //check ci su v regione uzavrete hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v regione je "mensia"
                                     } else if (oblastneOpatrenia[allCountries[property].region].borders === 1) {
                                         if (Math.random() < 0.001) {
-                                            countries[property] = infectingByRegions(property);
+                                            countries[property] = infectingNewCountry(property,"region");
                                             //break pre for, aby sa v jednom for infikovala len jedna nova krajina, tym znizime vysoky prirastok novo-nakazenych krajin
                                             break;
                                         }
@@ -523,13 +478,13 @@ const MapContainer = ({setTooltipContent}) => {
                                     //check ci su v regione otvorene hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v subregione je "normalna"
                                     if (oblastneOpatrenia[allCountries[property].region].borders === 0) {
                                         if (Math.random() < 0.003) {
-                                            countries[property] = infectingBySubRegions(property);
+                                            countries[property] = infectingNewCountry(property,"subregion");
                                             break;
                                         }
                                         //check ci su v regione uzavrete hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v subregione je mensia
                                     } else if (oblastneOpatrenia[allCountries[property].region].borders === 1) {
                                         if (Math.random() < 0.002) {
-                                            countries[property] = infectingBySubRegions(property);
+                                            countries[property] = infectingNewCountry(property,"subregion");
                                             break;
                                         }
                                     }
@@ -553,11 +508,11 @@ const MapContainer = ({setTooltipContent}) => {
                                                 if (allCountries[pickCountryToInfectViaPlanes].region === regionToInfect) {
                                                     //check ci ma vybrana krajina na infikovanie otvorene letiska
                                                     if (oblastneOpatrenia[regionToInfect].airports === 0) {
-                                                        countries[pickCountryToInfectViaPlanes] = infectingByAirTraffic(pickCountryToInfectViaPlanes);
+                                                        countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes,"airTraffic");
                                                         //console.log("krajina:",allCountries[currentCountry],"ma otvorene letiska a nakazila",allCountries[pickCountryToInfectViaPlanes],"ta ma tiez otvorene letiska");
                                                     } else if (oblastneOpatrenia[regionToInfect].airports === 1) {
                                                         if (Math.random() < 0.05) {
-                                                            countries[pickCountryToInfectViaPlanes] = infectingByAirTraffic(pickCountryToInfectViaPlanes);
+                                                            countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes,"airTraffic");
                                                             //console.log("krajina:",allCountries[currentCountry],"ma otvorene letiska a nakazila",allCountries[pickCountryToInfectViaPlanes],"ta ma zatvorene letiska");
                                                         }
                                                     }
@@ -570,11 +525,11 @@ const MapContainer = ({setTooltipContent}) => {
                                                 if (allCountries[pickCountryToInfectViaPlanes].region === regionToInfect) {
                                                     //check ci ma vybrana krajina na infikovanie otvorene letiska
                                                     if (oblastneOpatrenia[regionToInfect].airports === 0) {
-                                                        countries[pickCountryToInfectViaPlanes] = infectingByAirTraffic(pickCountryToInfectViaPlanes);
+                                                        countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes,"airTraffic");
                                                         //console.log("krajina:",allCountries[currentCountry],"ma zatvorene letiska a nakazila",allCountries[pickCountryToInfectViaPlanes],"ta ma otvorene letiska");
                                                     } else if (oblastneOpatrenia[regionToInfect].airports === 1) {
                                                         if (Math.random() < 0.05) {
-                                                            countries[pickCountryToInfectViaPlanes] = infectingByAirTraffic(pickCountryToInfectViaPlanes);
+                                                            countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes,"airTraffic");
                                                             //console.log("krajina:",allCountries[currentCountry],"ma zatvorene letiska a nakazila",allCountries[pickCountryToInfectViaPlanes],"ta ma tiez zatvorene letiska");
                                                         }
                                                     }
@@ -603,10 +558,10 @@ const MapContainer = ({setTooltipContent}) => {
                                                 if (allCountries[pickCountryToInfectViaShips].region === regionToInfect) {
                                                     //check ci ma vybrana krajina na infikovanie otvorene letiska
                                                     if (oblastneOpatrenia[regionToInfect].seaports === 0) {
-                                                        countries[pickCountryToInfectViaShips] = infectingBySeaTraffic(pickCountryToInfectViaShips);
+                                                        countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips,"seaTraffic");
                                                     } else if (oblastneOpatrenia[regionToInfect].seaports === 1) {
                                                         if (Math.random() < 0.05) {
-                                                            countries[pickCountryToInfectViaShips] = infectingBySeaTraffic(pickCountryToInfectViaShips);
+                                                            countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips,"seaTraffic");
                                                         }
                                                     }
                                                 }
@@ -618,10 +573,10 @@ const MapContainer = ({setTooltipContent}) => {
                                                 if (allCountries[pickCountryToInfectViaShips].region === regionToInfect) {
                                                     //check ci ma vybrana krajina na infikovanie otvorene letiska
                                                     if (oblastneOpatrenia[regionToInfect].seaports === 0) {
-                                                        countries[pickCountryToInfectViaShips] = infectingBySeaTraffic(pickCountryToInfectViaShips);
+                                                        countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips,"seaTraffic");
                                                     } else if (oblastneOpatrenia[regionToInfect].seaports === 1) {
                                                         if (Math.random() < 0.05) {
-                                                            countries[pickCountryToInfectViaShips] = infectingBySeaTraffic(pickCountryToInfectViaShips);
+                                                            countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips,"seaTraffic");
                                                         }
                                                     }
                                                 }
