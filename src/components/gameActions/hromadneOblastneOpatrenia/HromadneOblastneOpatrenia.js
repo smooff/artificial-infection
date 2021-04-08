@@ -15,75 +15,32 @@ import {makeStyles} from "@material-ui/core/styles";
 import {PlayArrow} from "@material-ui/icons";
 import ListItem from "@material-ui/core/ListItem";
 import KartaHromadneOblastneOpatrenia from "./KartaHromadneOblastneOpatrenia";
+import Divider from "@material-ui/core/Divider";
 
 
 function HromadneOblastneOpatrenia(props) {
-    const useStyles = makeStyles((theme) => ({
-
-
-    }));
+    const useStyles = makeStyles((theme) => ({}));
     const classes = useStyles();
 
-    // const [showResultsEurope, setShowResultsEurope] = React.useState(false);
-    // const [showResultsAmerica, setShowResultsAmerica] = React.useState(false);
-    // const [showResultsAfrica, setShowResultsAfrica] = React.useState(false);
-    // const [showResultsAsia, setShowResultsAsia] = React.useState(false);
-    // const [showResultsAustraliaOceania, setShowResultsAustraliaOceania] = React.useState(false);
-    // const [showResultsAntartica, setShowResultsAntartica] = React.useState(false);
-    //
-    // const handleEuropeClick = () => {
-    //     setShowResultsEurope(true);
-    //     setShowResultsAmerica(false);
-    //     setShowResultsAfrica(false);
-    //     setShowResultsAsia(false);
-    //     setShowResultsAustraliaOceania(false);
-    //     setShowResultsAntartica(false);
-    // }
-    // const handleAmericaClick = () => {
-    //     setShowResultsEurope(false);
-    //     setShowResultsAmerica(true);
-    //     setShowResultsAfrica(false);
-    //     setShowResultsAsia(false);
-    //     setShowResultsAustraliaOceania(false);
-    //     setShowResultsAntartica(false);
-    // }
-    // const handleAfricaClick = () => {
-    //     setShowResultsEurope(false);
-    //     setShowResultsAmerica(false);
-    //     setShowResultsAfrica(true);
-    //     setShowResultsAsia(false);
-    //     setShowResultsAustraliaOceania(false);
-    //     setShowResultsAntartica(false);
-    // }
-    // const handleAsiaClick = () => {
-    //     setShowResultsEurope(false);
-    //     setShowResultsAmerica(false);
-    //     setShowResultsAfrica(false);
-    //     setShowResultsAsia(true);
-    //     setShowResultsAustraliaOceania(false);
-    //     setShowResultsAntartica(false);
-    // }
-    // const handleAustraliaOceaniaClick = () => {
-    //     setShowResultsEurope(false);
-    //     setShowResultsAmerica(false);
-    //     setShowResultsAfrica(false);
-    //     setShowResultsAsia(false);
-    //     setShowResultsAustraliaOceania(true);
-    //     setShowResultsAntartica(false);
-    // }
-    // const handleAntarticaClick = () => {
-    //     setShowResultsEurope(false);
-    //     setShowResultsAmerica(false);
-    //     setShowResultsAfrica(false);
-    //     setShowResultsAsia(false);
-    //     setShowResultsAustraliaOceania(false);
-    //     setShowResultsAntartica(true);
-    // }
+
+    const [linkText, setLinkText] = useState();
+    const changeLinkText = (text) => {
+        setLinkText(text);
+    };
+    const [linkPrice, setLinkPrice] = useState();
+    const changeLinkPrice = (price) => {
+        setLinkPrice(price);
+    };
     return (
 
         <DialogContent dividers>
             <Typography gutterBottom>
-                Aktiváciou týchto opatrení sa znižuje riziko šírenia nákazy na jednotlivých svetadieloch alebo celosvetovo.
+                Aktiváciou týchto opatrení sa znižuje riziko šírenia nákazy na jednotlivých svetadieloch alebo
+                celosvetovo.
+                <Divider/>
+                Popis: {linkText}
+                <br/>
+                Cena: {linkPrice}
             </Typography>
 
             {/*<FormControl style={{width:"85px"}}>*/}
@@ -123,25 +80,40 @@ function HromadneOblastneOpatrenia(props) {
             {/*                                                                   measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
             {/*/> : null }*/}
 
-            <KartaHromadneOblastneOpatrenia regionEN="Europe" regionName="Európa" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
+            <KartaHromadneOblastneOpatrenia regionEN="Europe" regionName="Európa"
+                                            measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
+                                            changeLinkText={changeLinkText}
+                                            changeLinkPrice={changeLinkPrice}
             />
-            <KartaHromadneOblastneOpatrenia regionEN="Americas" regionName="Amerika" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
+            <KartaHromadneOblastneOpatrenia regionEN="Americas" regionName="Amerika"
+                                            measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
+                                            changeLinkText={changeLinkText}
+                                            changeLinkPrice={changeLinkPrice}
             />
-            <KartaHromadneOblastneOpatrenia regionEN="Africa" regionName="Afrika" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
+            <KartaHromadneOblastneOpatrenia regionEN="Africa" regionName="Afrika"
+                                            measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
+                                            changeLinkText={changeLinkText}
+                                            changeLinkPrice={changeLinkPrice}
             />
-            <KartaHromadneOblastneOpatrenia regionEN="Asia" regionName="Ázia" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
+            <KartaHromadneOblastneOpatrenia regionEN="Asia" regionName="Ázia"
+                                            measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
+                                            changeLinkText={changeLinkText}
+                                            changeLinkPrice={changeLinkPrice}
             />
-            <KartaHromadneOblastneOpatrenia regionEN="Oceania" regionName="Austrália a Oceánia" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
+            <KartaHromadneOblastneOpatrenia regionEN="Oceania" regionName="Austrália a Oceánia"
+                                            measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
                                             measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."
                                             measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."
+                                            changeLinkText={changeLinkText}
+                                            changeLinkPrice={changeLinkPrice}
             />
         </DialogContent>
 
