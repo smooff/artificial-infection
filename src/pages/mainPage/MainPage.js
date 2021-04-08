@@ -51,6 +51,7 @@ import ZoznamOpatreni from "../../components/gameActions/ZoznamOpatreni";
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
+import TrasovanieTestovanie from "../../components/gameActions/trasovanieTestovanie/TrasovanieTestovanie";
 
 
 const drawerWidth = 240;
@@ -128,12 +129,20 @@ function MainPage(props) {
 
     //opatrenia modal 1
     const [openOblastneOpatrenia, setOpenOblastneOpatrenia] = React.useState(false);
-
     const handleClickOpenOblastneOpatrenia = () => {
         setOpenOblastneOpatrenia(true);
     };
     const handleCloseOblastneOpatrenia = () => {
         setOpenOblastneOpatrenia(false);
+    };
+
+    //opatrenia modal2
+    const [openTrasovanieTestovanie, setOpenTrasovanieTestovanie] = React.useState(false);
+    const handleClickOpenTrasovanieTestovanie = () => {
+        setOpenTrasovanieTestovanie(true);
+    };
+    const handleCloseTrasovanieTestovanie = () => {
+        setOpenTrasovanieTestovanie(false);
     };
 
     //react-tooltip
@@ -347,7 +356,7 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <Contacts/>
-                        <ListItemText primary="Trasovanie kontaktov a testovanie" onClick={handleClickOpen}/>
+                        <ListItemText primary="Trasovanie kontaktov a testovanie" onClick={handleClickOpenTrasovanieTestovanie}/>
                     </ListItem>
                     <ListItem button>
                         <Apps/>
@@ -404,6 +413,22 @@ function MainPage(props) {
                     Hromadné oblastné opatrenia
                 </DialogTitle>
                 <HromadneOblastneOpatrenia/>
+            </Dialog>
+
+            <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
+                    open={openOblastneOpatrenia}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseOblastneOpatrenia}>
+                    Hromadné oblastné opatrenia
+                </DialogTitle>
+                <HromadneOblastneOpatrenia/>
+            </Dialog>
+
+            <Dialog onClose={handleCloseTrasovanieTestovanie} aria-labelledby="customized-dialog-title"
+                    open={openTrasovanieTestovanie}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseTrasovanieTestovanie}>
+                    Trasovanie kontaktov a testovanie
+                </DialogTitle>
+                <TrasovanieTestovanie/>
             </Dialog>
 
         </div>
