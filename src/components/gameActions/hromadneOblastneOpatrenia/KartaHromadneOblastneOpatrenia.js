@@ -76,44 +76,60 @@ function KartaHromadneOblastneOpatrenia(props) {
         props.changeLinkPrice(buttonPrice);
         props.changeLinkText(textMessage);
 
-        if (buttonNumber === 1) {
-            setButton1Color("primary");
-            setButton2Color("default");
-            setButton3Color("default");
+        switch (buttonNumber) {
+            case 1:
+                setButton1Color("primary");
+                setButton2Color("default");
+                setButton3Color("default");
 
-            setShowResults1(true);
-            setShowResults2(false);
-            setShowResults3(false);
-        } else if (buttonNumber === 2) {
-            setButton1Color("default");
-            setButton2Color("primary");
-            setButton3Color("default");
+                setShowResults1(true);
+                setShowResults2(false);
+                setShowResults3(false);
+                break;
+            case 2:
+                setButton1Color("default");
+                setButton2Color("primary");
+                setButton3Color("default");
 
-            setShowResults1(false);
-            setShowResults2(true);
-            setShowResults3(false);
-        } else if (buttonNumber === 3) {
-            setButton1Color("default");
-            setButton2Color("default");
-            setButton3Color("primary");
+                setShowResults1(false);
+                setShowResults2(true);
+                setShowResults3(false);
+                break;
+            case 3:
+                setButton1Color("default");
+                setButton2Color("default");
+                setButton3Color("primary");
 
-            setShowResults1(false);
-            setShowResults2(false);
-            setShowResults3(true);
+                setShowResults1(false);
+                setShowResults2(false);
+                setShowResults3(true);
+                break;
+            default:
+                return null;
         }
 
     }
 
+    //funckia pre navrat hodnot do resultu
+    const renderSwitch = (param) =>{
+        switch(param) {
+            case 1:
+                return  <div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button
+                    onClick={handleDeactivationClickBorders}>Deaktivovať</Button></div>
+            case 2:
+                return   <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button
+                    onClick={handleDeactivationClickAirports}>Deaktivovať</Button></div>
+            case 3:
+                return   <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button
+                    onClick={handleDeactivationClickSeaports}>Deaktivovať</Button></div>
+            default:
+                return null;
+        }
+    }
+
     const Results = (c) => (
         <Grid className={classes.activationButtons}>
-            {c.cislo === 1 ? <div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button
-                onClick={handleDeactivationClickBorders}>Dektivovať</Button></div> : c.cislo === 2 ?
-                <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button
-                    onClick={handleDeactivationClickAirports}>Dektivovať</Button></div> : c.cislo === 3 ?
-                    <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button
-                        onClick={handleDeactivationClickSeaports}>Deaktivovať</Button></div> : <div/>}
-
-
+            {renderSwitch(c.cislo)}
         </Grid>
     )
 
