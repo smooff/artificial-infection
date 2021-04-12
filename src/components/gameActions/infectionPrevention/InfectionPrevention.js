@@ -100,8 +100,6 @@ function InfectionPrevention(props) {
     const [showSafetyProtocols, setShowSafetyProtocols] = React.useState(false);
 
 
-
-
     const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
         setText(textMessage);
         setPrice(buttonPrice);
@@ -633,7 +631,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.QuarantinePrice <= gameCurrency) {
             if (measuresActualState.Quarantine === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Quarantine: 1};
+                    return {...prevStats, Quarantine: 1, quarantineState:false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.QuarantinePrice));
 
@@ -649,7 +647,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.Quarantine === 1) {
             if (measuresActualState.QuarantineFacilities === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Quarantine: 0};
+                    return {...prevStats, Quarantine: 0, quarantineState:true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.QuarantinePrice));
 
@@ -782,7 +780,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.SocialDistancingPrice <= gameCurrency) {
             if (measuresActualState.SocialDistancing === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, SocialDistancing: 1};
+                    return {...prevStats, SocialDistancing: 1, socialDistancingState:false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.SocialDistancingPrice));
 
@@ -799,13 +797,13 @@ function InfectionPrevention(props) {
             if (measuresActualState.MassGathering === 0 && measuresActualState.SmallGathering === 0 && measuresActualState.EducationalInstitutions === 0) {
 
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, SocialDistancing: 0};
+                    return {...prevStats, SocialDistancing: 0, socialDistancingState:true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.SocialDistancingPrice));
 
                 setModalMessage("Deaktivoval si opatrenie - Sociálny odstup.")
                 handleOpenSuccess();
-            }else {
+            } else {
                 setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
                 handleOpenFailure();
             }
@@ -992,7 +990,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonArmyHelpColor}
                             variant={measuresActualState.ArmyHelp === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Armáda a polícia poskytne pomoc so zásobovaním, dohliadaním na opatrenia. Armáda taktiež poskytne medickú pomoc. Toto opatrenie potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.ArmyHelpPrice);
+                                handleButtonClick("Armáda a polícia poskytne pomoc so zásobovaním a dohliadaním na opatrenia. Armáda taktiež poskytne medickú pomoc. Toto opatrenie potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.ArmyHelpPrice);
                             }}>
                         Zapojenie polície a armády
                     </Button>
@@ -1014,9 +1012,9 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSpecialPopulationColor}
                             variant={measuresActualState.SpecialPopulation === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodci, ...) sa potenciálne zníži šírenie nákazy.", 8, measuresActualState.SpecialPopulationPrice);
+                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodcovia, zdravotne ťažko postihnutí, ...) sa potenciálne zníži šírenie nákazy.", 8, measuresActualState.SpecialPopulationPrice);
                             }}>
-                        Opatrenia pre osobinté skupiny
+                        Opatrenia pre osobitné skupiny
                     </Button>
                     {showSpecialPopulation ? <Results cislo={8}/> : null}
                 </Grid>
@@ -1050,19 +1048,17 @@ function InfectionPrevention(props) {
                     {showQuarantine ? <Results cislo={4}/> : null}
                 </Grid>
 
-                {measuresActualState.Quarantine === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonQuarantineFacilitiesColor}
-                                variant={measuresActualState.QuarantineFacilities === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Zriadením karanténnch/izolačných zariadení sa potenciálne zníži šírenie nákazy.", 5, measuresActualState.QuarantineFacilitiesPrice);
-                                }}>
-                            Karanténne zariadenia
-                        </Button>
-                        {showQuarantineFacilities ? <Results cislo={5}/> : null}
-                    </Grid>
-                    : null}
-
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.quarantineState} className={classes.buttonSize}
+                            color={buttonQuarantineFacilitiesColor}
+                            variant={measuresActualState.QuarantineFacilities === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zriadením karanténnych/izolačných zariadení sa potenciálne zníži šírenie nákazy.", 5, measuresActualState.QuarantineFacilitiesPrice);
+                            }}>
+                        Karanténne zariadenia
+                    </Button>
+                    {showQuarantineFacilities ? <Results cislo={5}/> : null}
+                </Grid>
             </Grid>
 
             <br/>
@@ -1080,44 +1076,41 @@ function InfectionPrevention(props) {
                     {showSocialDistancing ? <Results cislo={9}/> : null}
                 </Grid>
 
-                {measuresActualState.SocialDistancing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonMassGatheringColor}
-                                variant={measuresActualState.MassGathering === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Zrušením hromadných podujatí sa potenciálne zníži šírenie nákazy.", 10, measuresActualState.MassGatheringPrice);
-                                }}>
-                            Zrušenie hromadných podujatí
-                        </Button>
-                        {showMassGathering ? <Results cislo={10}/> : null}
-                    </Grid>
-                    : null}
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.socialDistancingState} className={classes.buttonSize}
+                            color={buttonMassGatheringColor}
+                            variant={measuresActualState.MassGathering === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zrušením hromadných podujatí sa potenciálne zníži šírenie nákazy.", 10, measuresActualState.MassGatheringPrice);
+                            }}>
+                        Zrušenie hromadných podujatí
+                    </Button>
+                    {showMassGathering ? <Results cislo={10}/> : null}
+                </Grid>
 
-                {measuresActualState.SocialDistancing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonSmallGatheringColor}
-                                variant={measuresActualState.SmallGathering === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Zrušením malých podujatí a stretnutí sa potenciálne zníži šírenie nákazy.", 11, measuresActualState.SmallGatheringPrice);
-                                }}>
-                            Zrušenie malých podujatí
-                        </Button>
-                        {showSmallGathering ? <Results cislo={11}/> : null}
-                    </Grid>
-                    : null}
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.socialDistancingState} className={classes.buttonSize}
+                            color={buttonSmallGatheringColor}
+                            variant={measuresActualState.SmallGathering === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zrušením malých podujatí a stretnutí sa potenciálne zníži šírenie nákazy.", 11, measuresActualState.SmallGatheringPrice);
+                            }}>
+                        Zrušenie malých podujatí
+                    </Button>
+                    {showSmallGathering ? <Results cislo={11}/> : null}
+                </Grid>
 
-                {measuresActualState.SocialDistancing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonEducationalInstitutionsColor}
-                                variant={measuresActualState.EducationalInstitutions === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Zatvorením vzdelávacích inštitúcií sa potenciálne zníži šírenie nákazy.", 12, measuresActualState.EducationalInstitutionsPrice);
-                                }}>
-                            Zatvorenie vzdelávacích inštitúcií
-                        </Button>
-                        {showEducationalInstitutions ? <Results cislo={12}/> : null}
-                    </Grid>
-                    : null}
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.socialDistancingState} className={classes.buttonSize}
+                            color={buttonEducationalInstitutionsColor}
+                            variant={measuresActualState.EducationalInstitutions === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zatvorením vzdelávacích inštitúcií sa potenciálne zníži šírenie nákazy.", 12, measuresActualState.EducationalInstitutionsPrice);
+                            }}>
+                        Zatvorenie vzdelávacích inštitúcií
+                    </Button>
+                    {showEducationalInstitutions ? <Results cislo={12}/> : null}
+                </Grid>
             </Grid>
 
 

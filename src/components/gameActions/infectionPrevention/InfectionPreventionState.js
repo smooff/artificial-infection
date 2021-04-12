@@ -4,6 +4,8 @@ import {atom} from "recoil";
 export const InfectionPreventionState = atom({
     key: 'InfectionPreventionState',
     default: {
+        quarantineState:true,
+        socialDistancingState:true,
 
         EnvironmentDisinfection:0,
         EnvironmentDisinfectionPrice:1,

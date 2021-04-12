@@ -101,27 +101,43 @@ function HromadneOblastneOpatrenia(props) {
         switch (buttonNumber) {
             case 1:
                 setButtonNationalLockdownColor("primary");
+                setButtonCordonSanitaireColor("default");
+                setButtonPublicTransportRestrictionColor("default");
+                setButtonRiskCountriesRestrictionColor("default");
+
                 setShowNationalLockdown(true);
                 setShowCordonSanitaire(false);
                 setShowPublicTransportRestriction(false);
                 setShowRiskCountriesRestriction(false);
                 break;
             case 2:
+                setButtonNationalLockdownColor("default");
                 setButtonCordonSanitaireColor("primary");
+                setButtonPublicTransportRestrictionColor("default");
+                setButtonRiskCountriesRestrictionColor("default");
+
                 setShowCordonSanitaire(true);
                 setShowNationalLockdown(false);
                 setShowPublicTransportRestriction(false);
                 setShowRiskCountriesRestriction(false);
                 break;
             case 3:
+                setButtonNationalLockdownColor("default");
+                setButtonCordonSanitaireColor("default");
                 setButtonPublicTransportRestrictionColor("primary");
+                setButtonRiskCountriesRestrictionColor("default");
+
                 setShowPublicTransportRestriction(true);
                 setShowNationalLockdown(false);
                 setShowCordonSanitaire(false);
                 setShowRiskCountriesRestriction(false);
                 break;
             case 4:
+                setButtonNationalLockdownColor("default");
+                setButtonCordonSanitaireColor("default");
+                setButtonPublicTransportRestrictionColor("default");
                 setButtonRiskCountriesRestrictionColor("primary");
+
                 setShowRiskCountriesRestriction(true);
                 setShowNationalLockdown(false);
                 setShowCordonSanitaire(false);
@@ -168,7 +184,7 @@ function HromadneOblastneOpatrenia(props) {
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.NationalLockdownPrice));
 
-                setModalMessage("Aktivoval si opatrenie - Národný lockdown.");
+                setModalMessage("Aktivoval si opatrenie - Lockdown v infekčných krajinách.");
                 handleOpenSuccess();
             }
         }else{
@@ -183,7 +199,7 @@ function HromadneOblastneOpatrenia(props) {
                 });
                 setGameCurrency(prev => (prev + travelRestrictionsState.NationalLockdownPrice));
 
-                setModalMessage("Deaktivoval si opatrenie - Národný lockdown.")
+                setModalMessage("Deaktivoval si opatrenie - Lockdown v infekčných krajinách.")
                 handleOpenSuccess();
             }
     }
@@ -372,9 +388,9 @@ function HromadneOblastneOpatrenia(props) {
                     <Button className={classes.buttonSize} color={buttonNationalLockdownColor}
                             variant={travelRestrictionsState.NationalLockdown === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktivovaním národného lockdownu sa potenciálne zníži šírenie nákazy.", 1, travelRestrictionsState.NationalLockdownPrice);
+                                handleButtonClick("Aktivovaním lockdownov v postihnutých krajinách sa potenciálne zníži šírenie nákazy.", 1, travelRestrictionsState.NationalLockdownPrice);
                             }}>
-                        Národný lockdown
+                        Lockdown v infekčných krajinách
                     </Button>
                     {showNationalLockdown ? <Results cislo={1}/> : null}
                 </Grid>
@@ -383,7 +399,7 @@ function HromadneOblastneOpatrenia(props) {
                     <Button className={classes.buttonSize} color={buttonCordonSanitaireColor}
                             variant={travelRestrictionsState.CordonSanitaire === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zaslaním lekárskych tímov do ohnisk nákazy sa potenciálne zníži šírenie nákazy a smrtnosť.", 2, travelRestrictionsState.CordonSanitairePrice);
+                                handleButtonClick("Zaslaním lekárskych tímov do ohnísk nákazy sa potenciálne zníži šírenie nákazy a smrtnosť.", 2, travelRestrictionsState.CordonSanitairePrice);
                             }}>
                         Lekársky zásah v ohniskách
                     </Button>

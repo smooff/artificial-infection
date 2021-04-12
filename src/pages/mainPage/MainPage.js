@@ -53,6 +53,8 @@ import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
 import TrasovanieTestovanie from "../../components/gameActions/trasovanieTestovanie/TrasovanieTestovanie";
 import InfectionPrevention from "../../components/gameActions/infectionPrevention/InfectionPrevention";
+import Cure from "../../components/gameActions/cure/Cure";
+import Communication from "../../components/gameActions/communication/Communication";
 
 
 const drawerWidth = 240;
@@ -146,13 +148,31 @@ function MainPage(props) {
         setOpenTrasovanieTestovanie(false);
     };
 
-    //opatrenia modal2
+    //opatrenia modal3
     const [openInfectionPrevention, setOpenInfectionPrevention] = React.useState(false);
     const handleClickOpenInfectionPrevention = () => {
         setOpenInfectionPrevention(true);
     };
     const handleCloseInfectionPrevention = () => {
         setOpenInfectionPrevention(false);
+    };
+
+    //opatrenia modal4
+    const [openCure, setOpenCure] = React.useState(false);
+    const handleClickOpenCure = () => {
+        setOpenCure(true);
+    };
+    const handleCloseCure = () => {
+        setOpenCure(false);
+    };
+
+    //opatrenia modal5
+    const [openCommunication, setOpenCommunication] = React.useState(false);
+    const handleClickOpenCommunication = () => {
+        setOpenCommunication(true);
+    };
+    const handleCloseCommunication = () => {
+        setOpenCommunication(false);
     };
 
     //react-tooltip
@@ -374,11 +394,11 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <Apps/>
-                        <ListItemText primary="Liečba" onClick={handleClickOpen}/>
+                        <ListItemText primary="Liečba" onClick={handleClickOpenCure}/>
                     </ListItem>
                     <ListItem button>
                         <Apps/>
-                        <ListItemText primary="Vakcína" onClick={handleClickOpen}/>
+                        <ListItemText primary="Komunikácia a spolupráca" onClick={handleClickOpenCommunication}/>
                     </ListItem>
                 </List>
             </Drawer>
@@ -447,6 +467,22 @@ function MainPage(props) {
                     Prevencia nakazenia
                 </DialogTitle>
                 <InfectionPrevention/>
+            </Dialog>
+
+            <Dialog onClose={handleCloseCure} aria-labelledby="customized-dialog-title"
+                    open={openCure}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseCure}>
+                    Liečba
+                </DialogTitle>
+                <Cure/>
+            </Dialog>
+
+            <Dialog onClose={handleCloseCommunication} aria-labelledby="customized-dialog-title"
+                    open={openCommunication}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseCommunication}>
+                    Komunikácia a spolupráca
+                </DialogTitle>
+                <Communication/>
             </Dialog>
 
         </div>

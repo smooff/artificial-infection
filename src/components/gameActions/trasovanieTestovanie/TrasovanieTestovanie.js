@@ -381,7 +381,7 @@ function TrasovanieTestovanie(props) {
         if (measuresActualState.TestingPrice <= gameCurrency) {
             if (measuresActualState.Testing !== 1) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Testing: 1};
+                    return {...prevStats, Testing: 1, testingState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.TestingPrice));
 
@@ -397,7 +397,7 @@ function TrasovanieTestovanie(props) {
         if (measuresActualState.Testing === 1) {
             if (measuresActualState.AdvancedDetectionSystem === 0 && measuresActualState.TestingCapacityEnhancement === 0 && measuresActualState.InfrastructureTesting === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Testing: 0};
+                    return {...prevStats, Testing: 0, testingState: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.TestingPrice));
 
@@ -418,7 +418,7 @@ function TrasovanieTestovanie(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.AdvancedDetectionSystemPrice));
 
-                setModalMessage("Aktivoval si opatrenie - Vylepšenie systému detekcie.")
+                setModalMessage("Aktivoval si opatrenie - Vylepšenie systému detekcie infekčných.")
                 handleOpenSuccess();
             }
         } else {
@@ -433,7 +433,7 @@ function TrasovanieTestovanie(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.AdvancedDetectionSystemPrice));
 
-            setModalMessage("Deaktivoval si opatrenie - Vylepšenie systému detekcie.")
+            setModalMessage("Deaktivoval si opatrenie - Vylepšenie systému detekcie infekčných.")
             handleOpenSuccess();
         }
 
@@ -447,7 +447,7 @@ function TrasovanieTestovanie(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.TestingCapacityEnhancementPrice));
 
-                setModalMessage("Aktivoval si opatrenie - Vylepšenie testovacej kapacity laboratórií.")
+                setModalMessage("Aktivoval si opatrenie - Zvýšenie testovacej kapacity laboratórií.")
                 handleOpenSuccess();
             }
         } else {
@@ -462,7 +462,7 @@ function TrasovanieTestovanie(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.TestingCapacityEnhancementPrice));
 
-            setModalMessage("Deaktivoval si opatrenie - Vylepšenie testovacej kapacity laboratórií.")
+            setModalMessage("Deaktivoval si opatrenie - Zvýšenie testovacej kapacity laboratórií.")
             handleOpenSuccess();
         }
 
@@ -505,7 +505,7 @@ function TrasovanieTestovanie(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.InfrastructureTestingPrice));
 
-                setModalMessage("Aktivoval si opatrenie - Testovanie kľúčovej infraštruktúry.")
+                setModalMessage("Aktivoval si opatrenie - Testovanie kritickej infraštruktúry.")
                 handleOpenSuccess();
             }
         } else {
@@ -520,7 +520,7 @@ function TrasovanieTestovanie(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.InfrastructureTestingPrice));
 
-            setModalMessage("Deaktivoval si opatrenie - Testovanie kľúčovej infraštruktúry.")
+            setModalMessage("Deaktivoval si opatrenie - Testovanie kritickej infraštruktúry.")
             handleOpenSuccess();
         }
 
@@ -616,7 +616,7 @@ function TrasovanieTestovanie(props) {
         if (measuresActualState.ContactTracingPrice <= gameCurrency) {
             if (measuresActualState.ContactTracing !== 1) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, ContactTracing: 1};
+                    return {...prevStats, ContactTracing: 1, contactTracingState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.ContactTracingPrice));
 
@@ -630,13 +630,18 @@ function TrasovanieTestovanie(props) {
     }
     const handleDeactivationContactTracing = () => {
         if (measuresActualState.ContactTracing === 1) {
-            setMeasuresActualState((prevStats) => {
-                return {...prevStats, ContactTracing: 0};
-            });
-            setGameCurrency(prev => (prev + measuresActualState.ContactTracingPrice));
+            if (measuresActualState.AdvancedContactTracing === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, ContactTracing: 0, contactTracingState: true};
+                });
+                setGameCurrency(prev => (prev + measuresActualState.ContactTracingPrice));
 
-            setModalMessage("Deaktivoval si opatrenie - Dohľadávanie kontaktov.")
-            handleOpenSuccess();
+                setModalMessage("Deaktivoval si opatrenie - Dohľadávanie kontaktov.")
+                handleOpenSuccess();
+            } else {
+                setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
+                handleOpenFailure();
+            }
         }
 
     }
@@ -707,45 +712,41 @@ function TrasovanieTestovanie(props) {
                     {showTesting ? <Results cislo={1}/> : null}
                 </Grid>
 
-                {measuresActualState.Testing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonAdvancedDetectionSystemColor}
-                                variant={measuresActualState.AdvancedDetectionSystem === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Vylepšením systému detekcie (testovania) sa zdokonalí odhalovanie infekčných jedincov, čo má za následok potenciálne zníženie presnosu.", 2, measuresActualState.AdvancedDetectionSystemPrice);
-                                }}>
-                            Vylepšenie systému detekcie
-                        </Button>
-                        {showAdvancedDetectionSystem ? <Results cislo={2}/> : null}
-                    </Grid>
-                    : null}
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.testingState} className={classes.buttonSize}
+                            color={buttonAdvancedDetectionSystemColor}
+                            variant={measuresActualState.AdvancedDetectionSystem === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vylepšením systému detekcie infekčných (testovania) sa zdokonalí odhalovanie infekčných jedincov, čo má za následok potenciálne zníženie presnosu.", 2, measuresActualState.AdvancedDetectionSystemPrice);
+                            }}>
+                        Vylepšenie systému detekcie infekčných
+                    </Button>
+                    {showAdvancedDetectionSystem ? <Results cislo={2}/> : null}
+                </Grid>
 
-                {measuresActualState.Testing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonTestingCapacityEnhancementColor}
-                                variant={measuresActualState.TestingCapacityEnhancement === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Vylepšením kapacity laboratórií sa zvýši počet testovanej jedincov, čo má za následok potenciálne zníženie presnosu.", 3, measuresActualState.TestingCapacityEnhancementPrice);
-                                }}>
-                            Vylepšenie testovacej kapacity laboratórií
-                        </Button>
-                        {showTestingCapacityEnhancement ? <Results cislo={3}/> : null}
-                    </Grid>
-                    : null}
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.testingState} className={classes.buttonSize}
+                            color={buttonTestingCapacityEnhancementColor}
+                            variant={measuresActualState.TestingCapacityEnhancement === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zvýšením kapacity laboratórií sa zvýši počet testovaných jedincov, čo má za následok potenciálne zníženie presnosu.", 3, measuresActualState.TestingCapacityEnhancementPrice);
+                            }}>
+                        Zvýšenie testovacej kapacity laboratórií
+                    </Button>
+                    {showTestingCapacityEnhancement ? <Results cislo={3}/> : null}
+                </Grid>
 
-                {measuresActualState.Testing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonInfrastructureTestingColor}
-                                variant={measuresActualState.InfrastructureTesting === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Testovanie kľúčovej infraštruktúry napomôže zvýšeniu stability v silne postihnuutej krajine.", 5, measuresActualState.InfrastructureTestingPrice);
-                                }}>
-                            Testovanie kľúčovej infraštruktúry
-                        </Button>
-                        {showInfrastructureTesting ? <Results cislo={5}/> : null}
-                    </Grid>
-                    : null}
-
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.testingState} className={classes.buttonSize}
+                            color={buttonInfrastructureTestingColor}
+                            variant={measuresActualState.InfrastructureTesting === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Testovanie kritickej infraštruktúry napomôže zvýšeniu stability v silne zasiahnutej krajine.", 5, measuresActualState.InfrastructureTestingPrice);
+                            }}>
+                        Testovanie kritickej infraštruktúry
+                    </Button>
+                    {showInfrastructureTesting ? <Results cislo={5}/> : null}
+                </Grid>
             </Grid>
 
             <br/>
@@ -804,26 +805,24 @@ function TrasovanieTestovanie(props) {
                     <Button className={classes.buttonSize} color={buttonContactTracingColor}
                             variant={measuresActualState.ContactTracing === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Dohľadávaním kontaktov sa môže potenciálne znížiť presnos nákazy.", 9, measuresActualState.ContactTracingPrice);
+                                handleButtonClick("Dohľadávaním kontaktov novonakazených sa môže potenciálne znížiť presnos nákazy.", 9, measuresActualState.ContactTracingPrice);
                             }}>
                         Dohľadávanie kontaktov
                     </Button>
                     {showContactTracing ? <Results cislo={9}/> : null}
                 </Grid>
 
-                {measuresActualState.ContactTracing === 1 ?
-                    <Grid item xs={12} className={classes.actionButtons}>
-                        <Button className={classes.buttonSize} color={buttonAdvancedContactTracingColor}
-                                variant={measuresActualState.AdvancedContactTracing === 1 ? "contained" : "outlined"}
-                                onClick={() => {
-                                    handleButtonClick("Dohľadávaním kontaktov sa vylepší a môže potenciálne ešte znížiť presnos nákazy.", 10, measuresActualState.AdvancedContactTracingPrice);
-                                }}>
-                            Vylepšené dohľadávanie kontaktov
-                        </Button>
-                        {showAdvancedContactTracing ? <Results cislo={10}/> : null}
-                    </Grid>
-                    : null}
-
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.contactTracingState} className={classes.buttonSize}
+                            color={buttonAdvancedContactTracingColor}
+                            variant={measuresActualState.AdvancedContactTracing === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Dohľadávanie kontaktov novonakazených sa vylepší a môže potenciálne znížiť presnos nákazy.", 10, measuresActualState.AdvancedContactTracingPrice);
+                            }}>
+                        Vylepšené dohľadávanie kontaktov
+                    </Button>
+                    {showAdvancedContactTracing ? <Results cislo={10}/> : null}
+                </Grid>
             </Grid>
 
         </DialogContent>
