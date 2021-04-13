@@ -55,6 +55,7 @@ import TracingTesting from "../../components/gameActions/tracingTesting/TracingT
 import InfectionPrevention from "../../components/gameActions/infectionPrevention/InfectionPrevention";
 import Cure from "../../components/gameActions/cure/Cure";
 import Communication from "../../components/gameActions/communication/Communication";
+import Vaccine from "../../components/gameActions/vaccine/Vaccine";
 
 
 const drawerWidth = 240;
@@ -163,6 +164,15 @@ function MainPage(props) {
     };
     const handleCloseCommunication = () => {
         setOpenCommunication(false);
+    };
+
+    //opatrenia modal6
+    const [openVaccine, setOpenVaccine] = React.useState(false);
+    const handleClickOpenVaccine = () => {
+        setOpenVaccine(true);
+    };
+    const handleCloseVaccine = () => {
+        setOpenVaccine(false);
     };
 
     //react-tooltip
@@ -390,6 +400,10 @@ function MainPage(props) {
                         <Apps/>
                         <ListItemText primary="Komunikácia a spolupráca" onClick={handleClickOpenCommunication}/>
                     </ListItem>
+                    <ListItem button>
+                        <Apps/>
+                        <ListItemText primary="Vakcína" onClick={handleClickOpenVaccine}/>
+                    </ListItem>
                 </List>
             </Drawer>
 
@@ -440,6 +454,15 @@ function MainPage(props) {
                 </DialogTitle>
                 <Communication/>
             </Dialog>
+
+            <Dialog onClose={handleCloseVaccine} aria-labelledby="customized-dialog-title"
+                    open={openVaccine}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseVaccine}>
+                    Vakcína
+                </DialogTitle>
+                <Vaccine/>
+            </Dialog>
+
 
         </div>
 

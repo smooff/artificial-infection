@@ -33,22 +33,22 @@ function SingleCountryModal(props) {
             <Divider/>
 
             <Typography gutterBottom>
-              Populácia: {allCountries[props.singleCountryData].Population}
+              Populácia: {new Intl.NumberFormat('de-DE').format(allCountries[props.singleCountryData].Population)}
             </Typography>
 
             <Divider/>
             <Grid container>
                 <Grid item xs={12}>
-                    Náchylní: {allCountries[props.singleCountryData].Susceptible}
+                    Náchylní: {new Intl.NumberFormat('de-DE').format(allCountries[props.singleCountryData].Susceptible)}
                 </Grid>
                 <Grid item xs={12}>
-                    Infekční: {allCountries[props.singleCountryData].Infectious}
+                    Infekční: {new Intl.NumberFormat('de-DE').format(allCountries[props.singleCountryData].Infectious)}
                 </Grid>
                 <Grid item xs={12}>
-                    Zotavení: {allCountries[props.singleCountryData].Recovered}
+                    Zotavení: {new Intl.NumberFormat('de-DE').format(allCountries[props.singleCountryData].Recovered)}
                 </Grid>
                 <Grid item xs={12}>
-                    Zosnulí: {allCountries[props.singleCountryData].Deceased}
+                    Zosnulí: {new Intl.NumberFormat('de-DE').format(allCountries[props.singleCountryData].Deceased)}
                 </Grid>
             </Grid>
 
