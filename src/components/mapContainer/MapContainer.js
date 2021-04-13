@@ -15,7 +15,7 @@ import './MapContainer.css';
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
-import {HromadneOblastneOpatreniaState} from "../gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatreniaState";
+import {RegionTravelRestrictionState} from "../gameActions/travelRestriction/RegionTravelRestrictionState";
 import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
 import {BetaState} from "../../data/parameters/BetaState";
 import {GammaState} from "../../data/parameters/GammaState";
@@ -401,7 +401,7 @@ const MapContainer = ({setTooltipContent}) => {
 
     };
 
-    const [oblastneOpatrenia, setOblastneOpatrenia] = useRecoilState(HromadneOblastneOpatreniaState);
+    const [oblastneOpatrenia, setOblastneOpatrenia] = useRecoilState(RegionTravelRestrictionState);
     const [pickFirstInfectedCountry, setPickFirstInfectedCountry] = useRecoilState(FirstInfectedCountryState);
 
 
@@ -434,7 +434,7 @@ const MapContainer = ({setTooltipContent}) => {
                         allCountries[currentCountry].border.forEach(element => {
                             //check ci target krajina moze byt nakazena
                             if (allCountries[element].infectivity === 0) {
-                                //iteracia cez HromadneOblastneOpatreniaState
+                                //iteracia cez RegionTravelRestrictionState
                                 for (const region in oblastneOpatrenia) {
                                     if (allCountries[element].region === region) {
                                         //check ci su hranice v regione otvorene, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je "normalna"

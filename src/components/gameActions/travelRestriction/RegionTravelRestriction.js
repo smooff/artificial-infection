@@ -4,11 +4,11 @@ import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import {useRecoilState} from "recoil";
 import {GameCurrencyState} from "../../../data/GameCurrencyState.js";
-import {HromadneOblastneOpatreniaState} from "./HromadneOblastneOpatreniaState";
+import {RegionTravelRestrictionState} from "./RegionTravelRestrictionState";
 import MuiAlert from '@material-ui/lab/Alert';
 
 
-function KartaHromadneOblastneOpatrenia(props) {
+function RegionTravelRestriction(props) {
     const useStyles = makeStyles((theme) => ({
         actionButtons: {
             textAlign: "center",
@@ -62,7 +62,7 @@ function KartaHromadneOblastneOpatrenia(props) {
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
 
     //data s opatreniami
-    const [measuresActualState, setMeasuresActualState] = useRecoilState(HromadneOblastneOpatreniaState);
+    const [measuresActualState, setMeasuresActualState] = useRecoilState(RegionTravelRestrictionState);
 
     const [showResults1, setShowResults1] = React.useState(false);
     const [showResults2, setShowResults2] = React.useState(false);
@@ -295,4 +295,4 @@ function KartaHromadneOblastneOpatrenia(props) {
     );
 }
 
-export default KartaHromadneOblastneOpatrenia;
+export default RegionTravelRestriction;

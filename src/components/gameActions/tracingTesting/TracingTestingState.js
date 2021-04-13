@@ -1,8 +1,8 @@
 import {atom} from "recoil";
 
 
-export const TrasovanieTestovanieState = atom({
-    key: 'TrasovanieTestovanieState',
+export const TracingTestingState = atom({
+    key: 'TracingTestingState',
     default: {
         testingState:true,
         contactTracingState:true,

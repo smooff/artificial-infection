@@ -1,7 +1,7 @@
 import {atom} from "recoil";
 
 
-export const HromadneOblastneOpatreniaState = atom({
+export const RegionTravelRestrictionState = atom({
     key: 'hromadneOpatrenia',
     default: {
         Europe: {

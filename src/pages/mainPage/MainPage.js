@@ -44,14 +44,14 @@ import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
 import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-ui/icons";
 
-import HromadneOblastneOpatrenia
-    from "../../components/gameActions/hromadneOblastneOpatrenia/HromadneOblastneOpatrenia";
+import TravelRestriction
+    from "../../components/gameActions/travelRestriction/TravelRestriction";
 import {GameCurrencyState} from "../../data/GameCurrencyState.js";
-import ZoznamOpatreni from "../../components/gameActions/ZoznamOpatreni";
+import MeasuresList from "../../components/gameActions/MeasuresList";
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
-import TrasovanieTestovanie from "../../components/gameActions/trasovanieTestovanie/TrasovanieTestovanie";
+import TracingTesting from "../../components/gameActions/tracingTesting/TracingTesting";
 import InfectionPrevention from "../../components/gameActions/infectionPrevention/InfectionPrevention";
 import Cure from "../../components/gameActions/cure/Cure";
 import Communication from "../../components/gameActions/communication/Communication";
@@ -107,17 +107,6 @@ function MainPage(props) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-    };
-
-
-//modal
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
     };
 
 
@@ -383,7 +372,7 @@ function MainPage(props) {
                 <List>
                     <ListItem button>
                         <Public/>
-                        <ListItemText primary="Hromadné oblastné opatrenia" onClick={handleClickOpenOblastneOpatrenia}/>
+                        <ListItemText primary="Obmedzenia cestovania" onClick={handleClickOpenOblastneOpatrenia}/>
                     </ListItem>
                     <ListItem button>
                         <Contacts/>
@@ -404,62 +393,28 @@ function MainPage(props) {
                 </List>
             </Drawer>
 
-            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Modal title
-                </DialogTitle>
-                <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-                        in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-                        lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-                        scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-                        auctor fringilla.
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="primary">
-                        Save changes
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
             <Dialog onClose={handleClickCloseZoznamOpatreni} aria-labelledby="customized-dialog-title"
                     open={openZoznamOpatreni}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
                     Zoznam opatrení
                 </DialogTitle>
-                <ZoznamOpatreni dataSelector={separateCountryByInfectivitySelector} dataSelectorCount={infectiousCountriesCountSelector}/>
+                <MeasuresList dataSelector={separateCountryByInfectivitySelector} dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
             <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
                     open={openOblastneOpatrenia}>
                 <DialogTitle id="customized-dialog-title" onClose={handleCloseOblastneOpatrenia}>
-                    Hromadné oblastné opatrenia
+                    Obmedzenia cestovania
                 </DialogTitle>
-                <HromadneOblastneOpatrenia/>
+                <TravelRestriction/>
             </Dialog>
-
-            {/*<Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"*/}
-            {/*        open={openOblastneOpatrenia}>*/}
-            {/*    <DialogTitle id="customized-dialog-title" onClose={handleCloseOblastneOpatrenia}>*/}
-            {/*        Hromadné oblastné opatrenia*/}
-            {/*    </DialogTitle>*/}
-            {/*    <HromadneOblastneOpatrenia/>*/}
-            {/*</Dialog>*/}
 
             <Dialog onClose={handleCloseTrasovanieTestovanie} aria-labelledby="customized-dialog-title"
                     open={openTrasovanieTestovanie}>
                 <DialogTitle id="customized-dialog-title" onClose={handleCloseTrasovanieTestovanie}>
                     Trasovanie kontaktov a testovanie
                 </DialogTitle>
-                <TrasovanieTestovanie/>
+                <TracingTesting/>
             </Dialog>
 
             <Dialog onClose={handleCloseInfectionPrevention} aria-labelledby="customized-dialog-title"

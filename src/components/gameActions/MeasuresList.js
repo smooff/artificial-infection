@@ -5,17 +5,17 @@ import {
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import {useRecoilState, useRecoilValue} from "recoil";
-import {HromadneOblastneOpatreniaState} from "./hromadneOblastneOpatrenia/HromadneOblastneOpatreniaState";
+import {RegionTravelRestrictionState} from "./travelRestriction/RegionTravelRestrictionState";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 
 
-function ZoznamOpatreni({dataSelector, dataSelectorCount}) {
+function MeasuresList({dataSelector, dataSelectorCount}) {
     const useStyles = makeStyles((theme) => ({}));
     const classes = useStyles();
 
     //data s opatreniami
-    const [measuresActualState, setmeasuresActualState] = useRecoilState(HromadneOblastneOpatreniaState);
+    const [measuresActualState, setmeasuresActualState] = useRecoilState(RegionTravelRestrictionState);
 
     const data = useRecoilValue(dataSelector);
     const count = useRecoilValue(dataSelectorCount);
@@ -109,4 +109,4 @@ function ZoznamOpatreni({dataSelector, dataSelectorCount}) {
     );
 }
 
-export default ZoznamOpatreni;
+export default MeasuresList;

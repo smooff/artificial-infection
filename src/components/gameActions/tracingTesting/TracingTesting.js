@@ -7,12 +7,12 @@ import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import {useRecoilState} from "recoil";
-import {TrasovanieTestovanieState} from "./TrasovanieTestovanieState";
+import {TracingTestingState} from "./TracingTestingState";
 import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 
-function TrasovanieTestovanie(props) {
+function TracingTesting(props) {
     const useStyles = makeStyles((theme) => ({
         activationButtons: {
             textAlign: "center",
@@ -33,7 +33,7 @@ function TrasovanieTestovanie(props) {
     const [price, setPrice] = useState();
 
     //data s opatreniami
-    const [measuresActualState, setMeasuresActualState] = useRecoilState(TrasovanieTestovanieState);
+    const [measuresActualState, setMeasuresActualState] = useRecoilState(TracingTestingState);
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
@@ -830,4 +830,4 @@ function TrasovanieTestovanie(props) {
     );
 }
 
-export default TrasovanieTestovanie;
+export default TracingTesting;
