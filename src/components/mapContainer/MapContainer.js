@@ -20,6 +20,10 @@ import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
 import {BetaState} from "../../data/parameters/BetaState";
 import {GammaState} from "../../data/parameters/GammaState";
 import {DeltaState} from "../../data/parameters/DeltaState";
+import {Dialog, DialogTitle} from "@material-ui/core";
+import Communication from "../gameActions/communication/Communication";
+import SingleCountryModal from "./SingleCountryModal";
+
 
 
 const geoUrl = require('./topologies.json');
@@ -30,6 +34,17 @@ const colorScale = scaleLinear()
 
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
+
+    //modal
+    const [openCountryModal, setOpenCountryModal] = React.useState(false);
+    const handleClickOpenCountryModal = () => {
+        setOpenCountryModal(true);
+    };
+    const handleCloseCountryModal = () => {
+        setOpenCountryModal(false);
+    };
+
+    const [singleCountryModal, setSingleCountryModal] = useState();
 
     //react-tooltip->population rounding
     const rounded = num => {
@@ -652,6 +667,12 @@ const MapContainer = ({setTooltipContent}) => {
     const mapWidth = width * 0.75;
     return (
         <div>
+            <Dialog fullWidth={true} maxWidth={"xs"} onClose={handleCloseCountryModal} aria-labelledby="customized-dialog-title"
+                    open={openCountryModal}>
+
+                <SingleCountryModal singleCountryData={singleCountryModal}/>
+            </Dialog>
+
             <ComposableMap
                 projectionConfig={{
                     rotate: [-10, 0, 0],
@@ -693,7 +714,9 @@ const MapContainer = ({setTooltipContent}) => {
                                             //     setTooltipContent("");
                                             // }}
                                             onClick={() => {
-                                                console.log(d?.Population ? `${d.NAME} — ${rounded(d.Population)} SUS- ${d.Susceptible} INF- ${d.Infectious} REC- ${d.Recovered} DEC- ${d.Deceased}` : "");
+                                                setSingleCountryModal(geo.properties.ISO_A3);
+                                                handleClickOpenCountryModal();
+                                                //console.log(d?.Population ? `${d.NAME} — ${rounded(d.Population)} SUS- ${d.Susceptible} INF- ${d.Infectious} REC- ${d.Recovered} DEC- ${d.Deceased}` : "");
                                             }}
                                             style={{
                                                 default: {
