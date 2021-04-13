@@ -8,6 +8,9 @@ import {useRecoilValue} from "recoil";
 function BottomInfoBar({name, dataSelector}) {
     const useStyles = makeStyles((theme) => ({
         root: {},
+        title:{
+             fontSize:"25px"
+        }
 
     }));
     const classes = useStyles();
@@ -22,16 +25,9 @@ function BottomInfoBar({name, dataSelector}) {
                         {name}
                     </Typography>
                     <Typography variant="h5" component="h2">
-                        {name} count: {new Intl.NumberFormat('de-DE').format(data)}
+                       {new Intl.NumberFormat('de-DE').format(data)}
                     </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                        adjective
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        well meaning and kindly.
-                        <br/>
-                        {'"a benevolent smile"'}
-                    </Typography>
+
                 </CardContent>
 
             </Card>

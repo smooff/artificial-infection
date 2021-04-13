@@ -62,7 +62,8 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {},
     downInfoBar: {
-        marginLeft: '-15%',
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginRight: drawerWidth,
     },
     bottom: {
         width: '100%',
@@ -298,19 +299,19 @@ function MainPage(props) {
                     {/*            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
                     {/*            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
                     {/*</BottomNavigation>*/}
-                    <Grid container xs={12} direction="row" justify="space-around" alignItems="center" spacing="2"
-                          className={classes.appBar}>
+                    <Grid container xs={12} direction="row" justify="space-around" alignItems="center" spacing="1"
+                          className={classes.downInfoBar}>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Susceptibles" dataSelector={susceptiblesSelector}/>
+                            <BottomInfoBar name="Náchylní" dataSelector={susceptiblesSelector}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Infectious" dataSelector={infectiousSelector}/>
+                            <BottomInfoBar name="Infekční" dataSelector={infectiousSelector}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Recovered" dataSelector={recoveredSelector}/>
+                            <BottomInfoBar name="Zotavení" dataSelector={recoveredSelector}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <BottomInfoBar name="Deceased" dataSelector={deceasedSelector}/>
+                            <BottomInfoBar name="Zosnulí" dataSelector={deceasedSelector}/>
                         </Grid>
 
 
