@@ -16,28 +16,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MapContainer from "../../components/mapContainer/MapContainer";
 
 import {
-    BottomNavigation,
-    BottomNavigationAction,
-    Button, Card, CardContent,
+    Button,
     Dialog,
-    DialogActions,
-    DialogContent,
     DialogTitle
 } from "@material-ui/core";
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
 
-
-import FolderIcon from '@material-ui/icons/Folder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import ReactTooltip from "react-tooltip";
-import DataContainer from "../../components/dataContainer/DataContainer";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {
-    deceasedSelector, infectiousCountriesCountSelector,
+    deceasedSelector, infectiousCountriesCountSelector, infectiousProgressSelector,
     infectiousSelector,
-    mapContainerState,
     recoveredSelector, separateCountryByInfectivitySelector, susceptiblesSelector
 } from "../../components/mapContainer/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
@@ -56,6 +43,7 @@ import InfectionPrevention from "../../components/gameActions/infectionPreventio
 import Cure from "../../components/gameActions/cure/Cure";
 import Communication from "../../components/gameActions/communication/Communication";
 import Vaccine from "../../components/gameActions/vaccine/Vaccine";
+import GraphContainer from "../../components/graphContainer/GraphContainer";
 
 
 const drawerWidth = 240;
@@ -175,11 +163,23 @@ function MainPage(props) {
         setOpenVaccine(false);
     };
 
+    //opatrenia modal7
+    const [openGraph, setOpenGraph] = React.useState(false);
+    const handleClickOpenGraph = () => {
+        setOpenGraph(true);
+    };
+    const handleCloseGraph = () => {
+        setOpenGraph(false);
+    };
+
     //react-tooltip
     const [content, setContent] = useState("");
 
     //game currency
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //graf infekcnych
+
 
 
     const [gameFlow, setgameFlow] = useRecoilState(GameFlowState);
@@ -404,6 +404,10 @@ function MainPage(props) {
                         <Apps/>
                         <ListItemText primary="Vakcína" onClick={handleClickOpenVaccine}/>
                     </ListItem>
+                    <ListItem button>
+                        <Apps/>
+                        <ListItemText primary="Graf infekčných" onClick={handleClickOpenGraph}/>
+                    </ListItem>
                 </List>
             </Drawer>
 
@@ -463,6 +467,10 @@ function MainPage(props) {
                 <Vaccine/>
             </Dialog>
 
+            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph} aria-labelledby="customized-dialog-title"
+                    open={openGraph}>
+                    <GraphContainer graphDataState={infectiousProgressSelector}/>
+            </Dialog>
 
         </div>
 
