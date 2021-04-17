@@ -1,21 +1,10 @@
-import React from 'react';
-import {Button, Container, createMuiTheme, Typography, ThemeProvider } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import React, {useState} from 'react';
+import {Button, Container, createMuiTheme, Typography, ThemeProvider, Dialog, DialogTitle} from "@material-ui/core";
+import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
-import {useRecoilState} from "recoil";
+import Divider from "@material-ui/core/Divider";
 
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//     },
-//     paper: {
-//         padding: theme.spacing(2),
-//         textAlign: 'center',
-//         color: theme.palette.text.secondary,
-//     },
-// }));
 
 const theme = createMuiTheme({
     typography: {
@@ -24,11 +13,11 @@ const theme = createMuiTheme({
         fontSize: 20,
         h1: {
             color: 'white',
-            opacity:0.8,
+            opacity: 0.8,
         },
-        h2:{
-            color:'#F8F8FF',
-            opacity:0.7,
+        h2: {
+            color: '#F8F8FF',
+            opacity: 0.7,
         },
     },
 });
@@ -40,10 +29,31 @@ function refreshPage() {
 
 
 function WelcomePage(props) {
-    // const classes = useStyles();
+    const useStyles = makeStyles((theme) => ({
+        inviteModal: {
+            padding: "10px"
+        }, textCentering: {
+            textAlign: "center",
+            fontSize: "20px",
+            color: "red"
+        },
+        acceptButton: {
+            textAlign: "center",
+            fontSize: "20px",
+
+        },
+    }));
+    const classes = useStyles();
+
+    //invite modal
+    const [openInviteModal, setOpenInviteModal] = useState(true);
+    const handleCloseInviteModal = () => {
+        setOpenInviteModal(false);
+    };
+
     return (
         <div className="welcomePageCss">
-        <Container fixed >
+            <Container fixed>
                 <Grid
                     container
                     direction="column"
@@ -53,27 +63,42 @@ function WelcomePage(props) {
                 >
                     <Grid item xs={12}>
                         <ThemeProvider theme={theme}>
-                        <Typography  variant="h1" component="h2">
-                            Bakalárska práca
-                        </Typography>
-                        <Typography variant="h2" component="h2">
-                           Strategická hra založená na simulácii epidémie
-                        </Typography>
+                            <Typography variant="h1" component="h2">
+                                Bakalárska práca
+                            </Typography>
+                            <Typography variant="h2" component="h2">
+                                Strategická hra založená na simulácii epidémie
+                            </Typography>
                         </ThemeProvider>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button onClick={refreshPage} variant="contained">
-                            <Link to="/game">Play game</Link>
+                        <Button size={"large"} onClick={refreshPage} variant="contained">
+                            <Link to="/game">Hrať hru</Link>
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button variant="contained">Guide</Button>
+                        <Button size={"small"} variant="contained">Ako hrať?</Button>
                     </Grid>
                 </Grid>
 
-        </Container>
+                <Dialog fullWidth={true} maxWidth={"xs"}
+                        aria-labelledby="customized-dialog-title"
+                        open={openInviteModal}>
+                    <Grid className={classes.textCentering}>
+                        UPOZORNENIE</Grid>
+                    <Grid className={classes.inviteModal}>
+                        Táto webová aplikácia je určená na účely zábavy, nie ako reálny pandemický simulátor.
+                        <Divider/>
+                        Šírenie vírusu a jeho následné spomaľovanie/zastavenie síce je inšpirované z rôznych štúdií,
+                        avšak určite nie je odrazom reálneho sveta.
+                    </Grid>
+                    <Button color={"primary"} variant={"contained"} className={classes.acceptButton} onClick={handleCloseInviteModal}>
+                        Prečítal som a rozumiem
+                    </Button>
+                </Dialog>
+            </Container>
         </div>
-        );
+    );
 }
 
 export default WelcomePage;
