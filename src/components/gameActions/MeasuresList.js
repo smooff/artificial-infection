@@ -15,7 +15,7 @@ function MeasuresList({dataSelector, dataSelectorCount}) {
     const classes = useStyles();
 
     //data s opatreniami
-    const [measuresActualState, setmeasuresActualState] = useRecoilState(RegionTravelRestrictionState);
+    const [measuresActualState,] = useRecoilState(RegionTravelRestrictionState);
 
     const data = useRecoilValue(dataSelector);
     const count = useRecoilValue(dataSelectorCount);
@@ -26,8 +26,9 @@ function MeasuresList({dataSelector, dataSelectorCount}) {
             <Grid container direction={"row"}>
                 <Grid item xs={6} direction={"row"}>
                     Infikovnané krajiny:{count[0]} Neinfikované krajiny:{count[1]}
+                    <Divider/>
                     {data.map((item) => (
-                        <p style={(`${item.countryInfectivity}`==1) ? {color:"red"} : {color:"green"}}>{`${item.countryName}: ${item.countryInfectivity}`}</p>
+                        <p style={(`${item.countryInfectivity}`==1) ? {color:"red"} : {color:"green"}}>{`${item.countryName}`}</p>
                     ))}
                 </Grid>
 

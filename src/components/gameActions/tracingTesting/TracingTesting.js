@@ -705,7 +705,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonTestingColor}
                             variant={measuresActualState.Testing === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Pomocou testovania sa odhalia infekční jedinci, čo má za následok potenciálne zníženie presnosu.", 1, measuresActualState.TestingPrice);
+                                handleButtonClick("Pomocou testovania sa odhalia infekční jedinci, čo má za následok potenciálne zníženie prenosu.", 1, measuresActualState.TestingPrice);
                             }}>
                         Testovanie
                     </Button>
@@ -717,7 +717,7 @@ function TracingTesting(props) {
                             color={buttonAdvancedDetectionSystemColor}
                             variant={measuresActualState.AdvancedDetectionSystem === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vylepšením systému detekcie infekčných (testovania) sa zdokonalí odhalovanie infekčných jedincov, čo má za následok potenciálne zníženie presnosu.", 2, measuresActualState.AdvancedDetectionSystemPrice);
+                                handleButtonClick("Vylepšením systému detekcie infekčných (testovania) sa zdokonalí odhalovanie infekčných jedincov, čo má za následok potenciálne zníženie prenosu.", 2, measuresActualState.AdvancedDetectionSystemPrice);
                             }}>
                         Vylepšenie systému detekcie infekčných
                     </Button>
@@ -729,7 +729,7 @@ function TracingTesting(props) {
                             color={buttonTestingCapacityEnhancementColor}
                             variant={measuresActualState.TestingCapacityEnhancement === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zvýšením kapacity laboratórií sa zvýši počet testovaných jedincov, čo má za následok potenciálne zníženie presnosu.", 3, measuresActualState.TestingCapacityEnhancementPrice);
+                                handleButtonClick("Zvýšením kapacity laboratórií sa zvýši počet testovaných jedincov, čo má za následok potenciálne zníženie prenosu.", 3, measuresActualState.TestingCapacityEnhancementPrice);
                             }}>
                         Zvýšenie testovacej kapacity laboratórií
                     </Button>
@@ -757,7 +757,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonTestingInformationColor}
                             variant={measuresActualState.TestingInformation === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Informovaním verejnosti o aktuálnej situácii (počet aktívnych prípadov a úmrtí) môže upovedomiť o vážnosti situácie v krajine, čo má za následok potenciálne zníženie presnosu.", 4, measuresActualState.TestingInformationPrice);
+                                handleButtonClick("Informovaním verejnosti o aktuálnej situácii (počet aktívnych prípadov a úmrtí) môže upovedomiť o vážnosti situácie v krajine, čo má za následok potenciálne zníženie prenosu.", 4, measuresActualState.TestingInformationPrice);
                             }}>
                         Informácie o stave v krajine
                     </Button>
@@ -768,7 +768,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonBorderHealthCheckColor}
                             variant={measuresActualState.BorderHealthCheck === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zavedenie zdravotnej kontroly na hraniciach môže potenciálne znížiť presnos nákazy.", 6, measuresActualState.BorderHealthCheckPrice);
+                                handleButtonClick("Zavedenie zdravotnej kontroly na hraniciach môže potenciálne znížiť prenos nákazy.", 6, measuresActualState.BorderHealthCheckPrice);
                             }}>
                         Zdravotná kontrola na hraniciach
                     </Button>
@@ -779,7 +779,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonAirportHealthCheckColor}
                             variant={measuresActualState.AirportHealthCheck === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zavedenie zdravotnej kontroly na letiskách môže potenciálne znížiť presnos nákazy.", 7, measuresActualState.AirportHealthCheckPrice);
+                                handleButtonClick("Zavedenie zdravotnej kontroly na letiskách môže potenciálne znížiť prenos nákazy.", 7, measuresActualState.AirportHealthCheckPrice);
                             }}>
                         Zdravotná kontrola na letiskách
                     </Button>
@@ -790,7 +790,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonSurveillanceColor}
                             variant={measuresActualState.Surveillance === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť presnos nákazy.", 8, measuresActualState.SurveillancePrice);
+                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť prenos nákazy.", 8, measuresActualState.SurveillancePrice);
                             }}>
                         Dohľad nad opatreniami
                     </Button>
@@ -805,7 +805,7 @@ function TracingTesting(props) {
                     <Button className={classes.buttonSize} color={buttonContactTracingColor}
                             variant={measuresActualState.ContactTracing === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Dohľadávaním kontaktov novonakazených sa môže potenciálne znížiť presnos nákazy.", 9, measuresActualState.ContactTracingPrice);
+                                handleButtonClick("Dohľadávaním kontaktov novonakazených sa môže potenciálne znížiť prenos nákazy.", 9, measuresActualState.ContactTracingPrice);
                             }}>
                         Dohľadávanie kontaktov
                     </Button>
@@ -817,7 +817,7 @@ function TracingTesting(props) {
                             color={buttonAdvancedContactTracingColor}
                             variant={measuresActualState.AdvancedContactTracing === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Dohľadávanie kontaktov novonakazených sa vylepší a môže potenciálne znížiť presnos nákazy.", 10, measuresActualState.AdvancedContactTracingPrice);
+                                handleButtonClick("Dohľadávanie kontaktov novonakazených sa vylepší a môže potenciálne znížiť prenos nákazy.", 10, measuresActualState.AdvancedContactTracingPrice);
                             }}>
                         Vylepšené dohľadávanie kontaktov
                     </Button>

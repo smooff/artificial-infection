@@ -167,7 +167,7 @@ function Vaccine(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.FinanceVaccineDevelopmentPrice));
 
-                setModalMessage("Aktivoval si opatrenie - Finančná pomoc vývoju.");
+                setModalMessage("Aktivoval si opatrenie - Finančná pomoc vedcom.");
                 handleOpenSuccess();
             }
         }else{
@@ -231,9 +231,9 @@ function Vaccine(props) {
                             color={buttonFinanceVaccineDevelopmentColor}
                             variant={measuresActualState.FinanceVaccineDevelopment === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Pomocou finančnej pomoci vývoju vakcíny (laboratóriá, ...) sa urýchli vývoj vakcíny.", 2, measuresActualState.FinanceVaccineDevelopmentPrice);
+                                handleButtonClick("Pomocou finančnej pomoci vedcom vakcíny (laboratóriá, ...) sa urýchli vývoj vakcíny.", 2, measuresActualState.FinanceVaccineDevelopmentPrice);
                             }}>
-                        Finančná pomoc vývoju
+                        Finančná pomoc vedcom
                     </Button>
                     {showFinanceVaccineDevelopment ? <Results cislo={2}/> : null}
                 </Grid>
