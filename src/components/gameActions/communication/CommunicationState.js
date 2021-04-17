@@ -5,6 +5,7 @@ export const CommunicationState = atom({
     key: 'CommunicationState',
     default: {
         EmergencyStateActive:true,
+        EducateCommunicateActive:true,
 
         EducateCommunicate:0,
         EducateCommunicatePrice:1,
@@ -32,5 +33,8 @@ export const CommunicationState = atom({
 
         InternationalHelp:0,
         InternationalHelpPrice:1,
+        
+        InformationCampaign:0,
+        InformationCampaignPrice:1
     },
 });

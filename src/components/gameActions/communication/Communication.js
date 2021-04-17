@@ -80,7 +80,7 @@ function Communication(props) {
     const [buttonCrisisManagementColor, setButtonCrisisManagementColor] = useState("default");
     const [buttonSupplySecurityColor, setButtonSupplySecurityColor] = useState("default");
     const [buttonInternationalHelpColor, setButtonInternationalHelpColor] = useState("default");
-
+    const [buttonInformationCampaignColor, setButtonInformationCampaignColor] = useState("default");
 
     const [showEducateCommunicate, setShowEducateCommunicate] = React.useState(false);
     const [showGovernmentHelpsVulnerable, setShowGovernmentHelpsVulnerable] = React.useState(false);
@@ -91,6 +91,7 @@ function Communication(props) {
     const [showCrisisManagement, setShowCrisisManagement] = React.useState(false);
     const [showSupplySecurity, setShowSupplySecurity] = React.useState(false);
     const [showInternationalHelp, setShowInternationalHelp] = React.useState(false);
+    const [showInformationCampaign, setShowInformationCampaign] = React.useState(false);
 
     const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
         setText(textMessage);
@@ -106,6 +107,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(true);
                 setShowGovernmentHelpsVulnerable(false);
@@ -116,6 +118,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 2:
                 setButtonEducateCommunicateColor("default");
@@ -127,6 +130,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(true);
@@ -137,6 +141,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 3:
                 setButtonEducateCommunicateColor("default");
@@ -148,6 +153,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -158,6 +164,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 4:
                 setButtonEducateCommunicateColor("default");
@@ -169,6 +176,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -179,6 +187,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 5:
                 setButtonEducateCommunicateColor("default");
@@ -190,6 +199,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -200,6 +210,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 6:
                 setButtonEducateCommunicateColor("default");
@@ -211,6 +222,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -221,6 +233,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 7:
                 setButtonEducateCommunicateColor("default");
@@ -232,6 +245,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("primary");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -242,6 +256,7 @@ function Communication(props) {
                 setShowCrisisManagement(true);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 8:
                 setButtonEducateCommunicateColor("default");
@@ -253,6 +268,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("primary");
                 setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -263,6 +279,7 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(true);
                 setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
                 break;
             case 9:
                 setButtonEducateCommunicateColor("default");
@@ -274,6 +291,7 @@ function Communication(props) {
                 setButtonCrisisManagementColor("default");
                 setButtonSupplySecurityColor("default");
                 setButtonInternationalHelpColor("primary");
+                setButtonInformationCampaignColor("default");
 
                 setShowEducateCommunicate(false);
                 setShowGovernmentHelpsVulnerable(false);
@@ -284,6 +302,30 @@ function Communication(props) {
                 setShowCrisisManagement(false);
                 setShowSupplySecurity(false);
                 setShowInternationalHelp(true);
+                setShowInformationCampaign(false);
+                break;
+            case 10:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("primary");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(true);
                 break;
             default:
                 return null;
@@ -319,6 +361,9 @@ function Communication(props) {
             case 9:
                 return <div><Button onClick={handleActivationInternationalHelp}>Aktivovať</Button><Button
                     onClick={handleDeactivationInternationalHelp}>Deaktivovať</Button></div>
+            case 10:
+                return <div><Button onClick={handleActivationInformationCampaign}>Aktivovať</Button><Button
+                    onClick={handleDeactivationInformationCampaign}>Deaktivovať</Button></div>
             default:
                 return null;
         }
@@ -336,7 +381,7 @@ function Communication(props) {
         if (measuresActualState.EducateCommunicatePrice <= gameCurrency) {
             if (measuresActualState.EducateCommunicate === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, EducateCommunicate: 1};
+                    return {...prevStats, EducateCommunicate: 1, EducateCommunicateActive: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.EducateCommunicatePrice));
 
@@ -350,14 +395,18 @@ function Communication(props) {
     }
     const handleDeactivationEducateCommunicate = () => {
         if (measuresActualState.EducateCommunicate === 1) {
+            if (measuresActualState.InformationCampaign === 0 && measuresActualState.TravelWarning ===0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, EducateCommunicate: 0, EducateCommunicateActive: true};
+                });
+                setGameCurrency(prev => (prev + measuresActualState.EducateCommunicatePrice));
 
-            setMeasuresActualState((prevStats) => {
-                return {...prevStats, EducateCommunicate: 0};
-            });
-            setGameCurrency(prev => (prev + measuresActualState.EducateCommunicatePrice));
-
-            setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.")
-            handleOpenSuccess();
+                setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.")
+                handleOpenSuccess();
+            }else {
+                setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
+                handleOpenFailure();
+            }
         }
     }
 
@@ -416,7 +465,7 @@ function Communication(props) {
 
                 setModalMessage("Deaktivoval si opatrenie - Vyhlásenie núdzového stavu.")
                 handleOpenSuccess();
-            }else {
+            } else {
                 setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
                 handleOpenFailure();
             }
@@ -596,6 +645,35 @@ function Communication(props) {
             handleOpenSuccess();
         }
     }
+
+    const handleActivationInformationCampaign = () => {
+        if (measuresActualState.InformationCampaignPrice <= gameCurrency) {
+            if (measuresActualState.InformationCampaign === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, InformationCampaign: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.InformationCampaignPrice));
+
+                setModalMessage("Aktivoval si opatrenie - Informačná kampaň.")
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationInformationCampaign = () => {
+        if (measuresActualState.InformationCampaign === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, InformationCampaign: 0};
+            });
+            setGameCurrency(prev => (prev + measuresActualState.InformationCampaignPrice));
+
+            setModalMessage("Deaktivoval si opatrenie - Informačná kampaň.")
+            handleOpenSuccess();
+        }
+    }
     //-----------------------------------------
 
 
@@ -636,6 +714,36 @@ function Communication(props) {
                 </Grid>
 
                 <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.EducateCommunicateActive} className={classes.buttonSize}
+                            color={buttonTravelWarningColor}
+                            variant={measuresActualState.TravelWarning === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vlády zasiahnutých krajín dôkladne sledujú situáciu vo svete a vydávajú cestovné výstrahy a varovania, čím sa potenciálne znižuje šírenie nákazy.", 5, measuresActualState.TravelWarningPrice);
+                            }}>
+                        Cestovné výstrahy
+                    </Button>
+                    {showTravelWarning ? <Results cislo={5}/> : null}
+                </Grid>
+
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button disabled={measuresActualState.EducateCommunicateActive} className={classes.buttonSize}
+                            color={buttonInformationCampaignColor}
+                            variant={measuresActualState.InformationCampaign === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy.", 10, measuresActualState.InformationCampaignPrice);
+                            }}>
+                        Informačná kampaň
+                    </Button>
+                    {showInformationCampaign ? <Results cislo={10}/> : null}
+                </Grid>
+
+            </Grid>
+
+            <br/>
+            <Divider/>
+
+            <Grid container>
+                <Grid item xs={12} className={classes.actionButtons}>
                     <Button className={classes.buttonSize} color={buttonGovernmentHelpsVulnerableColor}
                             variant={measuresActualState.GovernmentHelpsVulnerable === 1 ? "contained" : "outlined"}
                             onClick={() => {
@@ -644,17 +752,6 @@ function Communication(props) {
                         Vládna pomoc zranitelným
                     </Button>
                     {showGovernmentHelpsVulnerable ? <Results cislo={2}/> : null}
-                </Grid>
-
-                <Grid item xs={12} className={classes.actionButtons}>
-                    <Button className={classes.buttonSize} color={buttonTravelWarningColor}
-                            variant={measuresActualState.TravelWarning === 1 ? "contained" : "outlined"}
-                            onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín dôkladne sledujú situáciu vo svete a vydávajú cestovné výstrahy a varovania, čím sa potenciálne znižuje šírenie nákazy.", 5, measuresActualState.TravelWarningPrice);
-                            }}>
-                        Cestovné výstrahy
-                    </Button>
-                    {showTravelWarning ? <Results cislo={5}/> : null}
                 </Grid>
 
                 <Grid item xs={12} className={classes.actionButtons}>
