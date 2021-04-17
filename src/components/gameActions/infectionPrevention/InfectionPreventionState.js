@@ -45,5 +45,8 @@ export const InfectionPreventionState = atom({
 
         SafetyProtocols:0,
         SafetyProtocolsPrice:2,
+
+        Surveillance:0,
+        SurveillancePrice:2,
     },
 });

@@ -28,9 +28,6 @@ export const TracingTestingState = atom({
         AirportHealthCheck:0,
         AirportHealthCheckPrice:2,
 
-        Surveillance:0,
-        SurveillancePrice:2,
-
         ContactTracing:0,
         ContactTracingPrice:3,
 

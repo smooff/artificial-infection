@@ -84,6 +84,7 @@ function InfectionPrevention(props) {
     const [buttonSmallGatheringColor, setButtonSmallGatheringColor] = useState("default");
     const [buttonEducationalInstitutionsColor, setButtonEducationalInstitutionsColor] = useState("default");
     const [buttonSafetyProtocolsColor, setButtonSafetyProtocolsColor] = useState("default");
+    const [buttonSurveillanceColor, setButtonSurveillanceColor] = useState("default");
 
     const [showEnvironmentDisinfection, setShowEnvironmentDisinfection] = React.useState(false);
     const [showPPE, setShowPPE] = React.useState(false);
@@ -98,6 +99,7 @@ function InfectionPrevention(props) {
     const [showSmallGathering, setShowSmallGathering] = React.useState(false);
     const [showEducationalInstitutions, setShowEducationalInstitutions] = React.useState(false);
     const [showSafetyProtocols, setShowSafetyProtocols] = React.useState(false);
+    const [showSurveillance, setShowSurveillance] = React.useState(false);
 
 
     const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
@@ -118,6 +120,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(true);
                 setShowPPE(false);
@@ -132,6 +135,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 2:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -147,6 +151,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(true);
@@ -161,6 +166,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 3:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -176,6 +182,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -190,6 +197,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 4:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -205,6 +213,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -219,6 +228,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 5:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -234,6 +244,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -248,6 +259,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 6:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -263,6 +275,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -277,6 +290,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 7:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -292,6 +306,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -306,6 +321,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 8:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -321,6 +337,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -335,6 +352,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 9:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -350,6 +368,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -364,6 +383,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 10:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -379,6 +399,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -393,6 +414,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 11:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -408,6 +430,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("primary");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -422,6 +445,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(true);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 12:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -437,6 +461,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("primary");
                 setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -451,6 +476,7 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(true);
                 setShowSafetyProtocols(false);
+                setShowSurveillance(false);
                 break;
             case 13:
                 setButtonEnvironmentDisinfectionColor("default");
@@ -466,6 +492,7 @@ function InfectionPrevention(props) {
                 setButtonSmallGatheringColor("default");
                 setButtonEducationalInstitutionsColor("default");
                 setButtonSafetyProtocolsColor("primary");
+                setButtonSurveillanceColor("default");
 
                 setShowEnvironmentDisinfection(false);
                 setShowPPE(false);
@@ -480,6 +507,38 @@ function InfectionPrevention(props) {
                 setShowSmallGathering(false);
                 setShowEducationalInstitutions(false);
                 setShowSafetyProtocols(true);
+                setShowSurveillance(false);
+                break;
+            case 14:
+                setButtonEnvironmentDisinfectionColor("default");
+                setButtonPPEColor("default");
+                setButtonInfectiousIsolationColor("default");
+                setButtonQuarantineColor("default");
+                setButtonQuarantineFacilitiesColor("default");
+                setButtonArmyHelpColor("default");
+                setButtonSpecialEstablishmentsColor("default");
+                setButtonSpecialPopulationColor("default");
+                setButtonSocialDistancingColor("default");
+                setButtonMassGatheringColor("default");
+                setButtonSmallGatheringColor("default");
+                setButtonEducationalInstitutionsColor("default");
+                setButtonSafetyProtocolsColor("default");
+                setButtonSurveillanceColor("primary");
+
+                setShowEnvironmentDisinfection(false);
+                setShowPPE(false);
+                setShowInfectiousIsolation(false);
+                setShowQuarantine(false);
+                setShowQuarantineFacilities(false);
+                setShowArmyHelp(false);
+                setShowSpecialEstablishments(false);
+                setShowSpecialPopulation(false);
+                setShowSocialDistancing(false);
+                setShowMassGathering(false);
+                setShowSmallGathering(false);
+                setShowEducationalInstitutions(false);
+                setShowSafetyProtocols(false);
+                setShowSurveillance(true);
                 break;
             default:
                 return null;
@@ -527,6 +586,9 @@ function InfectionPrevention(props) {
             case 13:
                 return <div><Button onClick={handleActivationSafetyProtocols}>Aktivovať</Button><Button
                     onClick={handleDeactivationSafetyProtocols}>Deaktivovať</Button></div>
+            case 14:
+                return <div><Button onClick={handleActivationSurveillance}>Aktivovať</Button><Button
+                    onClick={handleDeactivationSurveillance}>Deaktivovať</Button></div>
             default:
                 return null;
         }
@@ -925,6 +987,34 @@ function InfectionPrevention(props) {
             handleOpenSuccess();
         }
     }
+
+    const handleActivationSurveillance = () => {
+        if (measuresActualState.SurveillancePrice <= gameCurrency) {
+            if (measuresActualState.Surveillance !== 1) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, Surveillance: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.SurveillancePrice));
+
+                setModalMessage("Aktivoval si opatrenie - Dohľad nad opatreniami.")
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationSurveillance = () => {
+        if (measuresActualState.Surveillance === 1) {
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, Surveillance: 0};
+            });
+            setGameCurrency(prev => (prev + measuresActualState.SurveillancePrice));
+
+            setModalMessage("Deaktivoval si opatrenie - Dohľad nad opatreniami.")
+            handleOpenSuccess();
+        }
+    }
     //-----------------------------------------
 
 
@@ -1028,6 +1118,17 @@ function InfectionPrevention(props) {
                         Protokoly o bezpečnosti pri práci
                     </Button>
                     {showSafetyProtocols ? <Results cislo={13}/> : null}
+                </Grid>
+
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button className={classes.buttonSize} color={buttonSurveillanceColor}
+                            variant={measuresActualState.Surveillance === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť prenos nákazy.", 14, measuresActualState.SurveillancePrice);
+                            }}>
+                        Dohľad nad opatreniami
+                    </Button>
+                    {showSurveillance ? <Results cislo={14}/> : null}
                 </Grid>
 
             </Grid>

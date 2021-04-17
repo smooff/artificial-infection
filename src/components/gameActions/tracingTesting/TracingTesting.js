@@ -78,7 +78,6 @@ function TracingTesting(props) {
     const [buttonInfrastructureTestingColor, setButtonInfrastructureTestingColor] = useState("default");
     const [buttonBorderHealthCheckColor, setButtonBorderHealthCheckColor] = useState("default");
     const [buttonAirportHealthCheckColor, setButtonAirportHealthCheckColor] = useState("default");
-    const [buttonSurveillanceColor, setButtonSurveillanceColor] = useState("default");
     const [buttonContactTracingColor, setButtonContactTracingColor] = useState("default");
     const [buttonAdvancedContactTracingColor, setButtonAdvancedContactTracingColor] = useState("default");
 
@@ -89,7 +88,6 @@ function TracingTesting(props) {
     const [showInfrastructureTesting, setShowInfrastructureTesting] = React.useState(false);
     const [showBorderHealthCheck, setShowBorderHealthCheck] = React.useState(false);
     const [showAirportHealthCheck, setShowAirportHealthCheck] = React.useState(false);
-    const [showSurveillance, setShowSurveillance] = React.useState(false);
     const [showContactTracing, setShowContactTracing] = React.useState(false);
     const [showAdvancedContactTracing, setShowAdvancedContactTracing] = React.useState(false);
 
@@ -105,7 +103,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -116,7 +113,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -128,7 +124,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -139,7 +134,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -151,7 +145,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -162,7 +155,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -174,7 +166,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -185,7 +176,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -197,7 +187,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("primary");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -208,7 +197,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(true);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -220,7 +208,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("primary");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -231,7 +218,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(true);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -243,7 +229,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("primary");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -254,30 +239,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(true);
-                setShowSurveillance(false);
-                setShowContactTracing(false);
-                setShowAdvancedContactTracing(false);
-                break;
-            case 8:
-                setButtonTestingColor("default");
-                setButtonAdvancedDetectionSystemColor("default");
-                setButtonTestingCapacityEnhancementColor("default");
-                setButtonTestingInformationColor("default");
-                setButtonInfrastructureTestingColor("default");
-                setButtonBorderHealthCheckColor("default");
-                setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("primary");
-                setButtonContactTracingColor("default");
-                setButtonAdvancedContactTracingColor("default");
-
-                setShowTesting(false);
-                setShowAdvancedDetectionSystem(false);
-                setShowTestingCapacityEnhancement(false);
-                setShowTestingInformation(false);
-                setShowInfrastructureTesting(false);
-                setShowBorderHealthCheck(false);
-                setShowAirportHealthCheck(false);
-                setShowSurveillance(true);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -289,7 +250,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("primary");
                 setButtonAdvancedContactTracingColor("default");
 
@@ -300,7 +260,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(true);
                 setShowAdvancedContactTracing(false);
                 break;
@@ -312,7 +271,6 @@ function TracingTesting(props) {
                 setButtonInfrastructureTestingColor("default");
                 setButtonBorderHealthCheckColor("default");
                 setButtonAirportHealthCheckColor("default");
-                setButtonSurveillanceColor("default");
                 setButtonContactTracingColor("default");
                 setButtonAdvancedContactTracingColor("primary");
 
@@ -323,7 +281,6 @@ function TracingTesting(props) {
                 setShowInfrastructureTesting(false);
                 setShowBorderHealthCheck(false);
                 setShowAirportHealthCheck(false);
-                setShowSurveillance(false);
                 setShowContactTracing(false);
                 setShowAdvancedContactTracing(true);
                 break;
@@ -355,9 +312,6 @@ function TracingTesting(props) {
             case 7:
                 return <div><Button onClick={handleActivationAirportHealthCheck}>Aktivovať</Button><Button
                     onClick={handleDeactivationAirportHealthCheck}>Deaktivovať</Button></div>
-            case 8:
-                return <div><Button onClick={handleActivationSurveillance}>Aktivovať</Button><Button
-                    onClick={handleDeactivationSurveillance}>Deaktivovať</Button></div>
             case 9:
                 return <div><Button onClick={handleActivationContactTracing}>Aktivovať</Button><Button
                     onClick={handleDeactivationContactTracing}>Deaktivovať</Button></div>
@@ -584,34 +538,6 @@ function TracingTesting(props) {
 
     }
 
-    const handleActivationSurveillance = () => {
-        if (measuresActualState.SurveillancePrice <= gameCurrency) {
-            if (measuresActualState.Surveillance !== 1) {
-                setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Surveillance: 1};
-                });
-                setGameCurrency(prev => (prev - measuresActualState.SurveillancePrice));
-
-                setModalMessage("Aktivoval si opatrenie - Dohľad nad opatreniami.")
-                handleOpenSuccess();
-            }
-        } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
-            handleOpenFailure();
-        }
-    }
-    const handleDeactivationSurveillance = () => {
-        if (measuresActualState.Surveillance === 1) {
-            setMeasuresActualState((prevStats) => {
-                return {...prevStats, Surveillance: 0};
-            });
-            setGameCurrency(prev => (prev + measuresActualState.SurveillancePrice));
-
-            setModalMessage("Deaktivoval si opatrenie - Dohľad nad opatreniami.")
-            handleOpenSuccess();
-        }
-    }
-
     const handleActivationContactTracing = () => {
         if (measuresActualState.ContactTracingPrice <= gameCurrency) {
             if (measuresActualState.ContactTracing !== 1) {
@@ -786,16 +712,6 @@ function TracingTesting(props) {
                     {showAirportHealthCheck ? <Results cislo={7}/> : null}
                 </Grid>
 
-                <Grid item xs={12} className={classes.actionButtons}>
-                    <Button className={classes.buttonSize} color={buttonSurveillanceColor}
-                            variant={measuresActualState.Surveillance === 1 ? "contained" : "outlined"}
-                            onClick={() => {
-                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť prenos nákazy.", 8, measuresActualState.SurveillancePrice);
-                            }}>
-                        Dohľad nad opatreniami
-                    </Button>
-                    {showSurveillance ? <Results cislo={8}/> : null}
-                </Grid>
             </Grid>
 
             <br/>
