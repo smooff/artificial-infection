@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    DialogContent, ListItem, ListItemText,
+    DialogContent,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
@@ -28,7 +28,7 @@ function MeasuresList({dataSelector, dataSelectorCount}) {
                     Infikovnané krajiny:{count[0]} Neinfikované krajiny:{count[1]}
                     <Divider/>
                     {data.map((item) => (
-                        <p style={(`${item.countryInfectivity}`==1) ? {color:"red"} : {color:"green"}}>{`${item.countryName}`}</p>
+                        <p style={(parseInt(`${item.countryInfectivity}`)===1) ? {color:"red"} : {color:"green"}}>{`${item.countryName}`}</p>
                     ))}
                 </Grid>
 

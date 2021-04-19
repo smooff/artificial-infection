@@ -298,7 +298,7 @@ function MainPage(props) {
                     {/*            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
                     {/*            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
                     {/*</BottomNavigation>*/}
-                    <Grid container xs={12} direction="row" justify="space-around" alignItems="center" spacing="1"
+                    <Grid container direction="row" justify="space-around" alignItems="center" spacing={1}
                           className={classes.downInfoBar}>
                         <Grid item xs={3}>
                             <BottomInfoBar name="Náchylní" dataSelector={susceptiblesSelector}/>
