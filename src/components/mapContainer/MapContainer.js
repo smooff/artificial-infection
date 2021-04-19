@@ -28,9 +28,12 @@ import SingleCountryModal from "./SingleCountryModal";
 
 const geoUrl = require('./topologies.json');
 
-const colorScale = scaleLinear()
-    .domain([10000, 500000000])
-    .range(["#ffedea", "#FF2A05"]);
+const scaling = (infectiousNum, populationNum) => {
+    const colorScale = scaleLinear()
+        .domain([0, populationNum*0.75])
+        .range(["#ffedea", "#FF2A05"]);
+    return colorScale(infectiousNum);
+}
 
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
@@ -149,8 +152,8 @@ const MapContainer = ({setTooltipContent}) => {
 
         switch (infectiousOrigin) {
             case "initial":
-                S = S - 5;
-                I = 5;
+                S = S - 1;
+                I = 1;
                 //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
                 break;
             case "border":
@@ -195,6 +198,10 @@ const MapContainer = ({setTooltipContent}) => {
         // console.log('nach',nachylny);
 
 
+        // if(Math.ceil((betaParameter * S * I) / N) > N*0.002){
+        //     nachylny = (S - Math.ceil((Math.ceil((betaParameter * S * I) / N))*0.05));
+        //     console.log(Math.ceil(N*0.002),( - Math.ceil((Math.ceil((betaParameter * S * I) / N))*0.002)));
+        // }
         if (nachylny < 0) {
             nachylny = 0;
         }
@@ -202,7 +209,7 @@ const MapContainer = ({setTooltipContent}) => {
         return [nachylny];
     }
 
-    const infectiousCalculate = (S, I, N, beta, gamma, delta) => {
+    const infectiousCalculate = (S, I, N, beta, gamma, delta,infArrayState) => {
         let infekcny = (I + Math.ceil((betaParameter * S * I) / N)) - Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
         // console.log('inf', data.Infectious);
         // console.log('round do R: ', Math.round(gamma * I));
@@ -211,19 +218,27 @@ const MapContainer = ({setTooltipContent}) => {
         // console.log('ceil do R: ', Math.ceil(gamma * I));
         // console.log('ROZDIEL MEDZI I A INF', I - infekcny);
 
+        // if(Math.ceil((betaParameter * S * I) / N) > N*0.002){
+        //     infekcny = (I + Math.ceil((Math.ceil((betaParameter * S * I) / N))*0.05))- Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
+        // }
+
         let infekcnyVacsiNezPopulaciaCheck = 0;
         let povodnyInfekcny = 0;
         if (infekcny > N) {
-            // console.log('INFEKCNY JE VASCI', N - Math.round(gamma * I) - Math.round(delta * I));
             infekcny = N - Math.round(gammaParameter * N) - Math.round(deltaParameter * N);
             infekcnyVacsiNezPopulaciaCheck = 1;
-        } else if (infekcny < 0) {
+        }//ak infekcny padnu pod nulu
+        else if (infekcny < 0) {
             povodnyInfekcny = infekcny;
             infekcny = 0;
+        }//ak S padne pod nulu po tom co ich I ma celych zobrat
+        else if((S - Math.ceil((betaParameter * S * I) / N))<0){
+            infekcny = (I + S - Math.round(gammaParameter * I) - Math.round(deltaParameter * I));
         }
 
         const infekcnyPushToRD = I - infekcny;
         if ((I - infekcny) === 0) {
+            //ak uz do I neprichadza nic, tak aby dokazalo vytiahnut z I do R/D (aby vynulovalo I)
             if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
                 infekcny = (I + Math.ceil((betaParameter * S * I) / N) - Math.ceil(gammaParameter * I) - Math.ceil(deltaParameter * I));
 
@@ -245,22 +260,76 @@ const MapContainer = ({setTooltipContent}) => {
 
         }
 
-        return [infekcny, povodnyInfekcny, infekcnyPushToRD, infekcnyVacsiNezPopulaciaCheck];
+        let LoopPushToRD = 0;
+        //ak S je velke cislo a I sa blizi k nule ale nikdy ju nedosiahne (pretoze do I prichadzaju cez ceil)
+        //kopirovanie State pola do Local pola, pracujeme s Local polom ktore returneme a to sa nasetuje do State
+        let infArrayLocal = Array.from(infArrayState);
+        infArrayLocal.push(infekcny);
+        //ak je po pushnuti hodnoty infekcnych pole vacsie ako 3 tak vyhodi posledny prvok (udrziavanie pola o velkosti 3)
+        if(infArrayLocal.length>3){
+            infArrayLocal.shift();
+            //check ci su hodnoty infekcnych zacyklene (napr. pomale tahanie z S do I, v pripade ked I sa blizilo k nule)
+            if(infArrayLocal[0]===infArrayLocal[1] && infArrayLocal[1]===infArrayLocal[2]){
+                //check pre nulu, pretoze ta nas nezaujima
+                if(infArrayLocal[0]!==0){
+                    infekcny=infekcny-10;
+                    LoopPushToRD=1;
+
+                    if (infekcny < 0) {
+                        povodnyInfekcny = infekcny;
+                        infekcny = 0;
+                        LoopPushToRD=2;
+                    }
+                }
+                //check ci su hodnoty infekcnych zacyklene, a zaroven gamma a delta su schopne tahat kazdu druhu iteraciu -> cyklenie 8,9,8 / 9,8,9
+            }else if(infArrayLocal[0]===infArrayLocal[2] && infArrayLocal[0]<infArrayLocal[1] && infArrayLocal[0]<20 ){
+                if(infArrayLocal[0]!==0){
+                    infekcny=infekcny-10;
+                    LoopPushToRD=3;
+
+                    if (infekcny < 0) {
+                        povodnyInfekcny = infekcny;
+                        infekcny = 0;
+                        LoopPushToRD=4;
+                    }
+                }
+            }
+        }
+        return [infekcny, povodnyInfekcny, infekcnyPushToRD, infekcnyVacsiNezPopulaciaCheck, infArrayLocal, LoopPushToRD];
     }
 
-    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S) => {
+    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S,LoopPushToRD) => {
         //if funkcny v pripade presunu z kompartmentu I do R,
         //kde I sa dostava do zapornej hodnoty a je potrebne to vykompenzovat v R (aj v D) upravenym-znizenym pripocitanim
         if (I2 < 0) {
             let splittedI2 = I2 / (gammaParameter + deltaParameter);
-            let recoveredReduction = Math.round(gammaParameter * splittedI2);
+            let recoveredReduction = Math.round(gammaParameter * splittedI2);//-1
             let zotavenyZmena = R - recoveredReduction;
+
+            //pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
+            //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
+            if(LoopPushToRD===2){
+                return R+10;
+            }else if(LoopPushToRD===4){
+                return R+5;
+            }
 
             if (gammaParameter === deltaParameter) {
                 return R;
             }
 
             return zotavenyZmena;
+        }
+
+        //(tak ako vyssie len neskocia I pod nulu) pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I
+        if(LoopPushToRD===1){
+            //pre pripad zacyklenia 9,9,9
+            let zotaveny=Math.round(R + gammaParameter * I)+10;
+            return zotaveny;
+        }else if(LoopPushToRD===3){
+            //pre pripad zacyklenia 8,9,8 / 9,8,9
+            let zotaveny=Math.round(R + gammaParameter * I)+5;
+            return zotaveny;
         }
 
         if (infekcnyVacsiNezPopulaciaCheckValue === 1) {
@@ -302,16 +371,25 @@ const MapContainer = ({setTooltipContent}) => {
         return zotaveny;
     }
 
-    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S) => {
+    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S,LoopPushToRD) => {
         //rovnake osetrenie ako vo funkcii vyssie
         if (I2 < 0) {
             let splittedI2 = I2 / (gammaParameter + deltaParameter);
             let deceasedReduction = Math.round(deltaParameter * splittedI2);
             let zosnulyZmena = D - deceasedReduction;
+            if(LoopPushToRD===4){
+                return D+5;
+            }
 
             if (gammaParameter === deltaParameter) {
             }
             return zosnulyZmena;
+        }
+
+
+        if(LoopPushToRD===3){
+            let zosnuly = Math.round(D + deltaParameter * I)+5;
+            return zosnuly;
         }
 
         if (infekcnyVacsiNezPopulaciaCheckValue === 1) {
@@ -355,7 +433,7 @@ const MapContainer = ({setTooltipContent}) => {
 
     const compartmentsRecalculateValues = (countryName) => {
         const data = allCountries[countryName];
-        const {beta, gamma, delta, Susceptible: S, Infectious: I, Recovered: R, Deceased: D, Population: N} = data;
+        const {beta, gamma, delta, Susceptible: S, Infectious: I, Recovered: R, Deceased: D, Population: N, infectiousLooping:infArrayState} = data;
         // console.log('data:', data);
         // console.log('sus: ', new Intl.NumberFormat('de-DE').format(data.Susceptible));
         //console.log('inf: ', new Intl.NumberFormat('de-DE').format(data.Infectious));
@@ -365,11 +443,11 @@ const MapContainer = ({setTooltipContent}) => {
         //     '\n rozdiel populacie: ', new Intl.NumberFormat('de-DE').format(data.Population - (data.Susceptible + data.Infectious + data.Recovered + data.Deceased)));
 
         const [susceptibleValue] = susceptibleCalculate(S, I, N, beta);
-        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking] = infectiousCalculate(S, I, N, beta, gamma, delta);
+        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, infekcnyArrayFromLocal, LoopPushToRD] = infectiousCalculate(S, I, N, beta, gamma, delta,infArrayState);
         // console.log(actualInfectiousNumber, negativeNumberInfectious);
         const infectiousValue = actualInfectiousNumber;
-        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S);
-        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S);
+        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S,LoopPushToRD);
+        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S,LoopPushToRD);
         // const infekcny = data.Infectious + +50000;
 
         // if (povodnyNachylny >= 0) {
@@ -383,7 +461,8 @@ const MapContainer = ({setTooltipContent}) => {
             Susceptible: susceptibleValue,
             Infectious: infectiousValue,
             Recovered: recoveredValue,
-            Deceased: deceasedValue
+            Deceased: deceasedValue,
+            infectiousLooping:infekcnyArrayFromLocal
         };
 
 
@@ -663,7 +742,7 @@ const MapContainer = ({setTooltipContent}) => {
     }, intervalSpeed);
 //-------------------------------------------------------------------->
 
-    const mapHeight = height * 0.70;
+    const mapHeight = height * 0.745;
     const mapWidth = width * 0.75;
     return (
         <div>
@@ -703,7 +782,7 @@ const MapContainer = ({setTooltipContent}) => {
                                         <Geography
                                             key={geo.rsmKey}
                                             geography={geo}
-                                            fill={d?.Infectious ? colorScale(d?.Infectious) : "#F5F4F6"}
+                                            fill={d?.Infectious ? scaling(d?.Infectious, d?.Population) : "#F5F4F6"}
 
                                             // onMouseEnter={() => {
                                             //     const {NAME, POP_EST} = geo.properties;

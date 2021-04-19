@@ -1,4 +1,5 @@
 import {atom, selector} from "recoil";
+import {GameTimeState} from "../../data/GameTimeState";
 
 
 export const mapContainerState = atom({
@@ -20,6 +21,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRN',
                 'PAK',
@@ -42,6 +44,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MNE',
                 'GRC',
@@ -62,6 +65,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'TUN',
                 'LBY',
@@ -85,6 +89,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'FRA',
                 'ESP'
@@ -103,6 +108,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'COG',
                 'COD',
@@ -123,6 +129,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -138,6 +145,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BOL',
                 'BRA',
@@ -159,6 +167,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AZE',
                 'GEO',
@@ -179,6 +188,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Australia and New Zealand'
@@ -194,6 +204,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CZE',
                 'DEU',
@@ -218,6 +229,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARM',
                 'GEO',
@@ -239,6 +251,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -254,6 +267,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'Western Asia'
@@ -269,6 +283,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MMR',
                 'IND'
@@ -287,6 +302,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -302,6 +318,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'LVA',
                 'LTU',
@@ -323,6 +340,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'FRA',
                 'DEU',
@@ -343,6 +361,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GTM',
                 'MEX'
@@ -361,6 +380,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BFA',
                 'NER',
@@ -381,6 +401,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'IND'
@@ -399,6 +420,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARG',
                 'BRA',
@@ -420,6 +442,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'HRV',
                 'MNE',
@@ -439,6 +462,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'NAM',
                 'ZAF',
@@ -459,6 +483,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARG',
                 'BOL',
@@ -485,6 +510,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MYS'
             ],
@@ -502,6 +528,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GRC',
                 'MKD',
@@ -523,6 +550,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BEN',
                 'CIV',
@@ -545,6 +573,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'COD',
                 'RWA',
@@ -564,6 +593,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'LAO',
                 'THA',
@@ -583,6 +613,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'USA'
             ],
@@ -600,6 +631,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Western Africa'
@@ -615,6 +647,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CMR',
                 'TCD',
@@ -637,6 +670,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CMR',
                 'CAF',
@@ -659,6 +693,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARG',
                 'BOL',
@@ -678,6 +713,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'BTN',
@@ -708,6 +744,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRA',
                 'ECU',
@@ -729,6 +766,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Eastern Africa'
@@ -744,6 +782,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AGO',
                 'CMR',
@@ -765,6 +804,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AGO',
                 'BDI',
@@ -790,6 +830,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'NIC',
                 'PAN'
@@ -808,6 +849,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BFA',
                 'GHA',
@@ -829,6 +871,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BIH',
                 'HUN',
@@ -850,6 +893,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -865,6 +909,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CY2'
             ],
@@ -882,6 +927,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'DEU',
@@ -902,6 +948,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DEU'
             ],
@@ -919,6 +966,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ERI',
                 'ETH',
@@ -938,6 +986,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -953,6 +1002,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'HTI'
             ],
@@ -970,6 +1020,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'COL',
                 'PER'
@@ -988,6 +1039,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ISR',
                 'LBY',
@@ -1008,6 +1060,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GTM',
                 'HND'
@@ -1026,6 +1079,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CMR',
                 'GAB'
@@ -1044,6 +1098,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DJI',
                 'ETH',
@@ -1063,6 +1118,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'LVA',
                 'RUS'
@@ -1081,6 +1137,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DJI',
                 'ERI',
@@ -1104,6 +1161,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Melanesia'
@@ -1119,6 +1177,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'NOR',
                 'SWE',
@@ -1138,6 +1197,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AND',
                 'BEL',
@@ -1162,6 +1222,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRA',
                 'SUR'
@@ -1180,6 +1241,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CMR',
                 'COG',
@@ -1199,6 +1261,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'SEN'
             ],
@@ -1216,6 +1279,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARM',
                 'AZE',
@@ -1236,6 +1300,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'BEL',
@@ -1261,6 +1326,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BFA',
                 'CIV',
@@ -1280,6 +1346,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ALB',
                 'BGR',
@@ -1300,6 +1367,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -1315,6 +1383,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLZ',
                 'SLV',
@@ -1335,6 +1404,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CIV',
                 'GNB',
@@ -1357,6 +1427,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GIN',
                 'SEN'
@@ -1375,6 +1446,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRA',
                 'SUR',
@@ -1394,6 +1466,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DOM'
             ],
@@ -1411,6 +1484,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GTM',
                 'SLV',
@@ -1430,6 +1504,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'HRV',
@@ -1453,6 +1528,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Europe',
             subregion: 'Northern Europe'
@@ -1468,6 +1544,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BGD',
                 'BTN',
@@ -1490,6 +1567,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'TLS',
                 'MYS',
@@ -1509,6 +1587,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'ARM',
@@ -1532,6 +1611,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRN',
                 'JOR',
@@ -1554,6 +1634,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GBR'
             ],
@@ -1571,6 +1652,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'EGY',
                 'JOR',
@@ -1592,6 +1674,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'FRA',
@@ -1613,6 +1696,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -1628,6 +1712,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'Eastern Asia'
@@ -1643,6 +1728,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRQ',
                 'ISR',
@@ -1664,6 +1750,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'KGZ',
@@ -1685,6 +1772,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ETH',
                 'SOM',
@@ -1706,6 +1794,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Micronesia'
@@ -1721,6 +1810,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'KOR',
@@ -1740,6 +1830,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'PRK'
             ],
@@ -1757,6 +1848,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRQ',
                 'SAU'
@@ -1775,6 +1867,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'KAZ',
@@ -1795,6 +1888,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MMR',
                 'KHM',
@@ -1816,6 +1910,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLR',
                 'EST',
@@ -1836,6 +1931,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ISR',
                 'SYR'
@@ -1854,6 +1950,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ZAF'
             ],
@@ -1871,6 +1968,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GIN',
                 'CIV',
@@ -1890,6 +1988,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'TCD',
@@ -1912,6 +2011,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'CHE'
@@ -1930,6 +2030,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLR',
                 'LVA',
@@ -1950,6 +2051,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BEL',
                 'FRA',
@@ -1969,6 +2071,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ALB',
                 'BGR',
@@ -1990,6 +2093,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Eastern Africa'
@@ -2005,6 +2109,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MOZ',
                 'TZA',
@@ -2024,6 +2129,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRN',
                 'IDN',
@@ -2043,6 +2149,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'Southern Asia'
@@ -2058,6 +2165,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'BFA',
@@ -2081,6 +2189,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Europe',
             subregion: 'Southern Europe'
@@ -2096,6 +2205,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Micronesia'
@@ -2111,6 +2221,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'MLI',
@@ -2131,6 +2242,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Eastern Africa'
@@ -2146,6 +2258,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLZ',
                 'GTM',
@@ -2165,6 +2278,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Micronesia'
@@ -2180,6 +2294,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ROU',
                 'UKR'
@@ -2198,6 +2313,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'FRA'
             ],
@@ -2215,6 +2331,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'RUS'
@@ -2233,6 +2350,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ALB',
                 'BIH',
@@ -2254,6 +2372,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'ESH',
@@ -2273,6 +2392,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MWI',
                 'ZAF',
@@ -2295,6 +2415,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BGD',
                 'CHN',
@@ -2316,6 +2437,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AGO',
                 'BWA',
@@ -2336,6 +2458,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Micronesia'
@@ -2351,6 +2474,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CHN',
                 'IND'
@@ -2369,6 +2493,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BEL',
                 'DEU'
@@ -2387,6 +2512,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Australia and New Zealand'
@@ -2402,6 +2528,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CRI',
                 'HND'
@@ -2420,6 +2547,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'BEN',
@@ -2443,6 +2571,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BEN',
                 'CMR',
@@ -2463,6 +2592,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'FIN',
                 'SWE',
@@ -2482,6 +2612,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'SAU',
                 'ARE',
@@ -2501,6 +2632,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'CHN',
@@ -2521,6 +2653,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Micronesia'
@@ -2536,6 +2669,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'COL',
                 'CRI'
@@ -2554,6 +2688,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IDN'
             ],
@@ -2571,6 +2706,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARG',
                 'BOL',
@@ -2590,6 +2726,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BOL',
                 'BRA',
@@ -2611,6 +2748,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'South-Eastern Asia'
@@ -2626,6 +2764,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLR',
                 'CZE',
@@ -2649,6 +2788,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ESP'
             ],
@@ -2666,6 +2806,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'SAU'
             ],
@@ -2683,6 +2824,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BGR',
                 'HUN',
@@ -2704,6 +2846,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AZE',
                 'BLR',
@@ -2734,6 +2877,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BDI',
                 'COD',
@@ -2754,6 +2898,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -2769,6 +2914,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -2784,6 +2930,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -2799,6 +2946,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Polynesia'
@@ -2814,6 +2962,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ITA'
             ],
@@ -2831,6 +2980,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Middle Africa'
@@ -2846,6 +2996,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRQ',
                 'JOR',
@@ -2869,6 +3020,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GMB',
                 'GIN',
@@ -2890,6 +3042,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BIH',
                 'BGR',
@@ -2914,6 +3067,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Eastern Africa'
@@ -2929,6 +3083,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'GIN',
                 'LBR'
@@ -2947,6 +3102,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'South-Eastern Asia'
@@ -2962,6 +3118,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'CZE',
@@ -2983,6 +3140,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'HRV',
@@ -3003,6 +3161,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Melanesia'
@@ -3018,6 +3177,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DJI',
                 'ETH',
@@ -3037,6 +3197,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BWA',
                 'LSO',
@@ -3059,6 +3220,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AND',
                 'FRA',
@@ -3079,6 +3241,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IND'
             ],
@@ -3096,6 +3259,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CAF',
                 'TCD',
@@ -3119,6 +3283,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRA',
                 'GUY',
@@ -3138,6 +3303,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MOZ',
                 'ZAF'
@@ -3156,6 +3322,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'FIN',
                 'NOR'
@@ -3174,6 +3341,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AUT',
                 'FRA',
@@ -3195,6 +3363,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRQ',
                 'ISR',
@@ -3216,6 +3385,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'CHN',
@@ -3236,6 +3406,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BDI',
                 'COD',
@@ -3260,6 +3431,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'MMR',
                 'KHM',
@@ -3280,6 +3452,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IDN'
             ],
@@ -3297,6 +3470,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BEN',
                 'BFA',
@@ -3316,6 +3490,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Polynesia'
@@ -3331,6 +3506,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -3346,6 +3522,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'LBY'
@@ -3364,6 +3541,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARM',
                 'AZE',
@@ -3388,6 +3566,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'IRN',
@@ -3408,6 +3587,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Polynesia'
@@ -3423,6 +3603,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'COD',
                 'KEN',
@@ -3444,6 +3625,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BLR',
                 'HUN',
@@ -3467,6 +3649,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'OMN',
                 'SAU'
@@ -3485,6 +3668,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'IRL'
             ],
@@ -3502,6 +3686,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CAN',
                 'MEX'
@@ -3520,6 +3705,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ARG',
                 'BRA'
@@ -3538,6 +3724,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AFG',
                 'KAZ',
@@ -3559,6 +3746,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Melanesia'
@@ -3574,6 +3762,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BRA',
                 'COL',
@@ -3593,6 +3782,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'KHM',
                 'CHN',
@@ -3612,6 +3802,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'OMN',
                 'SAU'
@@ -3630,6 +3821,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'AGO',
                 'BWA',
@@ -3654,6 +3846,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'BWA',
                 'MOZ',
@@ -3674,6 +3867,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Africa',
             subregion: 'Southern Africa'
@@ -3689,6 +3883,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'North America'
@@ -3704,6 +3899,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'Caribbean'
@@ -3719,6 +3915,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Americas',
             subregion: 'South America'
@@ -3734,6 +3931,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'DZA',
                 'MRT',
@@ -3753,6 +3951,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CAF',
                 'TCD',
@@ -3775,6 +3974,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CAF',
                 'COD',
@@ -3797,6 +3997,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Oceania',
             subregion: 'Melanesia'
@@ -3812,6 +4013,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [],
             region: 'Asia',
             subregion: 'Eastern Asia'
@@ -3827,6 +4029,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ISR',
                 'EGY',
@@ -3846,6 +4049,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'ALB',
                 'MKD',
@@ -3866,6 +4070,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'SOM',
                 'ETH'
@@ -3884,6 +4089,7 @@ export const mapContainerState = atom({
             gamma: 0,
             delta: 0,
             infectivity: 0,
+            infectiousLooping: [],
             border: [
                 'CYP'
             ],
@@ -3972,6 +4178,21 @@ export const infectiousCountriesCountSelector = selector({
                 nonInfectedCountries++;
             }
         });
-        return [infectedCountries,nonInfectedCountries];
+        return [infectedCountries, nonInfectedCountries];
+    },
+});
+
+//data pre graf
+export const infectiousProgressSelector = selector({
+    key: 'infectiousProgressSelector',
+    get: ({get}) => {
+        const currentDay = get(GameTimeState);
+        const bigState = get(mapContainerState);
+        let inf = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            inf += bigState[currentCountry].Infectious;
+        });
+
+        return {day: currentDay, inf: inf};
     },
 });
