@@ -14,14 +14,17 @@ export const CureState = atom({
 
         FieldHospital: 0,
         FieldHospitalPrice: 1,
+        FieldHospitalBeta:0.0279,
 
         MedicalTechnology: 0,
         MedicalTechnologyPrice: 1,
 
         HospitalMeasures: 0,
         HospitalMeasuresPrice: 1,
+        HospitalMeasuresBeta:0.02325,
 
         MedicalSurgery: 0,
         MedicalSurgeryPrice: 1,
+        MedicalSurgeryBeta:0.0155,
     },
 });

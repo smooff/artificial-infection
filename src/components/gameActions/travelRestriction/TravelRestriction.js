@@ -20,6 +20,7 @@ import {useRecoilState} from "recoil";
 import {TravelRestrictionState} from "./TravelRestrictionState";
 import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import MuiAlert from "@material-ui/lab/Alert";
+import {BetaState} from "../../../data/parameters/BetaState";
 
 
 function TravelRestriction(props) {
@@ -53,6 +54,9 @@ function TravelRestriction(props) {
 
     //data s opatreniami
     const [travelRestrictionsState, setTravelRestrictionsState] = useRecoilState(TravelRestrictionState);
+
+    //beta parameter
+    const [, setBetaParameter] = useRecoilState(BetaState);
 
     //alert pri aktivaciach/deaktiv.
     const [modalMessage, setModalMessage] = useState();
@@ -183,7 +187,7 @@ function TravelRestriction(props) {
                     return {...prevStats, NationalLockdown: 1};
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.NationalLockdownPrice));
-
+                setBetaParameter(prev => (prev - travelRestrictionsState.NationalLockdownBeta));
                 setModalMessage("Aktivoval si opatrenie - Lockdown v infekčných krajinách.");
                 handleOpenSuccess();
             }
@@ -198,7 +202,7 @@ function TravelRestriction(props) {
                     return {...prevStats, NationalLockdown: 0};
                 });
                 setGameCurrency(prev => (prev + travelRestrictionsState.NationalLockdownPrice));
-
+                setBetaParameter(prev => (prev + travelRestrictionsState.NationalLockdownBeta));
                 setModalMessage("Deaktivoval si opatrenie - Lockdown v infekčných krajinách.")
                 handleOpenSuccess();
             }
@@ -211,7 +215,7 @@ function TravelRestriction(props) {
                     return {...prevStats, CordonSanitaire: 1};
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.CordonSanitairePrice));
-
+                setBetaParameter(prev => (prev - travelRestrictionsState.CordonSanitaireBeta));
                 setModalMessage("Aktivoval si opatrenie - Lekársky zásah v ohniskách.");
                 handleOpenSuccess();
             }
@@ -226,7 +230,7 @@ function TravelRestriction(props) {
                 return {...prevStats, CordonSanitaire: 0};
             });
             setGameCurrency(prev => (prev + travelRestrictionsState.CordonSanitairePrice));
-
+            setBetaParameter(prev => (prev + travelRestrictionsState.CordonSanitaireBeta));
             setModalMessage("Deaktivoval si opatrenie - Lekársky zásah v ohniskách.")
             handleOpenSuccess();
         }
@@ -239,7 +243,7 @@ function TravelRestriction(props) {
                     return {...prevStats, PublicTransportRestriction: 1};
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.PublicTransportRestrictionPrice));
-
+                setBetaParameter(prev => (prev - travelRestrictionsState.PublicTransportRestrictionBeta));
                 setModalMessage("Aktivoval si opatrenie - Obmedzenie verejnej dopravy.");
                 handleOpenSuccess();
             }
@@ -254,7 +258,7 @@ function TravelRestriction(props) {
                 return {...prevStats, PublicTransportRestriction: 0};
             });
             setGameCurrency(prev => (prev + travelRestrictionsState.PublicTransportRestrictionPrice));
-
+            setBetaParameter(prev => (prev + travelRestrictionsState.PublicTransportRestrictionBeta));
             setModalMessage("Deaktivoval si opatrenie - Obmedzenie verejnej dopravy.")
             handleOpenSuccess();
         }
@@ -267,7 +271,7 @@ function TravelRestriction(props) {
                     return {...prevStats, RiskCountriesRestriction: 1};
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.RiskCountriesRestrictionPrice));
-
+                setBetaParameter(prev => (prev - travelRestrictionsState.RiskCountriesRestrictionBeta));
                 setModalMessage("Aktivoval si opatrenie - Obmedzenie z rizikových krajín.");
                 handleOpenSuccess();
             }
@@ -282,7 +286,7 @@ function TravelRestriction(props) {
                 return {...prevStats, RiskCountriesRestriction: 0};
             });
             setGameCurrency(prev => (prev + travelRestrictionsState.RiskCountriesRestrictionPrice));
-
+            setBetaParameter(prev => (prev + travelRestrictionsState.RiskCountriesRestrictionBeta));
             setModalMessage("Deaktivoval si opatrenie - Obmedzenie z rizikových krajín.")
             handleOpenSuccess();
         }

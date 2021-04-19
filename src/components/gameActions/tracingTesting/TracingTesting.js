@@ -11,6 +11,7 @@ import {TracingTestingState} from "./TracingTestingState";
 import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
+import {BetaState} from "../../../data/parameters/BetaState";
 
 function TracingTesting(props) {
     const useStyles = makeStyles((theme) => ({
@@ -37,6 +38,9 @@ function TracingTesting(props) {
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //beta parameter
+    const [, setBetaParameter] = useRecoilState(BetaState);
 
     //modal po aktivacii/deaktivacii--------------------
     //po uspesnom pokuse o aktivaciu
@@ -371,7 +375,7 @@ function TracingTesting(props) {
                     return {...prevStats, AdvancedDetectionSystem: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.AdvancedDetectionSystemPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.AdvancedDetectionSystemBeta));
                 setModalMessage("Aktivoval si opatrenie - Vylepšenie systému detekcie infekčných.")
                 handleOpenSuccess();
             }
@@ -386,7 +390,7 @@ function TracingTesting(props) {
                 return {...prevStats, AdvancedDetectionSystem: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.AdvancedDetectionSystemPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.AdvancedDetectionSystemBeta));
             setModalMessage("Deaktivoval si opatrenie - Vylepšenie systému detekcie infekčných.")
             handleOpenSuccess();
         }
@@ -400,7 +404,7 @@ function TracingTesting(props) {
                     return {...prevStats, TestingCapacityEnhancement: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.TestingCapacityEnhancementPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.TestingCapacityEnhancementBeta));
                 setModalMessage("Aktivoval si opatrenie - Zvýšenie testovacej kapacity laboratórií.")
                 handleOpenSuccess();
             }
@@ -415,7 +419,7 @@ function TracingTesting(props) {
                 return {...prevStats, TestingCapacityEnhancement: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.TestingCapacityEnhancementPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.TestingCapacityEnhancementBeta));
             setModalMessage("Deaktivoval si opatrenie - Zvýšenie testovacej kapacity laboratórií.")
             handleOpenSuccess();
         }
@@ -429,7 +433,7 @@ function TracingTesting(props) {
                     return {...prevStats, TestingInformation: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.TestingInformationPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.TestingInformationBeta));
                 setModalMessage("Aktivoval si opatrenie - Informácie o stave v krajine.")
                 handleOpenSuccess();
             }
@@ -444,7 +448,7 @@ function TracingTesting(props) {
                 return {...prevStats, TestingInformation: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.TestingInformationPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.TestingInformationBeta));
             setModalMessage("Deaktivoval si opatrenie - Informácie o stave v krajine.")
             handleOpenSuccess();
         }
@@ -458,7 +462,7 @@ function TracingTesting(props) {
                     return {...prevStats, InfrastructureTesting: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.InfrastructureTestingPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.InfrastructureTestingBeta));
                 setModalMessage("Aktivoval si opatrenie - Testovanie kritickej infraštruktúry.")
                 handleOpenSuccess();
             }
@@ -473,7 +477,7 @@ function TracingTesting(props) {
                 return {...prevStats, InfrastructureTesting: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.InfrastructureTestingPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.InfrastructureTestingBeta));
             setModalMessage("Deaktivoval si opatrenie - Testovanie kritickej infraštruktúry.")
             handleOpenSuccess();
         }
@@ -487,7 +491,7 @@ function TracingTesting(props) {
                     return {...prevStats, BorderHealthCheck: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.BorderHealthCheckPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.BorderHealthCheckBeta));
                 setModalMessage("Aktivoval si opatrenie - Zdravotná kontrola na hraniciach.")
                 handleOpenSuccess();
             }
@@ -502,7 +506,7 @@ function TracingTesting(props) {
                 return {...prevStats, BorderHealthCheck: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.BorderHealthCheckPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.BorderHealthCheckBeta));
             setModalMessage("Deaktivoval si opatrenie - Zdravotná kontrola na hraniciach.")
             handleOpenSuccess();
         }
@@ -516,7 +520,7 @@ function TracingTesting(props) {
                     return {...prevStats, AirportHealthCheck: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.AirportHealthCheckPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.AirportHealthCheckBeta));
                 setModalMessage("Aktivoval si opatrenie - Zdravotná kontrola na letiskách.")
                 handleOpenSuccess();
             }
@@ -531,7 +535,7 @@ function TracingTesting(props) {
                 return {...prevStats, AirportHealthCheck: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.AirportHealthCheckPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.AirportHealthCheckBeta));
             setModalMessage("Deaktivoval si opatrenie - Zdravotná kontrola na letiskách.")
             handleOpenSuccess();
         }
@@ -545,7 +549,7 @@ function TracingTesting(props) {
                     return {...prevStats, ContactTracing: 1, contactTracingState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.ContactTracingPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.ContactTracingBeta));
                 setModalMessage("Aktivoval si opatrenie - Dohľadávanie kontaktov.")
                 handleOpenSuccess();
             }
@@ -561,7 +565,7 @@ function TracingTesting(props) {
                     return {...prevStats, ContactTracing: 0, contactTracingState: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.ContactTracingPrice));
-
+                setBetaParameter(prev => (prev + measuresActualState.ContactTracingBeta));
                 setModalMessage("Deaktivoval si opatrenie - Dohľadávanie kontaktov.")
                 handleOpenSuccess();
             } else {
@@ -578,7 +582,7 @@ function TracingTesting(props) {
                     return {...prevStats, AdvancedContactTracing: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.AdvancedContactTracingPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.AdvancedContactTracingBeta));
                 setModalMessage("Aktivoval si opatrenie - Vylepšené dohľadávanie kontaktov.")
                 handleOpenSuccess();
             }
@@ -593,7 +597,7 @@ function TracingTesting(props) {
                 return {...prevStats, AdvancedContactTracing: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.AdvancedContactTracingPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.AdvancedContactTracingBeta));
             setModalMessage("Deaktivoval si opatrenie - Vylepšené dohľadávanie kontaktov.")
             handleOpenSuccess();
         }

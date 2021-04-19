@@ -11,6 +11,7 @@ import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 import {CureState} from "./CureState";
+import {BetaState} from "../../../data/parameters/BetaState";
 
 function Cure(props) {
     const useStyles = makeStyles((theme) => ({
@@ -37,6 +38,9 @@ function Cure(props) {
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //beta parameter
+    const [, setBetaParameter] = useRecoilState(BetaState);
 
     //alert po aktivacii/deaktivacii--------------------
     //po uspesnom pokuse o aktivaciu
@@ -283,7 +287,7 @@ function Cure(props) {
                     return {...prevStats, FieldHospital: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.FieldHospitalPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.FieldHospitalBeta));
                 setModalMessage("Aktivoval si opatrenie - Poľné nemocnice.")
                 handleOpenSuccess();
             }
@@ -299,7 +303,7 @@ function Cure(props) {
                 return {...prevStats, FieldHospital: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.FieldHospitalPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.FieldHospitalBeta));
             setModalMessage("Deaktivoval si opatrenie - Poľné nemocnice.")
             handleOpenSuccess();
         }
@@ -341,7 +345,7 @@ function Cure(props) {
                     return {...prevStats, HospitalMeasures: 1, HospitalMeasuresState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.HospitalMeasuresPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.HospitalMeasuresBeta));
                 setModalMessage("Aktivoval si opatrenie - Opatrenia v nemocniciach.")
                 handleOpenSuccess();
             }
@@ -357,7 +361,7 @@ function Cure(props) {
                     return {...prevStats, HospitalMeasures: 0, HospitalMeasuresState: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.HospitalMeasuresPrice));
-
+                setBetaParameter(prev => (prev + measuresActualState.HospitalMeasuresBeta));
                 setModalMessage("Deaktivoval si opatrenie - Opatrenia v nemocniciach.")
                 handleOpenSuccess();
             } else {
@@ -374,7 +378,7 @@ function Cure(props) {
                     return {...prevStats, MedicalSurgery: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.MedicalSurgeryPrice));
-
+                setBetaParameter(prev => (prev - measuresActualState.MedicalSurgeryBeta));
                 setModalMessage("Aktivoval si opatrenie - Zrušenie lekárskych zákrokov.")
                 handleOpenSuccess();
             }
@@ -390,7 +394,7 @@ function Cure(props) {
                 return {...prevStats, MedicalSurgery: 0};
             });
             setGameCurrency(prev => (prev + measuresActualState.MedicalSurgeryPrice));
-
+            setBetaParameter(prev => (prev + measuresActualState.MedicalSurgeryBeta));
             setModalMessage("Deaktivoval si opatrenie - Zrušenie lekárskych zákrokov.")
             handleOpenSuccess();
         }
