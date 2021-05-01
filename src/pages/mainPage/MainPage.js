@@ -44,6 +44,8 @@ import Cure from "../../components/gameActions/cure/Cure";
 import Communication from "../../components/gameActions/communication/Communication";
 import Vaccine from "../../components/gameActions/vaccine/Vaccine";
 import GraphContainer from "../../components/graphContainer/GraphContainer";
+import MessageModal from "../../components/messageModal/MessageModal";
+import {MessageModalState} from "../../data/MessageModalState";
 
 
 const drawerWidth = 240;
@@ -87,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 function MainPage(props) {
-
 
 
     const classes = useStyles();
@@ -163,13 +164,22 @@ function MainPage(props) {
         setOpenVaccine(false);
     };
 
-    //opatrenia modal7
+    //modal7
     const [openGraph, setOpenGraph] = React.useState(false);
     const handleClickOpenGraph = () => {
         setOpenGraph(true);
     };
     const handleCloseGraph = () => {
         setOpenGraph(false);
+    };
+
+    // modal8
+    const [openMessages, setOpenMessages] = React.useState(false);
+    const handleClickOpenMessages = () => {
+        setOpenMessages(true);
+    };
+    const handleCloseMessages = () => {
+        setOpenMessages(false);
     };
 
     //react-tooltip
@@ -179,8 +189,6 @@ function MainPage(props) {
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
 
     //graf infekcnych
-
-
 
     const [gameFlow, setgameFlow] = useRecoilState(GameFlowState);
 
@@ -235,19 +243,12 @@ function MainPage(props) {
     }
 
 
-
-
-
-
-
     //nahodny vyber prvej infikovanej krajiny
     // const [firstInfectedCountry, ] = useState(() => {
     //     const countryCodes = Object.keys(allCountries);
     //     const firstCountryIndex = Math.floor(Math.random() * countryCodes.length);
     //     return [countryCodes[firstCountryIndex]]
     // });
-
-
 
 
     return (
@@ -312,8 +313,6 @@ function MainPage(props) {
                         <Grid item xs={3}>
                             <BottomInfoBar name="Zosnulí" dataSelector={deceasedSelector}/>
                         </Grid>
-
-
                     </Grid>
                     {/*<MapContainer/>*/}
 
@@ -386,7 +385,8 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <Contacts/>
-                        <ListItemText primary="Trasovanie kontaktov a testovanie" onClick={handleClickOpenTrasovanieTestovanie}/>
+                        <ListItemText primary="Trasovanie kontaktov a testovanie"
+                                      onClick={handleClickOpenTrasovanieTestovanie}/>
                     </ListItem>
                     <ListItem button>
                         <Apps/>
@@ -404,9 +404,14 @@ function MainPage(props) {
                         <Apps/>
                         <ListItemText primary="Vakcína" onClick={handleClickOpenVaccine}/>
                     </ListItem>
+                    <Divider/>
                     <ListItem button>
                         <Apps/>
                         <ListItemText primary="Graf infekčných" onClick={handleClickOpenGraph}/>
+                    </ListItem>
+                    <ListItem button>
+                        <Apps/>
+                        <ListItemText primary="Správy" onClick={handleClickOpenMessages}/>
                     </ListItem>
                 </List>
             </Drawer>
@@ -416,7 +421,8 @@ function MainPage(props) {
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
                     Zoznam opatrení
                 </DialogTitle>
-                <MeasuresList dataSelector={separateCountryByInfectivitySelector} dataSelectorCount={infectiousCountriesCountSelector}/>
+                <MeasuresList dataSelector={separateCountryByInfectivitySelector}
+                              dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
             <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
@@ -467,9 +473,19 @@ function MainPage(props) {
                 <Vaccine/>
             </Dialog>
 
-            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph} aria-labelledby="customized-dialog-title"
+            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
+                    aria-labelledby="customized-dialog-title"
                     open={openGraph}>
-                    <GraphContainer graphDataState={infectiousProgressSelector}/>
+                <GraphContainer graphDataState={infectiousProgressSelector}/>
+            </Dialog>
+
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
+                    aria-labelledby="customized-dialog-title"
+                    open={openMessages}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseMessages}>
+                    Správy
+                </DialogTitle>
+                <MessageModal dataSelector={MessageModalState}/>
             </Dialog>
 
         </div>
