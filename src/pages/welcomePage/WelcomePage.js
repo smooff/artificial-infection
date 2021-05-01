@@ -35,7 +35,7 @@ function WelcomePage(props) {
         }, textCentering: {
             textAlign: "center",
             fontSize: "20px",
-            color: "red"
+            color: "#3f51b5"
         },
         acceptButton: {
             textAlign: "center",

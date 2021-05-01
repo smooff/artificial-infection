@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {LineChart, CartesianGrid, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {useRecoilValue} from "recoil";
-import {infectiousProgressSelector} from "../mapContainer/MapContainerState";
 
 
 function GraphContainer({graphDataState}) {
@@ -24,7 +23,7 @@ function GraphContainer({graphDataState}) {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey={"day"}/>
+                <XAxis dataKey={"day"} reversed={true}/>
                 <YAxis />
                 <Tooltip/>
                 <Legend/>
