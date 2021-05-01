@@ -4153,13 +4153,31 @@ export const separateCountryByInfectivitySelector = selector({
         const bigState = get(mapContainerState);
         let countryName;
         let countryInfectivity;
+        let countryPopulation;
+        let countrySusceptibles;
+        let countryInfectious;
+        let countryRecovered;
+        let countryDeceased;
         let countryList = [];
         Object.keys(bigState).forEach(currentCountry => {
 
 
             countryName = bigState[currentCountry].NAME;
             countryInfectivity = bigState[currentCountry].infectivity;
-            countryList.push({countryName, countryInfectivity})
+            countryPopulation = bigState[currentCountry].Population;
+            countrySusceptibles = bigState[currentCountry].Susceptible;
+            countryInfectious =  bigState[currentCountry].Infectious;
+            countryRecovered =  bigState[currentCountry].Recovered;
+            countryDeceased =  bigState[currentCountry].Deceased;
+            countryList.push({
+                name: countryName,
+                infectivity: countryInfectivity,
+                population:countryPopulation,
+                susceptibles:countrySusceptibles,
+                infectious:countryInfectious,
+                recovered:countryRecovered,
+                deceased:countryDeceased
+            })
         });
         return countryList;
     },

@@ -34,7 +34,7 @@ import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-u
 import TravelRestriction
     from "../../components/gameActions/travelRestriction/TravelRestriction";
 import {GameCurrencyState} from "../../data/GameCurrencyState.js";
-import MeasuresList from "../../components/gameActions/MeasuresList";
+import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
@@ -104,9 +104,11 @@ function MainPage(props) {
     const [openZoznamOpatreni, setOpenZoznamOpatreni] = React.useState(false);
 
     const handleClickOpenZoznamOpatreni = () => {
+        setgameFlow(false);
         setOpenZoznamOpatreni(true);
     };
     const handleClickCloseZoznamOpatreni = () => {
+        setgameFlow(true);
         setOpenZoznamOpatreni(false);
     };
 
@@ -374,10 +376,6 @@ function MainPage(props) {
                     </ListItem>
                 </List>
                 <Divider/>
-                <ListItem button>
-                    <ListItemText primary="Prehľad všetkých opatrení" onClick={handleClickOpenZoznamOpatreni}/>
-                </ListItem>
-                <Divider/>
                 <List>
                     <ListItem button>
                         <Public/>
@@ -404,7 +402,15 @@ function MainPage(props) {
                         <Apps/>
                         <ListItemText primary="Vakcína" onClick={handleClickOpenVaccine}/>
                     </ListItem>
-                    <Divider/>
+                </List>
+
+                <Divider/>
+
+                <List>
+                    <ListItem button>
+                        <Apps/>
+                        <ListItemText primary="Prehľad všetkých krajín" onClick={handleClickOpenZoznamOpatreni}/>
+                    </ListItem>
                     <ListItem button>
                         <Apps/>
                         <ListItemText primary="Graf infekčných" onClick={handleClickOpenGraph}/>
@@ -416,13 +422,13 @@ function MainPage(props) {
                 </List>
             </Drawer>
 
-            <Dialog onClose={handleClickCloseZoznamOpatreni} aria-labelledby="customized-dialog-title"
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseZoznamOpatreni} aria-labelledby="customized-dialog-title"
                     open={openZoznamOpatreni}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
-                    Zoznam opatrení
+                    Zoznam krajín
                 </DialogTitle>
-                <MeasuresList dataSelector={separateCountryByInfectivitySelector}
-                              dataSelectorCount={infectiousCountriesCountSelector}/>
+                <CountriesListRightBar dataSelector={separateCountryByInfectivitySelector}
+                                       dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
             <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
