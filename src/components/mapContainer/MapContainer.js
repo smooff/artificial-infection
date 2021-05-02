@@ -9,7 +9,7 @@ import {
     Graticule, ZoomableGroup
 } from "react-simple-maps";
 import {mapContainerState} from "./MapContainerState";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 
 import './MapContainer.css';
 import {GameTimeState} from "../../data/GameTimeState";
@@ -20,20 +20,14 @@ import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
 import {BetaState} from "../../data/parameters/BetaState";
 import {GammaState} from "../../data/parameters/GammaState";
 import {DeltaState} from "../../data/parameters/DeltaState";
-import {Dialog, DialogTitle} from "@material-ui/core";
-import Communication from "../gameActions/communication/Communication";
+import {Dialog} from "@material-ui/core";
 import SingleCountryModal from "./SingleCountryModal";
-
+import {MessageModalState} from "../../data/MessageModalState";
+import {mapColorDataState} from "../../data/mapColorDataState";
 
 
 const geoUrl = require('./topologies.json');
 
-const scaling = (infectiousNum, populationNum) => {
-    const colorScale = scaleLinear()
-        .domain([0, populationNum*0.75])
-        .range(["#ffedea", "#FF2A05"]);
-    return colorScale(infectiousNum);
-}
 
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
@@ -130,20 +124,44 @@ const MapContainer = ({setTooltipContent}) => {
     //herny cas v jednotke-den
     const [days, setDays] = useRecoilState(GameTimeState);
 
-    const [gameFlow, setgameFlow] = useRecoilState(GameFlowState);
+    const [gameFlow, ] = useRecoilState(GameFlowState);
 
-    const [intervalSpeed, setIntervalSpeed] = useRecoilState(GameIntervalState);
+    const [intervalSpeed, ] = useRecoilState(GameIntervalState);
 
 
 //---------------------------
 
     //parametre
-    const [betaParameter, setBetaParameter] = useRecoilState(BetaState);
-    const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
-    const [deltaParameter, setDeltaParameter] = useRecoilState(DeltaState);
+    const [betaParameter, ] = useRecoilState(BetaState);
+    const [gammaParameter, ] = useRecoilState(GammaState);
+    const [deltaParameter, ] = useRecoilState(DeltaState);
 
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
+
+    //spravy z hry
+    const [messages, setMessages] = useRecoilState(MessageModalState);
+
+    //mapa farba
+    const [mapColor,] = useRecoilState(mapColorDataState);
+    const scaling = (infectiousNum, populationNum, deceasedNum) => {
+
+        if (deceasedNum === populationNum) {
+            return "rgb(0,0,0)";
+        }
+        if (mapColor === 'infectious') {
+            const colorScale = scaleLinear()
+                .domain([0, populationNum * 0.75])
+                .range(["#ffedea", "#FF2A05"]);
+            return colorScale(infectiousNum);
+        } else if (mapColor === 'deceased') {
+            const colorScale = scaleLinear()
+                .domain([0, populationNum * 0.4])
+                .range(["#dcdbdd", "#070707"]);
+            return colorScale(deceasedNum);
+        }
+
+    }
 
     //funkcia na infikovanie novej krajiny
     const infectingNewCountry = (countryName, infectiousOrigin) => {
@@ -183,6 +201,11 @@ const MapContainer = ({setTooltipContent}) => {
                 break;
         }
 
+        setMessages((prevStats) => ([...prevStats, {
+            iso: countryName, name: data.NAME, primaryMessage: "nakazila sa nová krajina - " + data.NAME, day: days
+        }]));
+
+
         return {
             ...data,
             infectivity: 1,
@@ -209,7 +232,7 @@ const MapContainer = ({setTooltipContent}) => {
         return [nachylny];
     }
 
-    const infectiousCalculate = (S, I, N, beta, gamma, delta,infArrayState) => {
+    const infectiousCalculate = (S, I, N, beta, gamma, delta, infArrayState) => {
         let infekcny = (I + Math.ceil((betaParameter * S * I) / N)) - Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
         // console.log('inf', data.Infectious);
         // console.log('round do R: ', Math.round(gamma * I));
@@ -232,7 +255,7 @@ const MapContainer = ({setTooltipContent}) => {
             povodnyInfekcny = infekcny;
             infekcny = 0;
         }//ak S padne pod nulu po tom co ich I ma celych zobrat
-        else if((S - Math.ceil((betaParameter * S * I) / N))<0){
+        else if ((S - Math.ceil((betaParameter * S * I) / N)) < 0) {
             infekcny = (I + S - Math.round(gammaParameter * I) - Math.round(deltaParameter * I));
         }
 
@@ -266,31 +289,31 @@ const MapContainer = ({setTooltipContent}) => {
         let infArrayLocal = Array.from(infArrayState);
         infArrayLocal.push(infekcny);
         //ak je po pushnuti hodnoty infekcnych pole vacsie ako 3 tak vyhodi posledny prvok (udrziavanie pola o velkosti 3)
-        if(infArrayLocal.length>3){
+        if (infArrayLocal.length > 3) {
             infArrayLocal.shift();
             //check ci su hodnoty infekcnych zacyklene (napr. pomale tahanie z S do I, v pripade ked I sa blizilo k nule)
-            if(infArrayLocal[0]===infArrayLocal[1] && infArrayLocal[1]===infArrayLocal[2]){
+            if (infArrayLocal[0] === infArrayLocal[1] && infArrayLocal[1] === infArrayLocal[2]) {
                 //check pre nulu, pretoze ta nas nezaujima
-                if(infArrayLocal[0]!==0){
-                    infekcny=infekcny-10;
-                    LoopPushToRD=1;
+                if (infArrayLocal[0] !== 0) {
+                    infekcny = infekcny - 10;
+                    LoopPushToRD = 1;
 
                     if (infekcny < 0) {
                         povodnyInfekcny = infekcny;
                         infekcny = 0;
-                        LoopPushToRD=2;
+                        LoopPushToRD = 2;
                     }
                 }
                 //check ci su hodnoty infekcnych zacyklene, a zaroven gamma a delta su schopne tahat kazdu druhu iteraciu -> cyklenie 8,9,8 / 9,8,9
-            }else if(infArrayLocal[0]===infArrayLocal[2] && infArrayLocal[0]<infArrayLocal[1] && infArrayLocal[0]<20 ){
-                if(infArrayLocal[0]!==0){
-                    infekcny=infekcny-10;
-                    LoopPushToRD=3;
+            } else if (infArrayLocal[0] === infArrayLocal[2] && infArrayLocal[0] < infArrayLocal[1] && infArrayLocal[0] < 20) {
+                if (infArrayLocal[0] !== 0) {
+                    infekcny = infekcny - 10;
+                    LoopPushToRD = 1;
 
                     if (infekcny < 0) {
                         povodnyInfekcny = infekcny;
                         infekcny = 0;
-                        LoopPushToRD=4;
+                        LoopPushToRD = 2;
                     }
                 }
             }
@@ -298,7 +321,7 @@ const MapContainer = ({setTooltipContent}) => {
         return [infekcny, povodnyInfekcny, infekcnyPushToRD, infekcnyVacsiNezPopulaciaCheck, infArrayLocal, LoopPushToRD];
     }
 
-    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S,LoopPushToRD) => {
+    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD) => {
         //if funkcny v pripade presunu z kompartmentu I do R,
         //kde I sa dostava do zapornej hodnoty a je potrebne to vykompenzovat v R (aj v D) upravenym-znizenym pripocitanim
         if (I2 < 0) {
@@ -306,12 +329,11 @@ const MapContainer = ({setTooltipContent}) => {
             let recoveredReduction = Math.round(gammaParameter * splittedI2);//-1
             let zotavenyZmena = R - recoveredReduction;
 
-            //pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
+            //pre pripad ze presun z I do D bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
             //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
-            if(LoopPushToRD===2){
-                return R+10;
-            }else if(LoopPushToRD===4){
-                return R+5;
+            //UPDATE: prepocet nastava len z I do D, R ostava zachovane
+            if (LoopPushToRD === 2) {
+                return R;
             }
 
             if (gammaParameter === deltaParameter) {
@@ -322,15 +344,17 @@ const MapContainer = ({setTooltipContent}) => {
         }
 
         //(tak ako vyssie len neskocia I pod nulu) pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I
-        if(LoopPushToRD===1){
+        //UPDATE: prepocet nastava len z I do D, R ostava zachovane
+        if (LoopPushToRD === 1) {
             //pre pripad zacyklenia 9,9,9
-            let zotaveny=Math.round(R + gammaParameter * I)+10;
-            return zotaveny;
-        }else if(LoopPushToRD===3){
-            //pre pripad zacyklenia 8,9,8 / 9,8,9
-            let zotaveny=Math.round(R + gammaParameter * I)+5;
-            return zotaveny;
+            //let zotaveny=Math.round(R + gammaParameter * I)+10;
+            return R;
         }
+        // else if(LoopPushToRD===3){
+        //     //pre pripad zacyklenia 8,9,8 / 9,8,9
+        //     let zotaveny=Math.round(R + gammaParameter * I)+5;
+        //     return zotaveny;
+        // }
 
         if (infekcnyVacsiNezPopulaciaCheckValue === 1) {
             let zotaveny = Math.round(gammaParameter * N);
@@ -371,24 +395,28 @@ const MapContainer = ({setTooltipContent}) => {
         return zotaveny;
     }
 
-    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S,LoopPushToRD) => {
+    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD) => {
         //rovnake osetrenie ako vo funkcii vyssie
         if (I2 < 0) {
             let splittedI2 = I2 / (gammaParameter + deltaParameter);
             let deceasedReduction = Math.round(deltaParameter * splittedI2);
             let zosnulyZmena = D - deceasedReduction;
-            if(LoopPushToRD===4){
-                return D+5;
+
+            //pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
+            //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
+            if (LoopPushToRD === 2) {
+                let zosnuly = Math.round(D + deltaParameter * I) + 10 + I2;
+                return zosnuly;
             }
 
             if (gammaParameter === deltaParameter) {
             }
             return zosnulyZmena;
         }
-
-
-        if(LoopPushToRD===3){
-            let zosnuly = Math.round(D + deltaParameter * I)+5;
+        //(tak ako vyssie len neskocia I pod nulu) pre pripad ze presun z I do D bol vynuteny na zaklade zacyklenia z S do I
+        //pre pripad zacyklenia 9,9,9 ale aj  8,9,8 / 9,8,9
+        if (LoopPushToRD === 1) {
+            let zosnuly = Math.round(D + deltaParameter * I) + 10;
             return zosnuly;
         }
 
@@ -433,7 +461,17 @@ const MapContainer = ({setTooltipContent}) => {
 
     const compartmentsRecalculateValues = (countryName) => {
         const data = allCountries[countryName];
-        const {beta, gamma, delta, Susceptible: S, Infectious: I, Recovered: R, Deceased: D, Population: N, infectiousLooping:infArrayState} = data;
+        const {
+            beta,
+            gamma,
+            delta,
+            Susceptible: S,
+            Infectious: I,
+            Recovered: R,
+            Deceased: D,
+            Population: N,
+            infectiousLooping: infArrayState
+        } = data;
         // console.log('data:', data);
         // console.log('sus: ', new Intl.NumberFormat('de-DE').format(data.Susceptible));
         //console.log('inf: ', new Intl.NumberFormat('de-DE').format(data.Infectious));
@@ -443,11 +481,11 @@ const MapContainer = ({setTooltipContent}) => {
         //     '\n rozdiel populacie: ', new Intl.NumberFormat('de-DE').format(data.Population - (data.Susceptible + data.Infectious + data.Recovered + data.Deceased)));
 
         const [susceptibleValue] = susceptibleCalculate(S, I, N, beta);
-        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, infekcnyArrayFromLocal, LoopPushToRD] = infectiousCalculate(S, I, N, beta, gamma, delta,infArrayState);
+        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, infekcnyArrayFromLocal, LoopPushToRD] = infectiousCalculate(S, I, N, beta, gamma, delta, infArrayState);
         // console.log(actualInfectiousNumber, negativeNumberInfectious);
         const infectiousValue = actualInfectiousNumber;
-        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S,LoopPushToRD);
-        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S,LoopPushToRD);
+        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD);
+        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD);
         // const infekcny = data.Infectious + +50000;
 
         // if (povodnyNachylny >= 0) {
@@ -462,7 +500,7 @@ const MapContainer = ({setTooltipContent}) => {
             Infectious: infectiousValue,
             Recovered: recoveredValue,
             Deceased: deceasedValue,
-            infectiousLooping:infekcnyArrayFromLocal
+            infectiousLooping: infekcnyArrayFromLocal
         };
 
 
@@ -499,7 +537,7 @@ const MapContainer = ({setTooltipContent}) => {
             //nahodne nakazenie prvej krajiny
             if (pickFirstInfectedCountry === 0) {
                 const firstCountry = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
-                countries[firstCountry] = infectingNewCountry(firstCountry,"initial");
+                countries[firstCountry] = infectingNewCountry(firstCountry, "initial");
                 setPickFirstInfectedCountry(1);
             }
 
@@ -519,12 +557,12 @@ const MapContainer = ({setTooltipContent}) => {
                                         //check ci su hranice v regione otvorene, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je "normalna"
                                         if (oblastneOpatrenia[region].borders === 0) {
                                             if (Math.random() < 0.005) {
-                                                countries[element] = infectingNewCountry(element,"border");
+                                                countries[element] = infectingNewCountry(element, "border");
                                             }
                                             //check ci su hranice v regione uzavrete, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je mensia
                                         } else if (oblastneOpatrenia[region].borders === 1) {
                                             if (Math.random() < 0.003) {
-                                                countries[element] = infectingNewCountry(element,"border");
+                                                countries[element] = infectingNewCountry(element, "border");
                                             }
                                         }
                                     }
@@ -746,7 +784,8 @@ const MapContainer = ({setTooltipContent}) => {
     const mapWidth = width * 0.75;
     return (
         <div>
-            <Dialog fullWidth={true} maxWidth={"xs"} onClose={handleCloseCountryModal} aria-labelledby="customized-dialog-title"
+            <Dialog fullWidth={true} maxWidth={"xs"} onClose={handleCloseCountryModal}
+                    aria-labelledby="customized-dialog-title"
                     open={openCountryModal}>
 
                 <SingleCountryModal singleCountryData={singleCountryModal}/>
@@ -782,8 +821,8 @@ const MapContainer = ({setTooltipContent}) => {
                                         <Geography
                                             key={geo.rsmKey}
                                             geography={geo}
-                                            fill={d?.Infectious ? scaling(d?.Infectious, d?.Population) : "#F5F4F6"}
-
+                                            fill={mapColor === 'infectious' ? d?.Infectious ? scaling(d?.Infectious, d?.Population, d?.Deceased) : "#F5F4F6" :
+                                                  mapColor === 'deceased' ? d?.Deceased ? scaling(d?.Infectious, d?.Population, d?.Deceased) : "#F5F4F6" : "#F5F4F6"}
                                             // onMouseEnter={() => {
                                             //     const {NAME, POP_EST} = geo.properties;
                                             //     // setTooltipContent(d?.Population ? `${d.NAME} — ${rounded(POP_EST)}` : "");
