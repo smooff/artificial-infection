@@ -4199,18 +4199,3 @@ export const infectiousCountriesCountSelector = selector({
         return [infectedCountries, nonInfectedCountries];
     },
 });
-
-//data pre graf
-export const infectiousProgressSelector = selector({
-    key: 'infectiousProgressSelector',
-    get: ({get}) => {
-        const currentDay = get(GameTimeState);
-        const bigState = get(mapContainerState);
-        let inf = 0;
-        Object.keys(bigState).forEach(currentCountry => {
-            inf += bigState[currentCountry].Infectious;
-        });
-
-        return {day: currentDay, inf: inf};
-    },
-});

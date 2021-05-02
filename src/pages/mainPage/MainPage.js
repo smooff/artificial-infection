@@ -1,17 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import Grid from "@material-ui/core/Grid";
-import {Link} from "react-router-dom";
 
 import {makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MapContainer from "../../components/mapContainer/MapContainer";
 
@@ -21,9 +16,9 @@ import {
     DialogTitle
 } from "@material-ui/core";
 
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {
-    deceasedSelector, infectiousCountriesCountSelector, infectiousProgressSelector,
+    deceasedSelector, infectiousCountriesCountSelector,
     infectiousSelector,
     recoveredSelector, separateCountryByInfectivitySelector, susceptiblesSelector
 } from "../../components/mapContainer/MapContainerState";
@@ -47,7 +42,7 @@ import GraphContainer from "../../components/graphContainer/GraphContainer";
 import MessageModal from "../../components/messageModal/MessageModal";
 import {MessageModalState} from "../../data/MessageModalState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
-import {mapColorDataState} from "../../data/mapColorDataState";
+import {mapColorDataState} from "../../data/MapColorDataState";
 
 
 const drawerWidth = 240;
@@ -437,7 +432,7 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <Apps/>
-                        <ListItemText primary="Graf infekčných" onClick={handleClickOpenGraph}/>
+                        <ListItemText primary="Globálny graf" onClick={handleClickOpenGraph}/>
                     </ListItem>
                     <ListItem button>
                         <Apps/>
@@ -507,7 +502,7 @@ function MainPage(props) {
             <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
                     aria-labelledby="customized-dialog-title"
                     open={openGraph}>
-                <GraphContainer graphDataState={infectiousProgressSelector}/>
+                <GraphContainer/>
             </Dialog>
 
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
