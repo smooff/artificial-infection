@@ -21,6 +21,7 @@ import {TravelRestrictionState} from "./TravelRestrictionState";
 import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import MuiAlert from "@material-ui/lab/Alert";
 import {BetaState} from "../../../data/parameters/BetaState";
+import {DeltaState} from "../../../data/parameters/DeltaState";
 
 
 function TravelRestriction(props) {
@@ -57,6 +58,8 @@ function TravelRestriction(props) {
 
     //beta parameter
     const [, setBetaParameter] = useRecoilState(BetaState);
+    //delta parameter
+    const [, setDeltaParameter] = useRecoilState(DeltaState);
 
     //alert pri aktivaciach/deaktiv.
     const [modalMessage, setModalMessage] = useState();
@@ -216,6 +219,7 @@ function TravelRestriction(props) {
                 });
                 setGameCurrency(prev => (prev - travelRestrictionsState.CordonSanitairePrice));
                 setBetaParameter(prev => (prev - travelRestrictionsState.CordonSanitaireBeta));
+                setDeltaParameter(prev => (prev - travelRestrictionsState.CordonSanitaireDelta));
                 setModalMessage("Aktivoval si opatrenie - Lekársky zásah v ohniskách.");
                 handleOpenSuccess();
             }
@@ -231,6 +235,7 @@ function TravelRestriction(props) {
             });
             setGameCurrency(prev => (prev + travelRestrictionsState.CordonSanitairePrice));
             setBetaParameter(prev => (prev + travelRestrictionsState.CordonSanitaireBeta));
+            setDeltaParameter(prev => (prev + travelRestrictionsState.CordonSanitaireDelta));
             setModalMessage("Deaktivoval si opatrenie - Lekársky zásah v ohniskách.")
             handleOpenSuccess();
         }

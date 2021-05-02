@@ -9,57 +9,60 @@ export const InfectionPreventionState = atom({
 
         EnvironmentDisinfection:0,
         EnvironmentDisinfectionPrice:1,
-        EnvironmentDisinfectionBeta:0.00155,
+        EnvironmentDisinfectionBeta:0.0017,
 
         PPE:0,
         PPEPrice:2,
-        PPEBeta:0.02325,
+        PPEBeta:0.0255,
 
         InfectiousIsolation:0,
         InfectiousIsolationPrice:2,
-        InfectiousIsolationBeta:0.0031,
+        InfectiousIsolationBeta:0.0034,
 
         Quarantine:0,
         QuarantinePrice:2,
-        QuarantineBeta:0.0465,
+        QuarantineBeta:0.051,
 
         QuarantineFacilities:0,
         QuarantineFacilitiesPrice:2,
-        QuarantineFacilitiesBeta:0.00775,
+        QuarantineFacilitiesBeta:0.0085,
 
         ArmyHelp:0,
         ArmyHelpPrice:2,
-        ArmyHelpBeta:0.02635,
+        ArmyHelpBeta:0.0289,
+        ArmyHelpDelta:0.007344,
 
         SpecialEstablishments:0,
         SpecialEstablishmentsPrice:2,
-        SpecialEstablishmentsBeta:0.03255,
+        SpecialEstablishmentsBeta:0.0357,
+        SpecialEstablishmentsDelta:0.009072,
 
         SpecialPopulation:0,
         SpecialPopulationPrice:2,
-        SpecialPopulationBeta:0.0341,
+        SpecialPopulationBeta:0.0374,
+        SpecialPopulationDelta:0.009504,
 
         SocialDistancing:0,
         SocialDistancingPrice:2,
 
         MassGathering:0,
         MassGatheringPrice:2,
-        MassGatheringBeta:0.05425,
+        MassGatheringBeta:0.0595,
 
         SmallGathering:0,
         SmallGatheringPrice:2,
-        SmallGatheringBeta:0.0589,
+        SmallGatheringBeta:0.0646,
 
         EducationalInstitutions:0,
         EducationalInstitutionsPrice:2,
-        EducationalInstitutionsBeta:0.03875,
+        EducationalInstitutionsBeta:0.0425,
 
         SafetyProtocols:0,
         SafetyProtocolsPrice:2,
-        SafetyProtocolsBeta:0.00155,
+        SafetyProtocolsBeta:0.0017,
 
         Surveillance:0,
         SurveillancePrice:2,
-        SurveillanceBeta:-0.0155,
+        SurveillanceBeta:-0.017,
     },
 });

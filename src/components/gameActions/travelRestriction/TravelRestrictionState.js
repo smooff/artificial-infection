@@ -6,18 +6,19 @@ export const TravelRestrictionState = atom({
     default: {
         NationalLockdown: 0,
         NationalLockdownPrice:5,
-        NationalLockdownBeta:0.02325,
+        NationalLockdownBeta:0.0255,
 
         CordonSanitaire:0,
         CordonSanitairePrice:4,
-        CordonSanitaireBeta:0.0155,
+        CordonSanitaireBeta:0.017,
+        CordonSanitaireDelta:0.00432,
 
         PublicTransportRestriction:0,
         PublicTransportRestrictionPrice:3,
-        PublicTransportRestrictionBeta:0.03875,
+        PublicTransportRestrictionBeta:0.0425,
 
         RiskCountriesRestriction:0,
         RiskCountriesRestrictionPrice:2,
-        RiskCountriesRestrictionBeta:0.031,
+        RiskCountriesRestrictionBeta:0.034,
     },
 });

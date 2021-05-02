@@ -12,6 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 import {InfectionPreventionState} from "./InfectionPreventionState";
 import {BetaState} from "../../../data/parameters/BetaState";
+import {DeltaState} from "../../../data/parameters/DeltaState";
 
 function InfectionPrevention(props) {
     const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,8 @@ function InfectionPrevention(props) {
 
     //beta parameter
     const [, setBetaParameter] = useRecoilState(BetaState);
+    //delta parameter
+    const [, setDeltaParameter] = useRecoilState(DeltaState);
 
     //alert po aktivacii/deaktivacii--------------------
     //po uspesnom pokuse o aktivaciu
@@ -763,6 +766,7 @@ function InfectionPrevention(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.ArmyHelpPrice));
                 setBetaParameter(prev => (prev - measuresActualState.ArmyHelpBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.ArmyHelpDelta));
                 setModalMessage("Aktivoval si opatrenie - Zapojenie polície a armády.")
                 handleOpenSuccess();
             }
@@ -779,6 +783,7 @@ function InfectionPrevention(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.ArmyHelpPrice));
             setBetaParameter(prev => (prev + measuresActualState.ArmyHelpBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.ArmyHelpDelta));
             setModalMessage("Deaktivoval si opatrenie - Zapojenie polície a armády.")
             handleOpenSuccess();
         }
@@ -792,6 +797,7 @@ function InfectionPrevention(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.SpecialEstablishmentsPrice));
                 setBetaParameter(prev => (prev - measuresActualState.SpecialEstablishmentsBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.SpecialEstablishmentsDelta));
                 setModalMessage("Aktivoval si opatrenie - Opatrenia pre špeciálne zariadenia.")
                 handleOpenSuccess();
             }
@@ -808,6 +814,7 @@ function InfectionPrevention(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.SpecialEstablishmentsPrice));
             setBetaParameter(prev => (prev + measuresActualState.SpecialEstablishmentsBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.SpecialEstablishmentsDelta));
             setModalMessage("Deaktivoval si opatrenie - Opatrenia pre špeciálne zariadenia.")
             handleOpenSuccess();
         }
@@ -821,6 +828,7 @@ function InfectionPrevention(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.SpecialPopulationPrice));
                 setBetaParameter(prev => (prev - measuresActualState.SpecialPopulationBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.SpecialPopulationDelta));
                 setModalMessage("Aktivoval si opatrenie - Opatrenia pre osobinté skupiny.")
                 handleOpenSuccess();
             }
@@ -837,6 +845,7 @@ function InfectionPrevention(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.SpecialPopulationPrice));
             setBetaParameter(prev => (prev + measuresActualState.SpecialPopulationBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.SpecialPopulationDelta));
             setModalMessage("Deaktivoval si opatrenie - Opatrenia pre osobinté skupiny.")
             handleOpenSuccess();
         }
@@ -1106,7 +1115,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSpecialPopulationColor}
                             variant={measuresActualState.SpecialPopulation === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodcovia, zdravotne ťažko postihnutí, ...) sa potenciálne zníži šírenie nákazy.", 8, measuresActualState.SpecialPopulationPrice);
+                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodcovia, zdravotne ťažko postihnutí, ...) sa potenciálne zníži šírenie nákazy a smrtnosť.", 8, measuresActualState.SpecialPopulationPrice);
                             }}>
                         Opatrenia pre osobitné skupiny
                     </Button>
