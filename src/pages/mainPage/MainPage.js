@@ -46,6 +46,8 @@ import Vaccine from "../../components/gameActions/vaccine/Vaccine";
 import GraphContainer from "../../components/graphContainer/GraphContainer";
 import MessageModal from "../../components/messageModal/MessageModal";
 import {MessageModalState} from "../../data/MessageModalState";
+import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import {mapColorDataState} from "../../data/mapColorDataState";
 
 
 const drawerWidth = 240;
@@ -189,6 +191,12 @@ function MainPage(props) {
 
     //game currency
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //mapa data - farba
+    const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
+    const handleMapColor = (event, newColor) => {
+        setmapColor(newColor);
+    };
 
     //graf infekcnych
 
@@ -343,6 +351,22 @@ function MainPage(props) {
                 anchor="right"
             >
                 <div className={classes.toolbar}/>
+
+                <ToggleButtonGroup
+                    value={mapColor}
+                    exclusive
+                    onChange={handleMapColor}
+                    aria-label="text alignment"
+                    style={{display: 'flex'}}
+                >
+                    <ToggleButton value="infectious" aria-label="left aligned" style={{flex: 1}}>
+                        Infekční
+                    </ToggleButton>
+                    <ToggleButton value="deceased" aria-label="centered" style={{flex: 1}}>
+                        Zosnulí
+                    </ToggleButton>
+                </ToggleButtonGroup>
+
                 <Divider/>
                 <List>
                     <ListItem button>
@@ -422,7 +446,8 @@ function MainPage(props) {
                 </List>
             </Drawer>
 
-            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseZoznamOpatreni} aria-labelledby="customized-dialog-title"
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseZoznamOpatreni}
+                    aria-labelledby="customized-dialog-title"
                     open={openZoznamOpatreni}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
                     Zoznam krajín
