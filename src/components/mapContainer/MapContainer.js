@@ -31,10 +31,14 @@ import SingleCountryModal from "./SingleCountryModal";
 import {MessageModalState} from "../../data/MessageModalState";
 import {mapColorDataState} from "../../data/MapColorDataState";
 import {GraphDataState} from "../../data/GraphDataState";
+import {VaccineState} from "../gameActions/vaccine/VaccineState";
 
 
 const geoUrl = require('./topologies.json');
 
+export function getRandomNumberInRange(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+}
 
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
@@ -140,7 +144,7 @@ const MapContainer = ({setTooltipContent}) => {
 
     //parametre
     const [betaParameter,] = useRecoilState(BetaState);
-    const [gammaParameter,] = useRecoilState(GammaState);
+    const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
     const [deltaParameter,] = useRecoilState(DeltaState);
 
     //
@@ -347,6 +351,10 @@ const MapContainer = ({setTooltipContent}) => {
             //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
             //UPDATE: prepocet nastava len z I do D, R ostava zachovane
             if (LoopPushToRD === 2) {
+                if(gammaParameter!==0){
+                    return   Math.round(R + gammaParameter * I);
+                }
+
                 return R;
             }
 
@@ -532,9 +540,20 @@ const MapContainer = ({setTooltipContent}) => {
 
     };
 
-    const [oblastneOpatrenia, setOblastneOpatrenia] = useRecoilState(RegionTravelRestrictionState);
+    const [oblastneOpatrenia, ] = useRecoilState(RegionTravelRestrictionState);
     const [pickFirstInfectedCountry, setPickFirstInfectedCountry] = useRecoilState(FirstInfectedCountryState);
 
+    //VAKCINA
+    const [vaccineState, setVaccineState] = useRecoilState(VaccineState);
+    //1095 dni = 3 roky, 2920 dni = 8 rokov
+    const vaccineStep1Start = 1095;
+    const vaccineStep1End= 2920;
+    //730 dni = 2 roky, 3650 dni = 10 rokov
+    const vaccineStep2Start = 730;
+    const vaccineStep2End= 3650;
+    //365 dni = 1 rok, 730 dni = 2 roky
+    const vaccineStep3Start = 365;
+    const vaccineStep3End= 730;
 
     useInterval(() => {
         // setInfectiousIncrement(infectiousIncrement + 1000000);
@@ -553,6 +572,61 @@ const MapContainer = ({setTooltipContent}) => {
                 const firstCountry = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
                 countries[firstCountry] = infectingNewCountry(firstCountry, "initial");
                 setPickFirstInfectedCountry(1);
+            }
+
+            //inicializacia casu vakciny (tradicny vyvoj)
+            if (vaccineState.InitializeVaccineTime === false) {
+                let step1 = getRandomNumberInRange(vaccineStep1Start, vaccineStep1End);
+                let step2 = getRandomNumberInRange(vaccineStep2Start, vaccineStep2End);
+                let step3 = getRandomNumberInRange(vaccineStep3Start, vaccineStep3End);
+
+                setVaccineState((prevStats) => {
+                    return {
+                        ...prevStats,
+                        InitializeVaccineTime: true,
+                        step1Time: step1,
+                        step2Time: step2,
+                        step3Time: step3,
+                    };
+                });
+            }
+
+            if(vaccineState.vaccineDevelopmentFinished===true){
+                setGammaParameter(0.49);
+            }
+
+            let maxDevelopmentTime = vaccineState.step1Time+vaccineState.step2Time+vaccineState.step3Time;
+            //prepocet casu vyvoja vakciny od zaciatku jej vyvoja
+            if (vaccineState.ActivationVaccineDevelopment === 1) {
+
+                if(vaccineState.actualDevelopmentTime<maxDevelopmentTime){
+                    let actualVaccineTime = vaccineState.actualDevelopmentTime + 1;
+
+                    //check ci bude vakcina v tejto iteracii vynajdena
+                    if(actualVaccineTime===maxDevelopmentTime){
+                        setVaccineState((prevStats) => {
+                            return {
+                                ...prevStats,
+                                actualDevelopmentTime: actualVaccineTime,
+                                vaccineDevelopmentFinished:true,
+                            };
+                        });
+                    }
+
+                    setVaccineState((prevStats) => {
+                        return {
+                            ...prevStats,
+                            actualDevelopmentTime: actualVaccineTime,
+                        };
+                    });
+                }else if(vaccineState.actualDevelopmentTime>maxDevelopmentTime){
+                    setVaccineState((prevStats) => {
+                        return {
+                            ...prevStats,
+                            actualDevelopmentTime: maxDevelopmentTime,
+                        };
+                    });
+                }
             }
 
             Object.keys(allCountries).forEach(currentCountry => {
@@ -762,7 +836,11 @@ const MapContainer = ({setTooltipContent}) => {
 
 
             setGraphData((prevStats) => ([...prevStats, {
-                inf: infectiousGraphData, sus: susceptibleGraphData, rec: recoveredGraphData, dec: deceasedGraphData, day: days
+                inf: infectiousGraphData,
+                sus: susceptibleGraphData,
+                rec: recoveredGraphData,
+                dec: deceasedGraphData,
+                day: days
             }]));
 
             // setAllStats(
