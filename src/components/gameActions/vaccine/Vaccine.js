@@ -13,6 +13,8 @@ import {GameCurrencyState} from "../../../data/GameCurrencyState";
 import MuiAlert from "@material-ui/lab/Alert";
 import {VaccineState} from "./VaccineState";
 import {getRandomNumberInRange} from "../../mapContainer/MapContainer";
+import {MessageModalState} from "../../../data/MessageModalState";
+import {GameTimeState} from "../../../data/GameTimeState";
 
 function Vaccine() {
     const useStyles = makeStyles((theme) => ({
@@ -42,6 +44,12 @@ function Vaccine() {
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //spravy z hry
+    const [, setMessages] = useRecoilState(MessageModalState);
+
+    //herny cas v jednotke-den
+    const [days, ] = useRecoilState(GameTimeState);
 
     //data s opatreniami
     const [measuresActualState, setMeasuresActualState] = useRecoilState(VaccineState);
@@ -239,7 +247,9 @@ function Vaccine() {
                     return {...prevStats, ActivationVaccineDevelopment: 1, DevelopmentProcessTree: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.VaccineDevelopmentPrice));
-
+                setMessages((prevStats) => ([...prevStats, {
+                    name: "Vakcína", primaryMessage: "Začiatok vývoja vakcíny.", day: days, reason:'vaccine'
+                }]));
                 setModalMessage("Aktivoval si opatrenie - Vývoj vakcíny.");
                 handleOpenSuccess();
             }

@@ -11,6 +11,19 @@ function MessageModal({dataSelector}) {
     const useStyles = makeStyles((theme) => ({
         title: {
             fontSize: "25px"
+        },
+        infectingColor: {
+            backgroundColor: "#ffd8d4"
+        },
+        vaccineColor: {
+            backgroundColor: "lightblue"
+        },
+        messageText: {
+            marginLeft: "5px"
+        },
+        messageTitle: {
+            marginLeft: "5px",
+            fontWeight: "bold"
         }
 
     }));
@@ -28,25 +41,31 @@ function MessageModal({dataSelector}) {
             <Card>
                 <CardContent>
                     <List className={classes.list}>
-                        {data.map(({name, primaryMessage, day}) => {
+                        {data.slice(0).reverse().map(({name, primaryMessage, day, reason}) => {
                                 return (
                                     <div>
-                                    <ListItem button>
+                                        <ListItem button>
 
-                                        <ListItemText primary={name} secondary={
-                                            <div>
-                                                <Typography>
-                                                    {addDays(new Date(),day).toLocaleDateString()}
+                                            <ListItemText primary={
+                                                <Typography className={classes.messageTitle}>
+                                                    {name}
                                                 </Typography>
+                                            } secondary={
+                                                <div>
+                                                    <Typography className={classes.messageText}>
+                                                        {addDays(new Date(), day).toLocaleDateString()}
+                                                    </Typography>
 
-                                                <Typography
-                                                    color="textPrimary">
-                                                    {primaryMessage}
-                                                </Typography>
-                                            </div>
-                                        }/>
-                                    </ListItem>
-                                    <Divider/>
+                                                    <Typography
+                                                        className={classes.messageText}
+                                                        color="textPrimary">
+                                                        {primaryMessage}
+                                                    </Typography>
+                                                </div>
+                                            }
+                                                          className={reason === 'infecting' ? classes.infectingColor : classes.vaccineColor}/>
+                                        </ListItem>
+                                        <Divider/>
                                     </div>
                                 );
                             }

@@ -220,7 +220,7 @@ const MapContainer = ({setTooltipContent}) => {
         }
 
         setMessages((prevStats) => ([...prevStats, {
-            iso: countryName, name: data.NAME, primaryMessage: "nakazila sa nová krajina - " + data.NAME, day: days
+            iso: countryName, name: data.NAME, primaryMessage: "nakazila sa nová krajina - " + data.NAME, day: days, reason:'infecting'
         }]));
 
 
@@ -604,6 +604,9 @@ const MapContainer = ({setTooltipContent}) => {
 
                     //check ci bude vakcina v tejto iteracii vynajdena
                     if(actualVaccineTime===maxDevelopmentTime){
+                        setMessages((prevStats) => ([...prevStats, {
+                            name: "Vakcína", primaryMessage: "Vývoj vakcíny bol dokončený.", day: days, reason:'vaccine'
+                        }]));
                         setVaccineState((prevStats) => {
                             return {
                                 ...prevStats,
