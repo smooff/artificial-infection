@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const CureState = atom({
@@ -32,5 +32,24 @@ export const CureState = atom({
         MedicalSurgeryPrice: 1,
         MedicalSurgeryBeta:0.017,
         MedicalSurgeryDelta:0.00432,
+    },
+});
+
+//selector pre prepocet dovery
+export const CureMeasuresSelector = selector({
+    key: 'CureMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(CureState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+           if(measurement==="WorkForce" || measurement==="PatientsCapacity" || measurement==="FieldHospital" ||
+               measurement==="MedicalTechnology" || measurement==="HospitalMeasures" || measurement==="MedicalSurgery"){
+               if(bigState[measurement]===1){
+                   count++;
+               }
+           }
+        });
+
+        return count;
     },
 });

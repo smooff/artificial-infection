@@ -43,6 +43,9 @@ import MessageModal from "../../components/messageModal/MessageModal";
 import {MessageModalState} from "../../data/MessageModalState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {mapColorDataState} from "../../data/MapColorDataState";
+import GameTrust from "../../components/gameTrust/GameTrust";
+import {GameTrustState} from "../../components/gameTrust/GameTrustState";
+import {TrustMessageState} from "../../data/TrustMessageState";
 
 
 const drawerWidth = 240;
@@ -179,6 +182,15 @@ function MainPage(props) {
     };
     const handleCloseMessages = () => {
         setOpenMessages(false);
+    };
+
+    // modal9
+    const [openTrust, setOpenTrust] = React.useState(false);
+    const handleClickOpenTrust = () => {
+        setOpenTrust(true);
+    };
+    const handleCloseTrust = () => {
+        setOpenTrust(false);
     };
 
     //react-tooltip
@@ -384,8 +396,8 @@ function MainPage(props) {
                         </Button>
                     </ListItem>
                     <ListItem button>
-                        <ListItemText>
-                            herna dovera
+                        <ListItemText onClick={handleClickOpenTrust}>
+                            <GameTrust trustState={GameTrustState}/>
                         </ListItemText>
                     </ListItem>
                     <ListItem button>
@@ -514,6 +526,14 @@ function MainPage(props) {
                 <MessageModal dataSelector={MessageModalState}/>
             </Dialog>
 
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust}
+                    aria-labelledby="customized-dialog-title"
+                    open={openTrust}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseTrust}>
+                    Dôvera
+                </DialogTitle>
+                <MessageModal dataSelector={TrustMessageState}/>
+            </Dialog>
         </div>
 
 

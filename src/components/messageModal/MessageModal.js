@@ -18,8 +18,12 @@ function MessageModal({dataSelector}) {
         vaccineColor: {
             backgroundColor: "lightblue"
         },
+        trustColor: {
+            backgroundColor: "#d3ffe3"
+        },
         messageText: {
-            marginLeft: "5px"
+            marginLeft: "5px",
+            whiteSpace: 'pre-line'
         },
         messageTitle: {
             marginLeft: "5px",
@@ -63,7 +67,7 @@ function MessageModal({dataSelector}) {
                                                     </Typography>
                                                 </div>
                                             }
-                                                          className={reason === 'infecting' ? classes.infectingColor : classes.vaccineColor}/>
+                                                          className={reason === 'infecting' ? classes.infectingColor : reason === 'vaccine' ? classes.vaccineColor : classes.trustColor}/>
                                         </ListItem>
                                         <Divider/>
                                     </div>

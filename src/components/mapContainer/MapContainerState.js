@@ -4199,3 +4199,18 @@ export const infectiousCountriesCountSelector = selector({
         return [infectedCountries, nonInfectedCountries];
     },
 });
+
+//vracia pocet infekcnych krajin (pre prepocet dovery)
+export const infectiousCountriesNumberSelector = selector({
+    key: 'infectiousCountriesNumberSelector',
+    get: ({get}) => {
+        const bigState = get(mapContainerState);
+        let infCountries = 0;
+        Object.keys(bigState).forEach(currentCountry => {
+            if(bigState[currentCountry].infectivity===1){
+                infCountries++;
+            }
+        });
+        return infCountries;
+    },
+});

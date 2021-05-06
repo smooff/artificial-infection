@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const InfectionPreventionState = atom({
@@ -64,5 +64,26 @@ export const InfectionPreventionState = atom({
         Surveillance:0,
         SurveillancePrice:2,
         SurveillanceBeta:-0.017,
+    },
+});
+
+//selector pre prepocet dovery
+export const InfectionPreventionMeasuresSelector = selector({
+    key: 'InfectionPreventionMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(InfectionPreventionState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if(measurement==="EnvironmentDisinfection" || measurement==="PPE" || measurement==="InfectiousIsolation" ||
+                measurement==="Quarantine" || measurement==="QuarantineFacilities" || measurement==="ArmyHelp" || measurement==="SpecialEstablishments"
+                || measurement==="SpecialPopulation" || measurement==="SocialDistancing" || measurement==="MassGathering" || measurement==="SmallGathering"
+                || measurement==="EducationalInstitutions" || measurement==="SafetyProtocols" || measurement==="Surveillance"){
+                if(bigState[measurement]===1){
+                    count++;
+                }
+            }
+        });
+
+        return count;
     },
 });

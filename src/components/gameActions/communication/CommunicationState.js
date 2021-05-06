@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const CommunicationState = atom({
@@ -52,5 +52,25 @@ export const CommunicationState = atom({
         InformationCampaign:0,
         InformationCampaignPrice:1,
         InformationCampaignBeta:0.0255,
+    },
+});
+
+//selector pre prepocet dovery
+export const CommunicationMeasuresSelector = selector({
+    key: 'CommunicationMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(CommunicationState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if(measurement==="EducateCommunicate" || measurement==="GovernmentHelpsVulnerable" || measurement==="EmergencyState" ||
+                measurement==="Curfew" || measurement==="TravelWarning" || measurement==="ExpertCommunication" || measurement==="CrisisManagement"
+                || measurement==="SupplySecurity" || measurement==="InternationalHelp" || measurement==="InformationCampaign"){
+                if(bigState[measurement]===1){
+                    count++;
+                }
+            }
+        });
+
+        return count;
     },
 });

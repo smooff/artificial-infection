@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const TravelRestrictionState = atom({
@@ -20,5 +20,42 @@ export const TravelRestrictionState = atom({
         RiskCountriesRestriction:0,
         RiskCountriesRestrictionPrice:2,
         RiskCountriesRestrictionBeta:0.034,
+    },
+});
+
+//selector pre prepocet dovery
+export const TravelRestrictionMeasuresSelector = selector({
+    key: 'TravelRestrictionMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(TravelRestrictionState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if(measurement==="NationalLockdown" || measurement==="CordonSanitaire" || measurement==="PublicTransportRestriction" ||
+                measurement==="RiskCountriesRestriction"){
+                if(bigState[measurement]===1){
+                    count++;
+                }
+            }
+        });
+
+        return count;
+    },
+});
+
+//selector pre prepocet dovery
+export const TravelRestrictionLockDownSelector = selector({
+    key: 'TravelRestrictionMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(TravelRestrictionState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if(measurement==="NationalLockdown"){
+                if(bigState[measurement]===1){
+                    count++;
+                }
+            }
+        });
+
+        return count;
     },
 });

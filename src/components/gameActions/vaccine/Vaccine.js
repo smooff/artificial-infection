@@ -248,7 +248,7 @@ function Vaccine() {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.VaccineDevelopmentPrice));
                 setMessages((prevStats) => ([...prevStats, {
-                    name: "Vakcína", primaryMessage: "Začiatok vývoja vakcíny.", day: days, reason:'vaccine'
+                    name: "Vakcína", primaryMessage: " ● Začiatok vývoja vakcíny.", day: days, reason:'vaccine'
                 }]));
                 setModalMessage("Aktivoval si opatrenie - Vývoj vakcíny.");
                 handleOpenSuccess();

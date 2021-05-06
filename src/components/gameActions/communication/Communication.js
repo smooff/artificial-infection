@@ -13,6 +13,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import {CommunicationState} from "./CommunicationState";
 import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
+import {GameTrustState} from "../../gameTrust/GameTrustState";
 
 function Communication(props) {
     const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,9 @@ function Communication(props) {
 
     //data s opatreniami
     const [measuresActualState, setMeasuresActualState] = useRecoilState(CommunicationState);
+
+    //dovera
+    const [, setTrustValue] = useRecoilState(GameTrustState);
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
@@ -393,7 +397,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.EducateCommunicatePrice));
                 setBetaParameter(prev => (prev - measuresActualState.EducateCommunicateBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.EducateCommunicateDelta));
-                setModalMessage("Aktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.")
+                setModalMessage("Aktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
+                setTrustValue(prev => (prev + 4));
                 handleOpenSuccess();
             }
         } else {
@@ -403,16 +408,17 @@ function Communication(props) {
     }
     const handleDeactivationEducateCommunicate = () => {
         if (measuresActualState.EducateCommunicate === 1) {
-            if (measuresActualState.InformationCampaign === 0 && measuresActualState.TravelWarning ===0) {
+            if (measuresActualState.InformationCampaign === 0 && measuresActualState.TravelWarning === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, EducateCommunicate: 0, EducateCommunicateActive: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.EducateCommunicatePrice));
                 setBetaParameter(prev => (prev + measuresActualState.EducateCommunicateBeta));
                 setDeltaParameter(prev => (prev + measuresActualState.EducateCommunicateDelta));
-                setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.")
+                setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
+                setTrustValue(prev => (prev - 5));
                 handleOpenSuccess();
-            }else {
+            } else {
                 setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
                 handleOpenFailure();
             }
@@ -428,7 +434,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.GovernmentHelpsVulnerablePrice));
                 setBetaParameter(prev => (prev - measuresActualState.GovernmentHelpsVulnerableBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.GovernmentHelpsVulnerableDelta));
-                setModalMessage("Aktivoval si opatrenie - Vládna pomoc zranitelným.")
+                setModalMessage("Aktivoval si opatrenie - Vládna pomoc zranitelným.");
+                setTrustValue(prev => (prev + 3));
                 handleOpenSuccess();
             }
         } else {
@@ -445,7 +452,8 @@ function Communication(props) {
             setGameCurrency(prev => (prev + measuresActualState.GovernmentHelpsVulnerablePrice));
             setBetaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableBeta));
             setDeltaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableDelta));
-            setModalMessage("Deaktivoval si opatrenie - Vládna pomoc zranitelným.")
+            setModalMessage("Deaktivoval si opatrenie - Vládna pomoc zranitelným.");
+            setTrustValue(prev => (prev - 4));
             handleOpenSuccess();
         }
     }
@@ -458,7 +466,7 @@ function Communication(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.EmergencyStatePrice));
                 setBetaParameter(prev => (prev - measuresActualState.EmergencyStateBeta));
-                setModalMessage("Aktivoval si opatrenie - Vyhlásenie núdzového stavu.")
+                setModalMessage("Aktivoval si opatrenie - Vyhlásenie núdzového stavu.");
                 handleOpenSuccess();
             }
         } else {
@@ -474,7 +482,7 @@ function Communication(props) {
                 });
                 setGameCurrency(prev => (prev + measuresActualState.EmergencyStatePrice));
                 setBetaParameter(prev => (prev + measuresActualState.EmergencyStateBeta));
-                setModalMessage("Deaktivoval si opatrenie - Vyhlásenie núdzového stavu.")
+                setModalMessage("Deaktivoval si opatrenie - Vyhlásenie núdzového stavu.");
                 handleOpenSuccess();
             } else {
                 setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
@@ -491,7 +499,7 @@ function Communication(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.CurfewPrice));
                 setBetaParameter(prev => (prev - measuresActualState.CurfewBeta));
-                setModalMessage("Aktivoval si opatrenie - Zákaz vychádzania.")
+                setModalMessage("Aktivoval si opatrenie - Zákaz vychádzania.");
                 handleOpenSuccess();
             }
         } else {
@@ -507,7 +515,7 @@ function Communication(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.CurfewPrice));
             setBetaParameter(prev => (prev + measuresActualState.CurfewBeta));
-            setModalMessage("Deaktivoval si opatrenie - Zákaz vychádzania.")
+            setModalMessage("Deaktivoval si opatrenie - Zákaz vychádzania.");
             handleOpenSuccess();
         }
     }
@@ -520,7 +528,7 @@ function Communication(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.TravelWarningPrice));
                 setBetaParameter(prev => (prev - measuresActualState.TravelWarningBeta));
-                setModalMessage("Aktivoval si opatrenie - Cestovné výstrahy.")
+                setModalMessage("Aktivoval si opatrenie - Cestovné výstrahy.");
                 handleOpenSuccess();
             }
         } else {
@@ -536,7 +544,7 @@ function Communication(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.TravelWarningPrice));
             setBetaParameter(prev => (prev + measuresActualState.TravelWarningBeta));
-            setModalMessage("Deaktivoval si opatrenie - Cestovné výstrahy.")
+            setModalMessage("Deaktivoval si opatrenie - Cestovné výstrahy.");
             handleOpenSuccess();
         }
     }
@@ -550,7 +558,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.ExpertCommunicationPrice));
                 setBetaParameter(prev => (prev - measuresActualState.ExpertCommunicationBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.ExpertCommunicationDelta));
-                setModalMessage("Aktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.")
+                setModalMessage("Aktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.");
+                setTrustValue(prev => (prev + 2));
                 handleOpenSuccess();
             }
         } else {
@@ -567,7 +576,8 @@ function Communication(props) {
             setGameCurrency(prev => (prev + measuresActualState.ExpertCommunicationPrice));
             setBetaParameter(prev => (prev + measuresActualState.ExpertCommunicationBeta));
             setDeltaParameter(prev => (prev + measuresActualState.ExpertCommunicationDelta));
-            setModalMessage("Deaktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.")
+            setModalMessage("Deaktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.");
+            setTrustValue(prev => (prev - 3));
             handleOpenSuccess();
         }
     }
@@ -581,7 +591,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.CrisisManagementPrice));
                 setBetaParameter(prev => (prev - measuresActualState.CrisisManagementBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.CrisisManagementDelta));
-                setModalMessage("Aktivoval si opatrenie - Plán krízového riadenia.")
+                setModalMessage("Aktivoval si opatrenie - Plán krízového riadenia.");
+                setTrustValue(prev => (prev + 3));
                 handleOpenSuccess();
             }
         } else {
@@ -598,7 +609,8 @@ function Communication(props) {
             setGameCurrency(prev => (prev + measuresActualState.CrisisManagementPrice));
             setBetaParameter(prev => (prev + measuresActualState.CrisisManagementBeta));
             setDeltaParameter(prev => (prev + measuresActualState.CrisisManagementDelta));
-            setModalMessage("Deaktivoval si opatrenie - Plán krízového riadenia.")
+            setModalMessage("Deaktivoval si opatrenie - Plán krízového riadenia.");
+            setTrustValue(prev => (prev - 4));
             handleOpenSuccess();
         }
     }
@@ -612,7 +624,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.SupplySecurityPrice));
                 setBetaParameter(prev => (prev - measuresActualState.SupplySecurityBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.SupplySecurityDelta));
-                setModalMessage("Aktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.")
+                setModalMessage("Aktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.");
+                setTrustValue(prev => (prev + 2));
                 handleOpenSuccess();
             }
         } else {
@@ -629,7 +642,8 @@ function Communication(props) {
             setGameCurrency(prev => (prev + measuresActualState.SupplySecurityPrice));
             setBetaParameter(prev => (prev + measuresActualState.SupplySecurityBeta));
             setDeltaParameter(prev => (prev + measuresActualState.SupplySecurityDelta));
-            setModalMessage("Deaktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.")
+            setModalMessage("Deaktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.");
+            setTrustValue(prev => (prev - 3));
             handleOpenSuccess();
         }
     }
@@ -643,7 +657,8 @@ function Communication(props) {
                 setGameCurrency(prev => (prev - measuresActualState.InternationalHelpPrice));
                 setBetaParameter(prev => (prev - measuresActualState.InternationalHelpBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.InternationalHelpDelta));
-                setModalMessage("Aktivoval si opatrenie - Medzinárodná pomoc.")
+                setModalMessage("Aktivoval si opatrenie - Medzinárodná pomoc.");
+                setTrustValue(prev => (prev + 4));
                 handleOpenSuccess();
             }
         } else {
@@ -660,7 +675,8 @@ function Communication(props) {
             setGameCurrency(prev => (prev + measuresActualState.InternationalHelpPrice));
             setBetaParameter(prev => (prev + measuresActualState.InternationalHelpBeta));
             setDeltaParameter(prev => (prev + measuresActualState.InternationalHelpDelta));
-            setModalMessage("Deaktivoval si opatrenie - Medzinárodná pomoc.")
+            setModalMessage("Deaktivoval si opatrenie - Medzinárodná pomoc.");
+            setTrustValue(prev => (prev - 5));
             handleOpenSuccess();
         }
     }
@@ -673,7 +689,8 @@ function Communication(props) {
                 });
                 setGameCurrency(prev => (prev - measuresActualState.InformationCampaignPrice));
                 setBetaParameter(prev => (prev - measuresActualState.InformationCampaignBeta));
-                setModalMessage("Aktivoval si opatrenie - Informačná kampaň.")
+                setModalMessage("Aktivoval si opatrenie - Informačná kampaň.");
+                setTrustValue(prev => (prev + 2));
                 handleOpenSuccess();
             }
         } else {
@@ -689,7 +706,8 @@ function Communication(props) {
             });
             setGameCurrency(prev => (prev + measuresActualState.InformationCampaignPrice));
             setBetaParameter(prev => (prev + measuresActualState.InformationCampaignBeta));
-            setModalMessage("Deaktivoval si opatrenie - Informačná kampaň.")
+            setModalMessage("Deaktivoval si opatrenie - Informačná kampaň.");
+            setTrustValue(prev => (prev - 3));
             handleOpenSuccess();
         }
     }
@@ -725,7 +743,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonEducateCommunicateColor}
                             variant={measuresActualState.EducateCommunicate === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktívnou komunikáciou a vzdelávaním verejnosti o nákaze sa potenciálne znižuje šírenie nákazy a smrtnosť.", 1, measuresActualState.EducateCommunicatePrice);
+                                handleButtonClick("Aktívnou komunikáciou a vzdelávaním verejnosti o nákaze sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 1, measuresActualState.EducateCommunicatePrice);
                             }}>
                         Vzdelávanie a komunikácia s verejnosťou
                     </Button>
@@ -749,7 +767,7 @@ function Communication(props) {
                             color={buttonInformationCampaignColor}
                             variant={measuresActualState.InformationCampaign === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy.", 10, measuresActualState.InformationCampaignPrice);
+                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 10, measuresActualState.InformationCampaignPrice);
                             }}>
                         Informačná kampaň
                     </Button>
@@ -766,7 +784,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonGovernmentHelpsVulnerableColor}
                             variant={measuresActualState.GovernmentHelpsVulnerable === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín poskytnú pomoc (informovanosť, ...) zraniteľným občanom (dôchodcovia, zdravotne ťažko postihnutí, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť.", 2, measuresActualState.GovernmentHelpsVulnerablePrice);
+                                handleButtonClick("Vlády zasiahnutých krajín poskytnú pomoc (informovanosť, ...) zraniteľným občanom (dôchodcovia, zdravotne ťažko postihnutí, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 2, measuresActualState.GovernmentHelpsVulnerablePrice);
                             }}>
                         Vládna pomoc zranitelným
                     </Button>
@@ -777,7 +795,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonExpertCommunicationColor}
                             variant={measuresActualState.ExpertCommunication === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktívnou komunikáciou a poradami so zdravotníckymi expertmi a vedcami sa potenciálne znižuje šírenie nákazy a smrtnosť.", 6, measuresActualState.ExpertCommunicationPrice);
+                                handleButtonClick("Aktívnou komunikáciou a poradami so zdravotníckymi expertmi a vedcami sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 6, measuresActualState.ExpertCommunicationPrice);
                             }}>
                         Komunikácia so zdravoníckymi expertmi
                     </Button>
@@ -788,7 +806,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonCrisisManagementColor}
                             variant={measuresActualState.CrisisManagement === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vytovrením plánu krízového riadenia (riešenie krízovej situácie v časových dimenziách, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť.", 7, measuresActualState.CrisisManagementPrice);
+                                handleButtonClick("Vytovrením plánu krízového riadenia (riešenie krízovej situácie v časových dimenziách, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 7, measuresActualState.CrisisManagementPrice);
                             }}>
                         Plán krízového riadenia
                     </Button>

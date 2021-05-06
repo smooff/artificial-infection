@@ -1,4 +1,4 @@
-import {atom} from "recoil";
+import {atom, selector} from "recoil";
 
 
 export const TracingTestingState = atom({
@@ -41,5 +41,25 @@ export const TracingTestingState = atom({
         AdvancedContactTracing:0,
         AdvancedContactTracingPrice:3,
         AdvancedContactTracingBeta:0.0255,
+    },
+});
+
+//selector pre prepocet dovery
+export const TracingTestingMeasuresSelector = selector({
+    key: 'TracingTestingMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(TracingTestingState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if(measurement==="Testing" || measurement==="AdvancedDetectionSystem" || measurement==="TestingCapacityEnhancement" ||
+                measurement==="TestingInformation" || measurement==="InfrastructureTesting" || measurement==="BorderHealthCheck" || measurement==="AirportHealthCheck"
+                || measurement==="ContactTracing" || measurement==="AdvancedContactTracing"){
+                if(bigState[measurement]===1){
+                    count++;
+                }
+            }
+        });
+
+        return count;
     },
 });

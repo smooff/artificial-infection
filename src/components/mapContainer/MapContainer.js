@@ -9,7 +9,7 @@ import {
     Graticule, ZoomableGroup
 } from "react-simple-maps";
 import {
-    deceasedSelector,
+    deceasedSelector, infectiousCountriesNumberSelector,
     infectiousSelector,
     mapContainerState,
     recoveredSelector,
@@ -21,7 +21,11 @@ import './MapContainer.css';
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
-import {RegionTravelRestrictionState} from "../gameActions/travelRestriction/RegionTravelRestrictionState";
+import {
+    RegionAirportsSelector,
+    RegionBordersSelector, RegionSeaportsSelector,
+    RegionTravelRestrictionState
+} from "../gameActions/travelRestriction/RegionTravelRestrictionState";
 import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
 import {BetaState} from "../../data/parameters/BetaState";
 import {GammaState} from "../../data/parameters/GammaState";
@@ -31,7 +35,18 @@ import SingleCountryModal from "./SingleCountryModal";
 import {MessageModalState} from "../../data/MessageModalState";
 import {mapColorDataState} from "../../data/MapColorDataState";
 import {GraphDataState} from "../../data/GraphDataState";
-import {VaccineState} from "../gameActions/vaccine/VaccineState";
+import {VaccineMeasuresSelector, VaccineState} from "../gameActions/vaccine/VaccineState";
+import {CureMeasuresSelector} from "../gameActions/cure/CureState";
+import {GameTrustState} from "../gameTrust/GameTrustState";
+import {CommunicationMeasuresSelector} from "../gameActions/communication/CommunicationState";
+import {InfectionPreventionMeasuresSelector} from "../gameActions/infectionPrevention/InfectionPreventionState";
+import {TracingTestingMeasuresSelector} from "../gameActions/tracingTesting/TracingTestingState";
+import {
+    TravelRestrictionLockDownSelector,
+    TravelRestrictionMeasuresSelector
+} from "../gameActions/travelRestriction/TravelRestrictionState";
+import {TrustMessageState} from "../../data/TrustMessageState";
+import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
 
 
 const geoUrl = require('./topologies.json');
@@ -160,6 +175,9 @@ const MapContainer = ({setTooltipContent}) => {
     //spravy z hry
     const [, setMessages] = useRecoilState(MessageModalState);
 
+    //spravy z dovery
+    const [, setTrustMessages] = useRecoilState(TrustMessageState);
+
     //mapa farba
     const [mapColor,] = useRecoilState(mapColorDataState);
     const scaling = (infectiousNum, populationNum, deceasedNum) => {
@@ -217,10 +235,16 @@ const MapContainer = ({setTooltipContent}) => {
                 I = 4;
                 //console.log(countryName,"nakazena cez",infectiousOrigin,"S/I",S,I);
                 break;
+            default:
+                return null;
         }
 
         setMessages((prevStats) => ([...prevStats, {
-            iso: countryName, name: data.NAME, primaryMessage: "nakazila sa nová krajina - " + data.NAME, day: days, reason:'infecting'
+            iso: countryName,
+            name: data.NAME,
+            primaryMessage: " ● Nakazila sa nová krajina - " + data.NAME,
+            day: days,
+            reason: 'infecting'
         }]));
 
 
@@ -351,8 +375,8 @@ const MapContainer = ({setTooltipContent}) => {
             //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
             //UPDATE: prepocet nastava len z I do D, R ostava zachovane
             if (LoopPushToRD === 2) {
-                if(gammaParameter!==0){
-                    return   Math.round(R + gammaParameter * I);
+                if (gammaParameter !== 0) {
+                    return Math.round(R + gammaParameter * I);
                 }
 
                 return R;
@@ -540,20 +564,352 @@ const MapContainer = ({setTooltipContent}) => {
 
     };
 
-    const [oblastneOpatrenia, ] = useRecoilState(RegionTravelRestrictionState);
+    //opatrenia pre nakazenie novych krajin
+    const [oblastneOpatrenia,] = useRecoilState(RegionTravelRestrictionState);
+    //check pre vyber prvej krajiny
     const [pickFirstInfectedCountry, setPickFirstInfectedCountry] = useRecoilState(FirstInfectedCountryState);
 
     //VAKCINA
     const [vaccineState, setVaccineState] = useRecoilState(VaccineState);
     //1095 dni = 3 roky, 2920 dni = 8 rokov
     const vaccineStep1Start = 1095;
-    const vaccineStep1End= 2920;
+    const vaccineStep1End = 2920;
     //730 dni = 2 roky, 3650 dni = 10 rokov
     const vaccineStep2Start = 730;
-    const vaccineStep2End= 3650;
+    const vaccineStep2End = 3650;
     //365 dni = 1 rok, 730 dni = 2 roky
     const vaccineStep3Start = 365;
-    const vaccineStep3End= 730;
+    const vaccineStep3End = 730;
+
+    //DOVERA
+    //pocet infkecnych krajin pre doveru
+    const infectiousCountriesNumber = useRecoilValue(infectiousCountriesNumberSelector);
+    //pocet aktivnych opatreni z liecby
+    const cureMeasuresNumber = useRecoilValue(CureMeasuresSelector);
+    //pocet aktivnych opatreni z komunikacie
+    const communicationMeasuresNumber = useRecoilValue(CommunicationMeasuresSelector);
+    //pocet aktivnych opatreni z prevencie nakazenia
+    const infectionPreventionMeasuresNumber = useRecoilValue(InfectionPreventionMeasuresSelector);
+    //pocet aktivnych opatreni z trasovania/testovania
+    const tracingTestingMeasuresNumber = useRecoilValue(TracingTestingMeasuresSelector);
+    //pocet aktivnych opatreni z obmedzenia cestovania
+    const travelRestrictionMeasuresNumber = useRecoilValue(TravelRestrictionMeasuresSelector);
+    //pocet aktivnych opatreni z vakciny
+    const vaccineMeasuresNumber = useRecoilValue(VaccineMeasuresSelector);
+
+    //pocet celosvetovych zosnulych
+    const deceasedWorlWideNumber = useRecoilValue(deceasedSelector);
+    //info o aktivovanom lockdowne
+    const lockDownMeasureState = useRecoilValue(TravelRestrictionLockDownSelector);
+    //info o dnoch, kolko uz je aktivny lockdown, ...
+    const [strictMeasuresTime, setStrictMeasuresTime] = useRecoilState(StrictMeasuresTimeState);
+    //info o aktivnych uzatvoreniach hranic, letisk, pristavov
+    const bordersMeasureState = useRecoilValue(RegionBordersSelector);
+    const airportsMeasureState = useRecoilValue(RegionAirportsSelector);
+    const seaportsMeasureState = useRecoilValue(RegionSeaportsSelector);
+
+    //dovera
+    const [, setTrustValue] = useRecoilState(GameTrustState);
+
+    function gameTrustHandle() {
+        let triggerPoint = 0;
+        let trustDecrease = 0;
+        let messageString = "";
+        if (infectiousCountriesNumber > 10 && (cureMeasuresNumber === 0 && communicationMeasuresNumber === 0 && infectionPreventionMeasuresNumber === 0
+            && tracingTestingMeasuresNumber === 0 && travelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
+            trustDecrease += 4;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín bez akéhokoľvek aktivovaného opatrenia. Aktivuj nejaké opatrenie.\n");
+        }
+        if (infectiousCountriesNumber > 15 && (travelRestrictionMeasuresNumber === 0)) {
+            trustDecrease += 4;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín bez akéhokoľvek aktivovaného opatrenia z obmedzenia cestovnia. Aktivuj nejaké opatrenie z tejto sekcie. \n");
+        }
+        if (infectiousCountriesNumber > 40 && (communicationMeasuresNumber === 0)) {
+            trustDecrease += 5;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín bez akéhokoľvek aktivovaného opatrenia z komunikácie. Aktivuj nejaké opatrenie z tejto sekcie. \n");
+        }
+        if (infectiousCountriesNumber > 100 && (communicationMeasuresNumber < 3)) {
+            trustDecrease += 5;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín, dôvera klesá z dôvodu slabej komunikácie s obyvateľmi. Aktivuj opatrenie zo sekcie Komunikácia. \n");
+        }
+
+        //1 milion
+        if (deceasedWorlWideNumber > 1000000 && cureMeasuresNumber === 0) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj opatrenie zo sekcie Liečba. \n");
+        }
+        //10 milionov
+        if (deceasedWorlWideNumber > 10000000 && cureMeasuresNumber < 2) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj viacero opatrení zo sekcie Liečba. \n");
+        }
+        //100 milionov
+        if (deceasedWorlWideNumber > 100000000 && cureMeasuresNumber < 3) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj opatrenie zo sekcie Liečba. \n");
+        }
+        //150 milionov
+        if (deceasedWorlWideNumber > 150000000 && vaccineMeasuresNumber === 0) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu nevyvíjania vakcíny. Aktivuj opatrenie zo sekcie Vakcína. \n");
+        }
+        //cca 75% populacie mrtva
+        if (deceasedWorlWideNumber > 5500000000 && cureMeasuresNumber < 5 && vaccineMeasuresNumber === 0 && communicationMeasuresNumber < 6 && infectionPreventionMeasuresNumber < 3) {
+            trustDecrease += 1;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z viacerých možných dôvodov. Aktivuj opatrenia zo sekcie Liečba, Vakcína, Komunikácia alebo Prevencia nakazenia. \n");
+        }
+
+        if (days > 60 && vaccineMeasuresNumber === 0) {
+            trustDecrease += 1;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Dôvera klesá z dôvodu nevyvíjania vakcíny. Aktivuj opatrenie zo sekcie Vakcína. \n");
+        }
+        if (days > 100 && communicationMeasuresNumber === 0) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi. Aktivuj opatrenie zo sekcie Komunikácia. \n");
+        }
+        if (days > 200 && communicationMeasuresNumber < 3) {
+            trustDecrease += 4;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi. Aktivuj opatrenia zo sekcie Komunikácia. \n");
+        }
+
+        //kazdych 30 dni sa strhne dovera za lockdown ale aj za aktivaciu lockdownu
+        if (lockDownMeasureState !== 0) {
+            if (strictMeasuresTime.lockdown === 0) {
+                trustDecrease += 7;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesla z dôvodu akitvácie lockdownu. \n");
+            }
+            if (strictMeasuresTime.lockdown === 30) {
+                trustDecrease += 7;
+                triggerPoint++;
+
+                //ak je lockdown aktivny a nie su opatrenia z komunikacie - > strhne este viac
+                if (communicationMeasuresNumber < 1) {
+                    trustDecrease += 1;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas lockdownu. \n");
+                } else if (communicationMeasuresNumber < 3) {
+                    trustDecrease += 2;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas lockdownu. \n");
+                }
+
+                messageString = messageString.concat(" ● Dôvera klesá z dôvodu aktívneho lockdownu. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, lockdown: 1};
+                });
+            } else {
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, lockdown: prevStats.lockdown + 1};
+                });
+            }
+        } else {
+            if (strictMeasuresTime.lockdown !== 0) {
+                trustDecrease -= 2;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera stúpla z dôvodu deaktivovania lockdownu. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, lockdown: 0};
+                });
+            }
+        }
+
+        //kazdych 25 dni sa strhne dovera za uzatvorenie hranic ale aj za aktivaciu uzavretia hranic
+        if (bordersMeasureState !== 0) {
+            if (strictMeasuresTime.borders === 0) {
+                trustDecrease += 4;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesla z dôvodu uzavretia hraníc. \n");
+            }
+            if (strictMeasuresTime.borders === 25) {
+                switch (bordersMeasureState) {
+                    case 1:
+                        trustDecrease += 3;
+                        break;
+                    case 2:
+                        trustDecrease += 4;
+                        break;
+                    case 3:
+                        trustDecrease += 5;
+                        break;
+                    case 4:
+                        trustDecrease += 6;
+                        break;
+                    case 5:
+                        trustDecrease += 6;
+                        break;
+                    default:
+                        return null;
+                }
+
+                //ak su hranice zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+                if (communicationMeasuresNumber < 1) {
+                    trustDecrease += 1;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých hraníc. \n");
+                } else if (communicationMeasuresNumber < 3) {
+                    trustDecrease += 2;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých hraníc. \n");
+                }
+
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesá z dôvodu aktívneho uzavretia hraníc. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, borders: 1};
+                });
+            } else {
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, borders: prevStats.borders + 1};
+                });
+            }
+        } else {
+            if (strictMeasuresTime.borders !== 0) {
+                trustDecrease -= 2;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera stúpla z dôvodu otvorenia hraníc. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, borders: 0};
+                });
+            }
+        }
+
+        //kazdych 25 dni sa strhne dovera za uzatvorenie letisk ale aj za aktivaciu uzavretia letisk
+        if (airportsMeasureState !== 0) {
+            if (strictMeasuresTime.airports === 0) {
+                trustDecrease += 4;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesla z dôvodu uzavretia letísk. \n");
+            }
+            if (strictMeasuresTime.airports === 25) {
+                switch (airportsMeasureState) {
+                    case 1:
+                        trustDecrease += 3;
+                        break;
+                    case 2:
+                        trustDecrease += 4;
+                        break;
+                    case 3:
+                        trustDecrease += 5;
+                        break;
+                    case 4:
+                        trustDecrease += 6;
+                        break;
+                    case 5:
+                        trustDecrease += 6;
+                        break;
+                    default:
+                        return null;
+                }
+
+                //ak su letiska zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+                if (communicationMeasuresNumber < 1) {
+                    trustDecrease += 1;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých letísk. \n");
+                } else if (communicationMeasuresNumber < 3) {
+                    trustDecrease += 2;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých letísk. \n");
+                }
+
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesá z dôvodu aktívneho uzavretia letísk. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, airports: 1};
+                });
+            } else {
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, airports: prevStats.airports + 1};
+                });
+            }
+        } else {
+            if (strictMeasuresTime.airports !== 0) {
+                trustDecrease -= 2;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera stúpla z dôvodu otvorenia letísk. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, airports: 0};
+                });
+            }
+        }
+
+        //kazdych 25 dni sa strhne dovera za uzatvorenie pristavov ale aj za aktivaciu uzavretia pristavov
+        if (seaportsMeasureState !== 0) {
+            if (strictMeasuresTime.seaports === 0) {
+                trustDecrease += 4;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesla z dôvodu uzavretia prístavov. \n");
+            }
+            if (strictMeasuresTime.seaports === 25) {
+                switch (seaportsMeasureState) {
+                    case 1:
+                        trustDecrease += 3;
+                        break;
+                    case 2:
+                        trustDecrease += 4;
+                        break;
+                    case 3:
+                        trustDecrease += 5;
+                        break;
+                    case 4:
+                        trustDecrease += 6;
+                        break;
+                    case 5:
+                        trustDecrease += 6;
+                        break;
+                    default:
+                        return null;
+                }
+
+                //ak su pristavy zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+                if (communicationMeasuresNumber < 1) {
+                    trustDecrease += 1;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých prístavov. \n");
+                } else if (communicationMeasuresNumber < 3) {
+                    trustDecrease += 2;
+                    messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých prístavov. \n");
+                }
+
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera klesá z dôvodu aktívneho uzavretia prístavov. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, seaports: 1};
+                });
+            } else {
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, seaports: prevStats.seaports + 1};
+                });
+            }
+        } else {
+            if (strictMeasuresTime.seaports !== 0) {
+                trustDecrease -= 2;
+                triggerPoint++;
+                messageString = messageString.concat(" ● Dôvera stúpla z dôvodu otvorenia prístavov. \n");
+                setStrictMeasuresTime((prevStats) => {
+                    return {...prevStats, seaports: 0};
+                });
+            }
+        }
+
+        if (triggerPoint !== 0) {
+            setTrustValue(prev => (prev - trustDecrease));
+            setTrustMessages((prevStats) => ([...prevStats, {
+                name: "Dôvera",
+                primaryMessage: messageString,
+                day: days,
+                reason: 'trust'
+            }]));
+        }
+
+    }
+
 
     useInterval(() => {
         // setInfectiousIncrement(infectiousIncrement + 1000000);
@@ -573,6 +929,8 @@ const MapContainer = ({setTooltipContent}) => {
                 countries[firstCountry] = infectingNewCountry(firstCountry, "initial");
                 setPickFirstInfectedCountry(1);
             }
+            //funkcia na prepocet dovery
+            gameTrustHandle();
 
             //inicializacia casu vakciny (tradicny vyvoj)
             if (vaccineState.InitializeVaccineTime === false) {
@@ -591,27 +949,30 @@ const MapContainer = ({setTooltipContent}) => {
                 });
             }
 
-            if(vaccineState.vaccineDevelopmentFinished===true){
+            if (vaccineState.vaccineDevelopmentFinished === true) {
                 setGammaParameter(0.49);
             }
 
-            let maxDevelopmentTime = vaccineState.step1Time+vaccineState.step2Time+vaccineState.step3Time;
+            let maxDevelopmentTime = vaccineState.step1Time + vaccineState.step2Time + vaccineState.step3Time;
             //prepocet casu vyvoja vakciny od zaciatku jej vyvoja
             if (vaccineState.ActivationVaccineDevelopment === 1) {
 
-                if(vaccineState.actualDevelopmentTime<maxDevelopmentTime){
+                if (vaccineState.actualDevelopmentTime < maxDevelopmentTime) {
                     let actualVaccineTime = vaccineState.actualDevelopmentTime + 1;
 
                     //check ci bude vakcina v tejto iteracii vynajdena
-                    if(actualVaccineTime===maxDevelopmentTime){
+                    if (actualVaccineTime === maxDevelopmentTime) {
                         setMessages((prevStats) => ([...prevStats, {
-                            name: "Vakcína", primaryMessage: "Vývoj vakcíny bol dokončený.", day: days, reason:'vaccine'
+                            name: "Vakcína",
+                            primaryMessage: " ● Vývoj vakcíny bol dokončený.",
+                            day: days,
+                            reason: 'vaccine'
                         }]));
                         setVaccineState((prevStats) => {
                             return {
                                 ...prevStats,
                                 actualDevelopmentTime: actualVaccineTime,
-                                vaccineDevelopmentFinished:true,
+                                vaccineDevelopmentFinished: true,
                             };
                         });
                     }
@@ -622,7 +983,7 @@ const MapContainer = ({setTooltipContent}) => {
                             actualDevelopmentTime: actualVaccineTime,
                         };
                     });
-                }else if(vaccineState.actualDevelopmentTime>maxDevelopmentTime){
+                } else if (vaccineState.actualDevelopmentTime > maxDevelopmentTime) {
                     setVaccineState((prevStats) => {
                         return {
                             ...prevStats,
