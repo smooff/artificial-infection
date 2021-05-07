@@ -34,13 +34,9 @@ function Vaccine() {
 
 
     const [linkText, setLinkText] = useState();
-    const changeLinkText = (text) => {
-        setLinkText(text);
-    };
+
     const [linkPrice, setLinkPrice] = useState();
-    const changeLinkPrice = (price) => {
-        setLinkPrice(price);
-    };
+
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);

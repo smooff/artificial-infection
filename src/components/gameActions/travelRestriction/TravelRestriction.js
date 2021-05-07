@@ -1,15 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-    Button,
-    Card,
-    CardContent,
-    DialogContent,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select, Snackbar
-} from "@material-ui/core";
+import React, {useState} from 'react';
+import {Button, DialogContent, Grid, Snackbar} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import RegionTravelRestriction from "./RegionTravelRestriction";

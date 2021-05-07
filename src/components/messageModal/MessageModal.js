@@ -1,10 +1,11 @@
 import React from 'react';
 import {Card, CardContent, ListItem, ListItemText} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import {NewMessagesCounter} from "../../data/NewMessagesCounter";
 
 
 function MessageModal({dataSelector}) {
@@ -35,11 +36,13 @@ function MessageModal({dataSelector}) {
 
     const data = useRecoilValue(dataSelector);
 
+    const [,setMessageCounter] = useRecoilState(NewMessagesCounter);
+
     function addDays(date, days) {
         date.setDate(date.getDate() + days);
         return date;
     }
-
+    setMessageCounter(0);
     return (
         <div>
             <Card>

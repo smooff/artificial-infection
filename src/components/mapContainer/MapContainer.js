@@ -1,15 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {csv} from "d3-fetch";
 import {scaleLinear} from "d3-scale";
+import {ComposableMap, Geographies, Geography, ZoomableGroup} from "react-simple-maps";
 import {
-    ComposableMap,
-    Geographies,
-    Geography,
-    Sphere,
-    Graticule, ZoomableGroup
-} from "react-simple-maps";
-import {
-    deceasedSelector, infectiousCountriesNumberSelector,
+    deceasedSelector,
+    infectiousCountriesNumberSelector,
     infectiousSelector,
     mapContainerState,
     recoveredSelector,
@@ -23,7 +18,8 @@ import {GameFlowState} from "../../data/GameFlowState";
 import {GameIntervalState} from "../../data/GameIntervalState";
 import {
     RegionAirportsSelector,
-    RegionBordersSelector, RegionSeaportsSelector,
+    RegionBordersSelector,
+    RegionSeaportsSelector,
     RegionTravelRestrictionState
 } from "../gameActions/travelRestriction/RegionTravelRestrictionState";
 import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
@@ -48,6 +44,7 @@ import {
 import {TrustMessageState} from "../../data/TrustMessageState";
 import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
 import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
+import {NewMessagesCounter} from "../../data/NewMessagesCounter";
 
 
 const geoUrl = require('./topologies.json');
@@ -71,15 +68,15 @@ const MapContainer = ({setTooltipContent}) => {
     const [singleCountryModal, setSingleCountryModal] = useState();
 
     //react-tooltip->population rounding
-    const rounded = num => {
-        if (num > 1000000000) {
-            return Math.round(num / 100000000) / 10 + "Bn";
-        } else if (num > 1000000) {
-            return Math.round(num / 100000) / 10 + "M";
-        } else {
-            return Math.round(num / 100) / 10 + "K";
-        }
-    };
+    // const rounded = num => {
+    //     if (num > 1000000000) {
+    //         return Math.round(num / 100000000) / 10 + "Bn";
+    //     } else if (num > 1000000) {
+    //         return Math.round(num / 100000) / 10 + "M";
+    //     } else {
+    //         return Math.round(num / 100) / 10 + "K";
+    //     }
+    // };
 
     // function centerMap(){
     //
@@ -91,11 +88,8 @@ const MapContainer = ({setTooltipContent}) => {
         });
     }, []);
 
-    const [mapData, setMapData] = useRecoilState(mapContainerState);
+    const mapData = useRecoilValue(mapContainerState);
 
-    useEffect(() => {
-        // console.log(mapData);
-    }, [mapData]);
 
     //pracuje s vyskou a sirkou okna, aby bola mapa responz.
     function getWindowDimensions() {
@@ -176,6 +170,9 @@ const MapContainer = ({setTooltipContent}) => {
     //spravy z hry
     const [, setMessages] = useRecoilState(MessageModalState);
 
+    //counter pre spravy z hry
+    const [, setMessageCounter] = useRecoilState(NewMessagesCounter);
+
     //klikatelna herna mena
     const [clickableGameCurrency, setClickAbleGameCurrency] = useRecoilState(ClickableGameCurrencyState);
 
@@ -250,6 +247,8 @@ const MapContainer = ({setTooltipContent}) => {
             day: days,
             reason: 'infecting'
         }]));
+
+        setMessageCounter(prev => (prev + 1));
 
         if (clickableGameCurrency < 10) {
             setClickAbleGameCurrency(prev => (prev + 1));

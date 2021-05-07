@@ -1,19 +1,32 @@
 import React from 'react';
-import {Box, Button, CircularProgress} from "@material-ui/core";
+import {Box, Button, CircularProgress, Dialog, DialogTitle} from "@material-ui/core";
 import {useRecoilState} from "recoil";
 import {GameCurrencyState} from "../../data/currencies/GameCurrencyState";
 import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import GameCurrencyModal from "./GameCurrencyModal";
 
 function GameCurrencyRightBar() {
 
     const useStyles = makeStyles((theme) => ({
         progressBar: {
             marginLeft: "15px",
+        }, buttonText: {
+            textTransform: 'none',
         }
     }));
     const classes = useStyles();
+
+    // modal
+    const [openCurrency, setOpenCurrency] = React.useState(false);
+    const handleClickOpenCurrency = () => {
+        setOpenCurrency(true);
+    };
+    const handleCloseCurrency = () => {
+        setOpenCurrency(false);
+    };
 
     //game currency
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
@@ -33,29 +46,44 @@ function GameCurrencyRightBar() {
     }
 
     return (
-        <>
-            Herná mena: {gameCurrency}
-            <Button onClick={addCurrency} className={classes.progressBar}>
-                <Box position="relative" display="inline-flex">
-                    <CircularProgress variant="determinate" value={clickableGameCurrency * 10}
-                                      color={clickableGameCurrency === 10 ? "secondary" : "primary"}/>
-                    <Box
-                        top={0}
-                        left={0}
-                        bottom={0}
-                        right={0}
-                        position="absolute"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Typography variant="caption" component="div" color="textSecondary">
-                            {clickableGameCurrency}
-                        </Typography>
+        <Grid container>
+            <Grid item xs={6}>
+                <Typography>
+                    <Button onClick={handleClickOpenCurrency} className={classes.buttonText}>
+                        Herná mena: {gameCurrency}</Button>
+                </Typography>
+            </Grid>
+            <Grid item xs={6}>
+                <Button onClick={addCurrency} className={classes.progressBar}>
+                    <Box position="relative" display="inline-flex">
+                        <CircularProgress variant="determinate" value={clickableGameCurrency * 10}
+                                          color={clickableGameCurrency === 10 ? "secondary" : "primary"}/>
+                        <Box
+                            top={0}
+                            left={0}
+                            bottom={0}
+                            right={0}
+                            position="absolute"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Typography variant="caption" component="div" color="textSecondary">
+                                {clickableGameCurrency}
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
-            </Button>
-        </>
+                </Button>
+            </Grid>
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseCurrency}
+                    aria-labelledby="customized-dialog-title"
+                    open={openCurrency}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseCurrency}>
+                    Herná mena
+                </DialogTitle>
+                <GameCurrencyModal mena={gameCurrency}/>
+            </Dialog>
+        </Grid>
     );
 }
 

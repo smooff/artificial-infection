@@ -10,24 +10,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MapContainer from "../../components/mapContainer/MapContainer";
 
-import {
-    Button,
-    Dialog,
-    DialogTitle
-} from "@material-ui/core";
+import {Button, Dialog, DialogTitle} from "@material-ui/core";
 
 import {useRecoilState} from "recoil";
 import {
-    deceasedSelector, infectiousCountriesCountSelector,
+    deceasedSelector,
+    infectiousCountriesCountSelector,
     infectiousSelector,
-    recoveredSelector, separateCountryByInfectivitySelector, susceptiblesSelector
+    recoveredSelector,
+    separateCountryByInfectivitySelector,
+    susceptiblesSelector
 } from "../../components/mapContainer/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
 import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-ui/icons";
 
-import TravelRestriction
-    from "../../components/gameActions/travelRestriction/TravelRestriction";
+import TravelRestriction from "../../components/gameActions/travelRestriction/TravelRestriction";
 import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
@@ -39,13 +37,13 @@ import Communication from "../../components/gameActions/communication/Communicat
 import Vaccine from "../../components/gameActions/vaccine/Vaccine";
 import GraphContainer from "../../components/graphContainer/GraphContainer";
 import MessageModal from "../../components/messageModal/MessageModal";
-import {MessageModalState} from "../../data/MessageModalState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {mapColorDataState} from "../../data/MapColorDataState";
 import GameTrust from "../../components/gameTrust/GameTrust";
 import {GameTrustState} from "../../components/gameTrust/GameTrustState";
 import {TrustMessageState} from "../../data/TrustMessageState";
 import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurrencyRightBar";
+import MessageWrapper from "../../components/messageModal/MessageWrapper";
 
 
 const drawerWidth = 240;
@@ -93,11 +91,6 @@ function MainPage(props) {
 
     const classes = useStyles();
 
-    const [value, setValue] = React.useState('recents');
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
 
     //zoznam opatreni
@@ -175,14 +168,6 @@ function MainPage(props) {
         setOpenGraph(false);
     };
 
-    // modal8
-    const [openMessages, setOpenMessages] = React.useState(false);
-    const handleClickOpenMessages = () => {
-        setOpenMessages(true);
-    };
-    const handleCloseMessages = () => {
-        setOpenMessages(false);
-    };
 
     // modal9
     const [openTrust, setOpenTrust] = React.useState(false);
@@ -194,7 +179,7 @@ function MainPage(props) {
     };
 
     //react-tooltip
-    const [content, setContent] = useState("");
+    const [, setContent] = useState("");
 
     //mapa data - farba
     const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
@@ -204,9 +189,9 @@ function MainPage(props) {
 
     //graf infekcnych
 
-    const [gameFlow, setgameFlow] = useRecoilState(GameFlowState);
+    const [, setgameFlow] = useRecoilState(GameFlowState);
 
-    const [intervalSpeed, setIntervalSpeed] = useRecoilState(GameIntervalState);
+    const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
 
     const [pauseColor, setPauseColor] = useState("default");
     const [unpauseColor, setUnpauseColor] = useState("primary");
@@ -392,6 +377,9 @@ function MainPage(props) {
                             <FastForward/>
                         </Button>
                     </ListItem>
+
+                    <Divider/>
+
                     <ListItem button>
                         <ListItemText onClick={handleClickOpenTrust}>
                             <GameTrust trustState={GameTrustState}/>
@@ -399,7 +387,7 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <ListItemText>
-                           <GameCurrencyRightBar/>
+                            <GameCurrencyRightBar/>
                         </ListItemText>
                     </ListItem>
                 </List>
@@ -445,7 +433,7 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <Apps/>
-                        <ListItemText primary="Správy" onClick={handleClickOpenMessages}/>
+                        <MessageWrapper/>
                     </ListItem>
                 </List>
             </Drawer>
@@ -512,15 +500,6 @@ function MainPage(props) {
                     aria-labelledby="customized-dialog-title"
                     open={openGraph}>
                 <GraphContainer/>
-            </Dialog>
-
-            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
-                    aria-labelledby="customized-dialog-title"
-                    open={openMessages}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseMessages}>
-                    Správy
-                </DialogTitle>
-                <MessageModal dataSelector={MessageModalState}/>
             </Dialog>
 
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust}

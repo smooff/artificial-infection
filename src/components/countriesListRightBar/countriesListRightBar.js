@@ -1,11 +1,17 @@
 import React from 'react';
 import {
-    DialogContent, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    DialogContent,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {RegionTravelRestrictionState} from "../gameActions/travelRestriction/RegionTravelRestrictionState";
+import {useRecoilValue} from "recoil";
 import {Text} from "recharts";
 
 
@@ -21,7 +27,7 @@ function CountriesListRightBar({dataSelector, dataSelectorCount}) {
     const classes = useStyles();
 
     //data s opatreniami
-    const [measuresActualState,] = useRecoilState(RegionTravelRestrictionState);
+    //const [measuresActualState,] = useRecoilState(RegionTravelRestrictionState);
 
     const data = useRecoilValue(dataSelector);
     const count = useRecoilValue(dataSelectorCount);

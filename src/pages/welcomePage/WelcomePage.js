@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Container, createMuiTheme, Typography, ThemeProvider, Dialog, DialogTitle} from "@material-ui/core";
+import {Button, Container, createMuiTheme, Dialog, ThemeProvider, Typography} from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
