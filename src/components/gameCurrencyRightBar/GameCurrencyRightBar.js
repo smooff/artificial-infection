@@ -81,7 +81,7 @@ function GameCurrencyRightBar() {
                 <DialogTitle id="customized-dialog-title" onClose={handleCloseCurrency}>
                     Herná mena
                 </DialogTitle>
-                <GameCurrencyModal mena={gameCurrency}/>
+                <GameCurrencyModal/>
             </Dialog>
         </Grid>
     );
