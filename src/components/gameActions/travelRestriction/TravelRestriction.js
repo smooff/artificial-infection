@@ -12,13 +12,11 @@ import {
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
-import {PlayArrow} from "@material-ui/icons";
-import ListItem from "@material-ui/core/ListItem";
 import RegionTravelRestriction from "./RegionTravelRestriction";
 import Divider from "@material-ui/core/Divider";
 import {useRecoilState} from "recoil";
 import {TravelRestrictionState} from "./TravelRestrictionState";
-import {GameCurrencyState} from "../../../data/GameCurrencyState";
+import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState";
 import MuiAlert from "@material-ui/lab/Alert";
 import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
@@ -33,7 +31,7 @@ function TravelRestriction(props) {
         activationButtons: {
             textAlign: "center",
             marginTop: "6px",
-        },buttonSize:{
+        }, buttonSize: {
             width: "260px",
             // height:"50px"
         }
@@ -86,9 +84,11 @@ function TravelRestriction(props) {
         }
         setOpenTravelRestrictionFailure(false);
     };
+
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
+
     //------------------------------
 
     //buttony
@@ -156,19 +156,19 @@ function TravelRestriction(props) {
     }
 
     //funckia pre navrat hodnot do resultu
-    const renderSwitch = (param) =>{
-        switch(param) {
+    const renderSwitch = (param) => {
+        switch (param) {
             case 1:
                 return <div><Button onClick={handleActivationNationalLockdown}>Aktivovať</Button><Button
                     onClick={handleDeactivationNationalLockdown}>Deaktivovať</Button></div>
             case 2:
-                return   <div><Button onClick={handleActivationCordonSanitaire}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationCordonSanitaire}>Aktivovať</Button><Button
                     onClick={handleDeactivationCordonSanitaire}>Deaktivovať</Button></div>
             case 3:
-                return  <div><Button onClick={handleActivationPublicTransportRestriction}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationPublicTransportRestriction}>Aktivovať</Button><Button
                     onClick={handleDeactivationPublicTransportRestriction}>Deaktivovať</Button></div>
             case 4:
-                return   <div><Button onClick={handleActivationRiskCountriesRestriction}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationRiskCountriesRestriction}>Aktivovať</Button><Button
                     onClick={handleDeactivationRiskCountriesRestriction}>Deaktivovať</Button></div>
             default:
                 return null;
@@ -194,21 +194,21 @@ function TravelRestriction(props) {
                 setModalMessage("Aktivoval si opatrenie - Lockdown v infekčných krajinách.");
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
             handleOpenFailure();
         }
     }
     const handleDeactivationNationalLockdown = () => {
         if (travelRestrictionsState.NationalLockdown === 1) {
-                setTravelRestrictionsState((prevStats) => {
-                    return {...prevStats, NationalLockdown: 0};
-                });
-                setGameCurrency(prev => (prev + travelRestrictionsState.NationalLockdownPrice));
-                setBetaParameter(prev => (prev + travelRestrictionsState.NationalLockdownBeta));
-                setModalMessage("Deaktivoval si opatrenie - Lockdown v infekčných krajinách.")
-                handleOpenSuccess();
-            }
+            setTravelRestrictionsState((prevStats) => {
+                return {...prevStats, NationalLockdown: 0};
+            });
+            setGameCurrency(prev => (prev + travelRestrictionsState.NationalLockdownPrice));
+            setBetaParameter(prev => (prev + travelRestrictionsState.NationalLockdownBeta));
+            setModalMessage("Deaktivoval si opatrenie - Lockdown v infekčných krajinách.")
+            handleOpenSuccess();
+        }
     }
 
     const handleActivationCordonSanitaire = () => {
@@ -223,7 +223,7 @@ function TravelRestriction(props) {
                 setModalMessage("Aktivoval si opatrenie - Lekársky zásah v ohniskách.");
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
             handleOpenFailure();
         }
@@ -252,7 +252,7 @@ function TravelRestriction(props) {
                 setModalMessage("Aktivoval si opatrenie - Obmedzenie verejnej dopravy.");
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
             handleOpenFailure();
         }
@@ -280,7 +280,7 @@ function TravelRestriction(props) {
                 setModalMessage("Aktivoval si opatrenie - Obmedzenie z rizikových krajín.");
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
             handleOpenFailure();
         }

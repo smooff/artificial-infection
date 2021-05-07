@@ -28,7 +28,6 @@ import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-u
 
 import TravelRestriction
     from "../../components/gameActions/travelRestriction/TravelRestriction";
-import {GameCurrencyState} from "../../data/GameCurrencyState.js";
 import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
 import {GameTimeState} from "../../data/GameTimeState";
 import {GameFlowState} from "../../data/GameFlowState";
@@ -46,6 +45,7 @@ import {mapColorDataState} from "../../data/MapColorDataState";
 import GameTrust from "../../components/gameTrust/GameTrust";
 import {GameTrustState} from "../../components/gameTrust/GameTrustState";
 import {TrustMessageState} from "../../data/TrustMessageState";
+import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurrencyRightBar";
 
 
 const drawerWidth = 240;
@@ -195,9 +195,6 @@ function MainPage(props) {
 
     //react-tooltip
     const [content, setContent] = useState("");
-
-    //game currency
-    const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
 
     //mapa data - farba
     const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
@@ -402,7 +399,7 @@ function MainPage(props) {
                     </ListItem>
                     <ListItem button>
                         <ListItemText>
-                            Herná mena: {gameCurrency}
+                           <GameCurrencyRightBar/>
                         </ListItemText>
                     </ListItem>
                 </List>

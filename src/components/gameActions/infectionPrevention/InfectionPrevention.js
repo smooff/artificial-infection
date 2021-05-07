@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {
-    Button, Card,
-    DialogContent, Modal, Snackbar,
+    Button,
+    DialogContent, Snackbar,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import {useRecoilState} from "recoil";
-import {GameCurrencyState} from "../../../data/GameCurrencyState";
+import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 import {InfectionPreventionState} from "./InfectionPreventionState";
@@ -700,7 +700,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.QuarantinePrice <= gameCurrency) {
             if (measuresActualState.Quarantine === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Quarantine: 1, quarantineState:false};
+                    return {...prevStats, Quarantine: 1, quarantineState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.QuarantinePrice));
                 setBetaParameter(prev => (prev - measuresActualState.QuarantineBeta));
@@ -716,7 +716,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.Quarantine === 1) {
             if (measuresActualState.QuarantineFacilities === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, Quarantine: 0, quarantineState:true};
+                    return {...prevStats, Quarantine: 0, quarantineState: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.QuarantinePrice));
                 setBetaParameter(prev => (prev + measuresActualState.QuarantineBeta));
@@ -855,7 +855,7 @@ function InfectionPrevention(props) {
         if (measuresActualState.SocialDistancingPrice <= gameCurrency) {
             if (measuresActualState.SocialDistancing === 0) {
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, SocialDistancing: 1, socialDistancingState:false};
+                    return {...prevStats, SocialDistancing: 1, socialDistancingState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.SocialDistancingPrice));
 
@@ -872,7 +872,7 @@ function InfectionPrevention(props) {
             if (measuresActualState.MassGathering === 0 && measuresActualState.SmallGathering === 0 && measuresActualState.EducationalInstitutions === 0) {
 
                 setMeasuresActualState((prevStats) => {
-                    return {...prevStats, SocialDistancing: 0, socialDistancingState:true};
+                    return {...prevStats, SocialDistancing: 0, socialDistancingState: true};
                 });
                 setGameCurrency(prev => (prev + measuresActualState.SocialDistancingPrice));
 

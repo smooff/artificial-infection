@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, CardContent, Grid, Modal, Snackbar} from "@material-ui/core";
+import React, {useState} from 'react';
+import {Button, Card, CardContent, Grid, Snackbar} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import {useRecoilState} from "recoil";
-import {GameCurrencyState} from "../../../data/GameCurrencyState.js";
+import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState.js";
 import {RegionTravelRestrictionState} from "./RegionTravelRestrictionState";
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -111,16 +111,16 @@ function RegionTravelRestriction(props) {
     }
 
     //funckia pre navrat hodnot do resultu
-    const renderSwitch = (param) =>{
-        switch(param) {
+    const renderSwitch = (param) => {
+        switch (param) {
             case 1:
-                return  <div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationClickBorders}>Aktivovať</Button><Button
                     onClick={handleDeactivationClickBorders}>Deaktivovať</Button></div>
             case 2:
-                return   <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationClickAirports}>Aktivovať</Button><Button
                     onClick={handleDeactivationClickAirports}>Deaktivovať</Button></div>
             case 3:
-                return   <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button
+                return <div><Button onClick={handleActivationClickSeaports}>Aktivovať</Button><Button
                     onClick={handleDeactivationClickSeaports}>Deaktivovať</Button></div>
             default:
                 return null;
@@ -147,7 +147,7 @@ function RegionTravelRestriction(props) {
                 setModalMessage("Aktivoval si uzavretie hraníc pre daný región.");
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             handleOpenFailure();
         }
     }
@@ -179,7 +179,7 @@ function RegionTravelRestriction(props) {
                 setModalMessage("Aktivoval si uzavretie letísk pre daný región.")
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             handleOpenFailure();
         }
     }
@@ -211,7 +211,7 @@ function RegionTravelRestriction(props) {
                 setModalMessage("Aktivoval si uzavretie ľodných prístavov pre daný región.")
                 handleOpenSuccess();
             }
-        }else{
+        } else {
             handleOpenFailure();
         }
     }

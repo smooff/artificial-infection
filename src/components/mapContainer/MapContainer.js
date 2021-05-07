@@ -47,6 +47,7 @@ import {
 } from "../gameActions/travelRestriction/TravelRestrictionState";
 import {TrustMessageState} from "../../data/TrustMessageState";
 import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
+import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
 
 
 const geoUrl = require('./topologies.json');
@@ -175,6 +176,9 @@ const MapContainer = ({setTooltipContent}) => {
     //spravy z hry
     const [, setMessages] = useRecoilState(MessageModalState);
 
+    //klikatelna herna mena
+    const [clickableGameCurrency, setClickAbleGameCurrency] = useRecoilState(ClickableGameCurrencyState);
+
     //spravy z dovery
     const [, setTrustMessages] = useRecoilState(TrustMessageState);
 
@@ -247,6 +251,9 @@ const MapContainer = ({setTooltipContent}) => {
             reason: 'infecting'
         }]));
 
+        if (clickableGameCurrency < 10) {
+            setClickAbleGameCurrency(prev => (prev + 1));
+        }
 
         return {
             ...data,

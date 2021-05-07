@@ -1,7 +1,7 @@
 import {atom} from "recoil";
 
-//reprezentuje hernu menu
+//reprezentuje hlavnu hernu menu
 export const GameCurrencyState = atom({
     key: 'gameCurrenyValue',
-    default: 100,
+    default: 0,
 });

@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {
-    Button, Card,
-    DialogContent, Modal, Snackbar,
+    Button,
+    DialogContent, Snackbar,
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import {useRecoilState} from "recoil";
 import {TracingTestingState} from "./TracingTestingState";
-import {GameCurrencyState} from "../../../data/GameCurrencyState";
+import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 import {BetaState} from "../../../data/parameters/BetaState";
