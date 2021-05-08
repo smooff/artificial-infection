@@ -22,13 +22,7 @@ const theme = createMuiTheme({
     },
 });
 
-//resetuje aplikaciu (ak pouzivatel isiel z mainpage do welcomepage a spustil hru)
-function refreshPage() {
-    window.location.reload(false);
-}
-
-
-function WelcomePage(props) {
+function WelcomePage() {
     const useStyles = makeStyles((theme) => ({
         inviteModal: {
             padding: "10px"
@@ -72,9 +66,9 @@ function WelcomePage(props) {
                         </ThemeProvider>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button size={"large"} onClick={refreshPage} variant="contained">
-                            <Link to="/game">Hrať hru</Link>
-                        </Button>
+                        <Link to="/game">
+                            <Button variant="contained">Hrať hru</Button>
+                        </Link>
                     </Grid>
                     <Grid item xs={12}>
                         <Button size={"small"} variant="contained">Ako hrať?</Button>
@@ -92,7 +86,8 @@ function WelcomePage(props) {
                         Šírenie vírusu a jeho následné spomaľovanie/zastavenie síce je inšpirované z rôznych štúdií,
                         avšak určite nie je odrazom reálneho sveta.
                     </Grid>
-                    <Button color={"primary"} variant={"contained"} className={classes.acceptButton} onClick={handleCloseInviteModal}>
+                    <Button color={"primary"} variant={"contained"} className={classes.acceptButton}
+                            onClick={handleCloseInviteModal}>
                         Prečítal som a rozumiem
                     </Button>
                 </Dialog>

@@ -44,6 +44,8 @@ import {GameTrustState} from "../../components/gameTrust/GameTrustState";
 import {TrustMessageState} from "../../data/TrustMessageState";
 import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurrencyRightBar";
 import MessageWrapper from "../../components/messageModal/MessageWrapper";
+import {MessageModalState} from "../../data/MessageModalState";
+import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
 
 
 const drawerWidth = 240;
@@ -91,106 +93,8 @@ function MainPage(props) {
 
     const classes = useStyles();
 
-
-
-    //zoznam opatreni
-    const [openZoznamOpatreni, setOpenZoznamOpatreni] = React.useState(false);
-
-    const handleClickOpenZoznamOpatreni = () => {
-        setgameFlow(false);
-        setOpenZoznamOpatreni(true);
-    };
-    const handleClickCloseZoznamOpatreni = () => {
-        setgameFlow(true);
-        setOpenZoznamOpatreni(false);
-    };
-
-    //opatrenia modal 1
-    const [openOblastneOpatrenia, setOpenOblastneOpatrenia] = React.useState(false);
-    const handleClickOpenOblastneOpatrenia = () => {
-        setOpenOblastneOpatrenia(true);
-    };
-    const handleCloseOblastneOpatrenia = () => {
-        setOpenOblastneOpatrenia(false);
-    };
-
-    //opatrenia modal2
-    const [openTrasovanieTestovanie, setOpenTrasovanieTestovanie] = React.useState(false);
-    const handleClickOpenTrasovanieTestovanie = () => {
-        setOpenTrasovanieTestovanie(true);
-    };
-    const handleCloseTrasovanieTestovanie = () => {
-        setOpenTrasovanieTestovanie(false);
-    };
-
-    //opatrenia modal3
-    const [openInfectionPrevention, setOpenInfectionPrevention] = React.useState(false);
-    const handleClickOpenInfectionPrevention = () => {
-        setOpenInfectionPrevention(true);
-    };
-    const handleCloseInfectionPrevention = () => {
-        setOpenInfectionPrevention(false);
-    };
-
-    //opatrenia modal4
-    const [openCure, setOpenCure] = React.useState(false);
-    const handleClickOpenCure = () => {
-        setOpenCure(true);
-    };
-    const handleCloseCure = () => {
-        setOpenCure(false);
-    };
-
-    //opatrenia modal5
-    const [openCommunication, setOpenCommunication] = React.useState(false);
-    const handleClickOpenCommunication = () => {
-        setOpenCommunication(true);
-    };
-    const handleCloseCommunication = () => {
-        setOpenCommunication(false);
-    };
-
-    //opatrenia modal6
-    const [openVaccine, setOpenVaccine] = React.useState(false);
-    const handleClickOpenVaccine = () => {
-        setOpenVaccine(true);
-    };
-    const handleCloseVaccine = () => {
-        setOpenVaccine(false);
-    };
-
-    //modal7
-    const [openGraph, setOpenGraph] = React.useState(false);
-    const handleClickOpenGraph = () => {
-        setOpenGraph(true);
-    };
-    const handleCloseGraph = () => {
-        setOpenGraph(false);
-    };
-
-
-    // modal9
-    const [openTrust, setOpenTrust] = React.useState(false);
-    const handleClickOpenTrust = () => {
-        setOpenTrust(true);
-    };
-    const handleCloseTrust = () => {
-        setOpenTrust(false);
-    };
-
-    //react-tooltip
-    const [, setContent] = useState("");
-
-    //mapa data - farba
-    const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
-    const handleMapColor = (event, newColor) => {
-        setmapColor(newColor);
-    };
-
-    //graf infekcnych
-
+    //herny cas a interakcie s nim
     const [, setgameFlow] = useRecoilState(GameFlowState);
-
     const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
 
     const [pauseColor, setPauseColor] = useState("default");
@@ -241,13 +145,118 @@ function MainPage(props) {
         setIntervalSpeed(1000);
     }
 
+    //zoznam krajin
+    const [openCountriesList, setOpenCountriesList] = React.useState(false);
+    const handleClickOpenCountriesList = () => {
+        gamePause();
+        setOpenCountriesList(true);
+    };
+    const handleClickCloseCountriesList = () => {
+        gameUnpause();
+        setOpenCountriesList(false);
+    };
 
-    //nahodny vyber prvej infikovanej krajiny
-    // const [firstInfectedCountry, ] = useState(() => {
-    //     const countryCodes = Object.keys(allCountries);
-    //     const firstCountryIndex = Math.floor(Math.random() * countryCodes.length);
-    //     return [countryCodes[firstCountryIndex]]
-    // });
+    //opatrenia modal 1
+    const [openTravelRestriction, setOpenTravelRestriction] = React.useState(false);
+    const handleClickOpenTravelRestriction = () => {
+        setOpenTravelRestriction(true);
+    };
+    const handleCloseTravelRestriction = () => {
+        setOpenTravelRestriction(false);
+    };
+
+    //opatrenia modal2
+    const [openTracingTesting, setOpenTracingTesting] = React.useState(false);
+    const handleClickOpenTracingTesting = () => {
+        setOpenTracingTesting(true);
+    };
+    const handleCloseTracingTesting = () => {
+        setOpenTracingTesting(false);
+    };
+
+    //opatrenia modal3
+    const [openInfectionPrevention, setOpenInfectionPrevention] = React.useState(false);
+    const handleClickOpenInfectionPrevention = () => {
+        setOpenInfectionPrevention(true);
+    };
+    const handleCloseInfectionPrevention = () => {
+        setOpenInfectionPrevention(false);
+    };
+
+    //opatrenia modal4
+    const [openCure, setOpenCure] = React.useState(false);
+    const handleClickOpenCure = () => {
+        setOpenCure(true);
+    };
+    const handleCloseCure = () => {
+        setOpenCure(false);
+    };
+
+    //opatrenia modal5
+    const [openCommunication, setOpenCommunication] = React.useState(false);
+    const handleClickOpenCommunication = () => {
+        setOpenCommunication(true);
+    };
+    const handleCloseCommunication = () => {
+        setOpenCommunication(false);
+    };
+
+    //opatrenia modal6
+    const [openVaccine, setOpenVaccine] = React.useState(false);
+    const handleClickOpenVaccine = () => {
+        setOpenVaccine(true);
+    };
+    const handleCloseVaccine = () => {
+        setOpenVaccine(false);
+    };
+
+    //modal7 - graf
+    const [openGraph, setOpenGraph] = React.useState(false);
+    const handleClickOpenGraph = () => {
+        setOpenGraph(true);
+    };
+    const handleCloseGraph = () => {
+        setOpenGraph(false);
+    };
+
+
+    // modal8 - herna dovera
+    const [openTrust, setOpenTrust] = React.useState(false);
+    const handleClickOpenTrust = () => {
+        setOpenTrust(true);
+    };
+    const handleCloseTrust = () => {
+        setOpenTrust(false);
+    };
+
+    //modal9 - spravy
+    const [openMessages, setOpenMessages] = React.useState(false);
+    const handleClickOpenMessages = () => {
+        setOpenMessages(true);
+    };
+    const handleCloseMessages = () => {
+        setOpenMessages(false);
+    };
+
+    //modal10 - navigovanie na welcome page
+    const [openPageNavigation, setOpenPageNavigation] = React.useState(false);
+    const handleClickOpenPageNavigation = () => {
+        setOpenPageNavigation(true);
+    };
+    const handleClickClosePageNavigation = () => {
+        setOpenPageNavigation(false);
+    };
+
+    //react-tooltip
+    const [, setContent] = useState("");
+
+    //mapa data - farba
+    const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
+    const handleMapColor = (event, newColor) => {
+        setmapColor(newColor);
+    };
+
+
 
 
     return (
@@ -339,7 +348,6 @@ function MainPage(props) {
                 }}
                 anchor="right"
             >
-                <div className={classes.toolbar}/>
 
                 <ToggleButtonGroup
                     value={mapColor}
@@ -393,72 +401,80 @@ function MainPage(props) {
                 </List>
                 <Divider/>
                 <List>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenTravelRestriction}>
                         <Public/>
-                        <ListItemText primary="Obmedzenia cestovania" onClick={handleClickOpenOblastneOpatrenia}/>
+                        <ListItemText primary="Obmedzenia cestovania"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenTracingTesting}>
                         <Contacts/>
-                        <ListItemText primary="Trasovanie kontaktov a testovanie"
-                                      onClick={handleClickOpenTrasovanieTestovanie}/>
+                        <ListItemText primary="Trasovanie kontaktov a testovanie"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenInfectionPrevention}>
                         <Apps/>
-                        <ListItemText primary="Prevencia nakazenia" onClick={handleClickOpenInfectionPrevention}/>
+                        <ListItemText primary="Prevencia nakazenia"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenCure}>
                         <Apps/>
-                        <ListItemText primary="Liečba" onClick={handleClickOpenCure}/>
+                        <ListItemText primary="Liečba"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenCommunication}>
                         <Apps/>
-                        <ListItemText primary="Komunikácia a spolupráca" onClick={handleClickOpenCommunication}/>
+                        <ListItemText primary="Komunikácia a spolupráca"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenVaccine}>
                         <Apps/>
-                        <ListItemText primary="Vakcína" onClick={handleClickOpenVaccine}/>
+                        <ListItemText primary="Vakcína"/>
                     </ListItem>
                 </List>
 
                 <Divider/>
 
                 <List>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenCountriesList}>
                         <Apps/>
-                        <ListItemText primary="Prehľad všetkých krajín" onClick={handleClickOpenZoznamOpatreni}/>
+                        <ListItemText primary="Prehľad všetkých krajín"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenGraph}>
                         <Apps/>
-                        <ListItemText primary="Globálny graf" onClick={handleClickOpenGraph}/>
+                        <ListItemText primary="Globálny graf"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={handleClickOpenMessages}>
                         <Apps/>
                         <MessageWrapper/>
                     </ListItem>
                 </List>
+
+                <Divider/>
+
+                <List>
+                    <ListItem button onClick={handleClickOpenPageNavigation}>
+                        <Apps/>
+                        <ListItemText primary="Návrat na úvodnú stránku"/>
+                    </ListItem>
+                </List>
             </Drawer>
 
-            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseZoznamOpatreni}
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList}
                     aria-labelledby="customized-dialog-title"
-                    open={openZoznamOpatreni}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClickCloseZoznamOpatreni}>
+                    open={openCountriesList}>
+                <DialogTitle id="customized-dialog-title" onClose={handleClickCloseCountriesList}>
                     Zoznam krajín
                 </DialogTitle>
                 <CountriesListRightBar dataSelector={separateCountryByInfectivitySelector}
                                        dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
-            <Dialog onClose={handleCloseOblastneOpatrenia} aria-labelledby="customized-dialog-title"
-                    open={openOblastneOpatrenia}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseOblastneOpatrenia}>
+            <Dialog onClose={handleCloseTravelRestriction} aria-labelledby="customized-dialog-title"
+                    open={openTravelRestriction}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseTravelRestriction}>
                     Obmedzenia cestovania
                 </DialogTitle>
                 <TravelRestriction/>
             </Dialog>
 
-            <Dialog onClose={handleCloseTrasovanieTestovanie} aria-labelledby="customized-dialog-title"
-                    open={openTrasovanieTestovanie}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseTrasovanieTestovanie}>
+            <Dialog onClose={handleCloseTracingTesting} aria-labelledby="customized-dialog-title"
+                    open={openTracingTesting}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseTracingTesting}>
                     Trasovanie kontaktov a testovanie
                 </DialogTitle>
                 <TracingTesting/>
@@ -510,9 +526,20 @@ function MainPage(props) {
                 </DialogTitle>
                 <MessageModal dataSelector={TrustMessageState}/>
             </Dialog>
+
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
+                    aria-labelledby="customized-dialog-title"
+                    open={openMessages}>
+                <DialogTitle id="customized-dialog-title" onClose={handleCloseMessages}>
+                    Správy
+                </DialogTitle>
+                <MessageModal dataSelector={MessageModalState}/>
+            </Dialog>
+
+            <Dialog onClose={handleClickClosePageNavigation} open={openPageNavigation}>
+                <PagesNavigationModal/>
+            </Dialog>
         </div>
-
-
     );
 }
 
