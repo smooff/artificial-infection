@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 
 import {makeStyles} from '@material-ui/core/styles';
@@ -46,6 +46,8 @@ import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurr
 import MessageWrapper from "../../components/messageModal/MessageWrapper";
 import {MessageModalState} from "../../data/MessageModalState";
 import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
+import {GameOverState} from "../../data/GameOverState";
+import GameOverModal from "../../components/gameOverModal/GameOverModal";
 
 
 const drawerWidth = 240;
@@ -246,6 +248,18 @@ function MainPage(props) {
     const handleClickClosePageNavigation = () => {
         setOpenPageNavigation(false);
     };
+
+    //game over check
+    const [gameOver, ] = useRecoilState(GameOverState);
+    const [openGameOver, setOpenGameOver] = React.useState(false);
+
+    useEffect(() => {
+        return () => {
+            setOpenGameOver(true);
+            gamePause();
+        };
+    }, [gameOver]);
+
 
     //react-tooltip
     const [, setContent] = useState("");
@@ -538,6 +552,10 @@ function MainPage(props) {
 
             <Dialog onClose={handleClickClosePageNavigation} open={openPageNavigation}>
                 <PagesNavigationModal/>
+            </Dialog>
+
+            <Dialog  fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
+              <GameOverModal data={gameOver}/>
             </Dialog>
         </div>
     );

@@ -157,7 +157,7 @@ function RegionTravelRestriction(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], borders: 0}};
             });
-            setGameCurrency(prev => (prev + measuresActualState[props.regionEN].bordersPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState[props.regionEN].bordersPrice / 2)));
 
             //alert o vykonani
             setModalRegion(props.regionName);
@@ -189,7 +189,7 @@ function RegionTravelRestriction(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], airports: 0}};
             });
-            setGameCurrency(prev => (prev + measuresActualState[props.regionEN].airportsPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState[props.regionEN].airportsPrice / 2)));
 
             //alert o vykonani
             setModalRegion(props.regionName);
@@ -221,7 +221,7 @@ function RegionTravelRestriction(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, [props.regionEN]: {...prevStats[props.regionEN], seaports: 0}};
             });
-            setGameCurrency(prev => (prev + measuresActualState[props.regionEN].seaportsPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState[props.regionEN].seaportsPrice / 2)));
 
             //alert o vykonani
             setModalRegion(props.regionName);
@@ -257,7 +257,7 @@ function RegionTravelRestriction(props) {
                                 <Button id={props.regionEN} color={button1Color}
                                         variant={measuresActualState[props.regionEN].borders === 1 ? "contained" : "outlined"}
                                         onClick={() => {
-                                            handleButtonClick(props.measurestext1, 1, measuresActualState[props.regionEN].bordersPrice);
+                                            handleButtonClick(props.measurestext1, 1, measuresActualState[props.regionEN].bordersPrice + " (herná mena)");
                                         }}>
                                     Hranice
                                 </Button>
@@ -266,7 +266,7 @@ function RegionTravelRestriction(props) {
                                 <Button color={button2Color}
                                         variant={measuresActualState[props.regionEN].airports === 1 ? "contained" : "outlined"}
                                         onClick={() => {
-                                            handleButtonClick(props.measurestext2, 2, measuresActualState[props.regionEN].airportsPrice);
+                                            handleButtonClick(props.measurestext2, 2, measuresActualState[props.regionEN].airportsPrice + " (herná mena)");
                                         }}>
                                     Letiská
                                 </Button>
@@ -275,7 +275,7 @@ function RegionTravelRestriction(props) {
                                 <Button color={button3Color}
                                         variant={measuresActualState[props.regionEN].seaports === 1 ? "contained" : "outlined"}
                                         onClick={() => {
-                                            handleButtonClick(props.measurestext3, 3, measuresActualState[props.regionEN].seaportsPrice);
+                                            handleButtonClick(props.measurestext3, 3, measuresActualState[props.regionEN].seaportsPrice + " (herná mena)");
                                         }}>
                                     Prístavy
                                 </Button>

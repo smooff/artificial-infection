@@ -13,6 +13,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import {CureState} from "./CureState";
 import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
+import {MedicalUnitsCurrencyState} from "../../../data/currencies/MedicalUnitsCurrencyState";
 
 function Cure(props) {
     const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,9 @@ function Cure(props) {
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //vedlajsia herna mena
+    const [medicalUnitsCurrency, setMedicalUnitsCurrency] = useRecoilState(MedicalUnitsCurrencyState);
 
     //beta parameter
     const [, setBetaParameter] = useRecoilState(BetaState);
@@ -226,12 +230,13 @@ function Cure(props) {
 
     //action-handlers pre aktivacie/deaktivacie----------
     const handleActivationWorkForce = () => {
-        if (measuresActualState.WorkForcePrice <= gameCurrency) {
+        if (measuresActualState.WorkForcePrice <= gameCurrency && measuresActualState.WorkForcePriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.WorkForce === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, WorkForce: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.WorkForcePrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.WorkForcePriceMedUnits));
                 setDeltaParameter(prev => (prev - measuresActualState.WorkForceDelta));
                 setModalMessage("Aktivoval si opatrenie - Zvýšenie kapacít zdravotníckeho personálu.")
                 handleOpenSuccess();
@@ -247,7 +252,7 @@ function Cure(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, WorkForce: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.WorkForcePrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.WorkForcePrice / 2)));
             setDeltaParameter(prev => (prev + measuresActualState.WorkForceDelta));
             setModalMessage("Deaktivoval si opatrenie - Zvýšenie kapacít zdravotníckeho personálu.")
             handleOpenSuccess();
@@ -255,12 +260,13 @@ function Cure(props) {
     }
 
     const handleActivationPatientsCapacity = () => {
-        if (measuresActualState.PatientsCapacityPrice <= gameCurrency) {
+        if (measuresActualState.PatientsCapacityPrice <= gameCurrency && measuresActualState.PatientsCapacityPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.PatientsCapacity === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, PatientsCapacity: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.PatientsCapacityPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.PatientsCapacityPriceMedUnits));
                 setDeltaParameter(prev => (prev - measuresActualState.PatientsCapacityDelta));
                 setModalMessage("Aktivoval si opatrenie - Zvýšenie kapacít pre pacientov.")
                 handleOpenSuccess();
@@ -276,7 +282,7 @@ function Cure(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, PatientsCapacity: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.PatientsCapacityPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.PatientsCapacityPrice / 2)));
             setDeltaParameter(prev => (prev + measuresActualState.PatientsCapacityDelta));
             setModalMessage("Deaktivoval si opatrenie - Zvýšenie kapacít pre pacientov.")
             handleOpenSuccess();
@@ -284,12 +290,13 @@ function Cure(props) {
     }
 
     const handleActivationFieldHospital = () => {
-        if (measuresActualState.FieldHospitalPrice <= gameCurrency) {
+        if (measuresActualState.FieldHospitalPrice <= gameCurrency && measuresActualState.FieldHospitalPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.FieldHospital === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, FieldHospital: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.FieldHospitalPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.FieldHospitalPriceMedUnits));
                 setBetaParameter(prev => (prev - measuresActualState.FieldHospitalBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.FieldHospitalDelta));
                 setModalMessage("Aktivoval si opatrenie - Poľné nemocnice.")
@@ -306,7 +313,7 @@ function Cure(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, FieldHospital: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.FieldHospitalPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.FieldHospitalPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.FieldHospitalBeta));
             setDeltaParameter(prev => (prev + measuresActualState.FieldHospitalDelta));
             setModalMessage("Deaktivoval si opatrenie - Poľné nemocnice.")
@@ -315,12 +322,13 @@ function Cure(props) {
     }
 
     const handleActivationMedicalTechnology = () => {
-        if (measuresActualState.MedicalTechnologyPrice <= gameCurrency) {
+        if (measuresActualState.MedicalTechnologyPrice <= gameCurrency && measuresActualState.MedicalTechnologyPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.MedicalTechnology === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, MedicalTechnology: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.MedicalTechnologyPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.MedicalTechnologyPriceMedUnits));
                 setDeltaParameter(prev => (prev - measuresActualState.MedicalTechnologyDelta));
                 setModalMessage("Aktivoval si opatrenie - Medické vybavenie a technológie.")
                 handleOpenSuccess();
@@ -336,7 +344,7 @@ function Cure(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, MedicalTechnology: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.MedicalTechnologyPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.MedicalTechnologyPrice / 2)));
             setDeltaParameter(prev => (prev + measuresActualState.MedicalTechnologyDelta));
             setModalMessage("Deaktivoval si opatrenie - Medické vybavenie a technológie.")
             handleOpenSuccess();
@@ -344,12 +352,13 @@ function Cure(props) {
     }
 
     const handleActivationHospitalMeasures = () => {
-        if (measuresActualState.HospitalMeasuresPrice <= gameCurrency) {
+        if (measuresActualState.HospitalMeasuresPrice <= gameCurrency && measuresActualState.HospitalMeasuresPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.HospitalMeasures === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, HospitalMeasures: 1, HospitalMeasuresState: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.HospitalMeasuresPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.HospitalMeasuresPriceMedUnits));
                 setBetaParameter(prev => (prev - measuresActualState.HospitalMeasuresBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.HospitalMeasuresDelta));
                 setModalMessage("Aktivoval si opatrenie - Opatrenia v nemocniciach.")
@@ -366,7 +375,7 @@ function Cure(props) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, HospitalMeasures: 0, HospitalMeasuresState: true};
                 });
-                setGameCurrency(prev => (prev + measuresActualState.HospitalMeasuresPrice));
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.HospitalMeasuresPrice / 2)));
                 setBetaParameter(prev => (prev + measuresActualState.HospitalMeasuresBeta));
                 setDeltaParameter(prev => (prev + measuresActualState.HospitalMeasuresDelta));
                 setModalMessage("Deaktivoval si opatrenie - Opatrenia v nemocniciach.")
@@ -379,12 +388,13 @@ function Cure(props) {
     }
 
     const handleActivationMedicalSurgery = () => {
-        if (measuresActualState.MedicalSurgeryPrice <= gameCurrency) {
+        if (measuresActualState.MedicalSurgeryPrice <= gameCurrency && measuresActualState.MedicalSurgeryPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.MedicalSurgery === 0) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, MedicalSurgery: 1};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.MedicalSurgeryPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.MedicalSurgeryPriceMedUnits));
                 setBetaParameter(prev => (prev - measuresActualState.MedicalSurgeryBeta));
                 setDeltaParameter(prev => (prev - measuresActualState.MedicalSurgeryDelta));
                 setModalMessage("Aktivoval si opatrenie - Zrušenie lekárskych zákrokov.")
@@ -401,7 +411,7 @@ function Cure(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, MedicalSurgery: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.MedicalSurgeryPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.MedicalSurgeryPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.MedicalSurgeryBeta));
             setDeltaParameter(prev => (prev + measuresActualState.MedicalSurgeryDelta));
             setModalMessage("Deaktivoval si opatrenie - Zrušenie lekárskych zákrokov.")
@@ -440,7 +450,7 @@ function Cure(props) {
                     <Button className={classes.buttonSize} color={buttonWorkForceColor}
                             variant={measuresActualState.WorkForce === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zvýšením kapacít zdravotníckeho personálu sa potenciálne zníži smrtnosť.", 1, measuresActualState.WorkForcePrice);
+                                handleButtonClick("Zvýšením kapacít zdravotníckeho personálu sa potenciálne zníži smrtnosť.", 1, measuresActualState.WorkForcePrice + " (herná mena) | " + measuresActualState.WorkForcePriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Zvýšenie kapacít zdravotníckeho personálu
                     </Button>
@@ -451,7 +461,7 @@ function Cure(props) {
                     <Button className={classes.buttonSize} color={buttonPatientsCapacityColor}
                             variant={measuresActualState.PatientsCapacity === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zvýšením kapacít pre pacientov v nemocniciach a zdravotníckych centrách sa potenciálne zníži smrtnosť.", 2, measuresActualState.PatientsCapacityPrice);
+                                handleButtonClick("Zvýšením kapacít pre pacientov v nemocniciach a zdravotníckych centrách sa potenciálne zníži smrtnosť.", 2, measuresActualState.PatientsCapacityPrice + " (herná mena) | " + measuresActualState.PatientsCapacityPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Zvýšenie kapacít pre pacientov
                     </Button>
@@ -462,7 +472,7 @@ function Cure(props) {
                     <Button className={classes.buttonSize} color={buttonFieldHospitalColor}
                             variant={measuresActualState.FieldHospital === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zriadením poľných nemocníc sa vytvoria kapacity pre nakazených pacientov a ich liečba bude izolovaná, čo má za následok potenciálne zníženie smrtnosti a šírenia nákazy.", 3, measuresActualState.FieldHospitalPrice);
+                                handleButtonClick("Zriadením poľných nemocníc sa vytvoria kapacity pre nakazených pacientov a ich liečba bude izolovaná, čo má za následok potenciálne zníženie smrtnosti a šírenia nákazy.", 3, measuresActualState.FieldHospitalPrice + " (herná mena) | " + measuresActualState.FieldHospitalPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Poľné nemocnice
                     </Button>
@@ -473,7 +483,7 @@ function Cure(props) {
                     <Button className={classes.buttonSize} color={buttonMedicalTechnologyColor}
                             variant={measuresActualState.MedicalTechnology === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zaobstaraním potrebnej medickej technológie a vybavenia sa potenciálne zníži smrtnosť.", 4, measuresActualState.MedicalTechnologyPrice);
+                                handleButtonClick("Zaobstaraním potrebnej medickej technológie a vybavenia sa potenciálne zníži smrtnosť.", 4, measuresActualState.MedicalTechnologyPrice + " (herná mena) | " + measuresActualState.MedicalTechnologyPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Medické vybavenie a technológie
                     </Button>
@@ -489,7 +499,7 @@ function Cure(props) {
                     <Button className={classes.buttonSize} color={buttonHospitalMeasuresColor}
                             variant={measuresActualState.HospitalMeasures === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zavedením prísnejších opatrení v nemocniciach a zdravotníckych centrách sa môže potenciálne znížiť smrtnosť a šírenie nákazy.", 5, measuresActualState.HospitalMeasuresPrice);
+                                handleButtonClick("Zavedením prísnejších opatrení v nemocniciach a zdravotníckych centrách sa môže potenciálne znížiť smrtnosť a šírenie nákazy.", 5, measuresActualState.HospitalMeasuresPrice + " (herná mena) | " + measuresActualState.HospitalMeasuresPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Opatrenia v nemocniciach
                     </Button>
@@ -501,7 +511,7 @@ function Cure(props) {
                             color={buttonMedicalSurgeryColor}
                             variant={measuresActualState.MedicalSurgery === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zrušením zákrokov, ktoré nie sú životne nevyhnutné, sa potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.MedicalSurgeryPrice);
+                                handleButtonClick("Zrušením zákrokov, ktoré nie sú životne nevyhnutné, sa potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.MedicalSurgeryPrice + " (herná mena) | " + measuresActualState.MedicalSurgeryPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Zrušenie lekárskych zákrokov
                     </Button>

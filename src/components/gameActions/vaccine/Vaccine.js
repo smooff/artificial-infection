@@ -15,6 +15,7 @@ import {VaccineState} from "./VaccineState";
 import {getRandomNumberInRange} from "../../mapContainer/MapContainer";
 import {MessageModalState} from "../../../data/MessageModalState";
 import {GameTimeState} from "../../../data/GameTimeState";
+import {MedicalUnitsCurrencyState} from "../../../data/currencies/MedicalUnitsCurrencyState";
 
 function Vaccine() {
     const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,9 @@ function Vaccine() {
 
     //herna mena
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //vedlajsia herna mena
+    const [medicalUnitsCurrency, setMedicalUnitsCurrency] = useRecoilState(MedicalUnitsCurrencyState);
 
     //spravy z hry
     const [, setMessages] = useRecoilState(MessageModalState);
@@ -101,6 +105,7 @@ function Vaccine() {
     const [buttonStep1Color, setButtonStep1Color] = useState("default");
     const [buttonStep2Color, setButtonStep2Color] = useState("default");
     const [buttonStep3Color, setButtonStep3Color] = useState("default");
+    const [buttonSuperDevelopmentColor, setButtonSuperDevelopmentColor] = useState("default");
 
     const [showVaccineDevelopment, setShowVaccineDevelopment] = React.useState(false);
     const [showFinanceVaccineDevelopment, setShowFinanceVaccineDevelopment] = React.useState(false);
@@ -108,6 +113,7 @@ function Vaccine() {
     const [showStep1, setShowStep1] = React.useState(false);
     const [showStep2, setShowStep2] = React.useState(false);
     const [showStep3, setShowStep3] = React.useState(false);
+    const [showSuperDevelopment, setShowSuperDevelopment] = React.useState(false);
 
     const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
         setLinkText(textMessage);
@@ -120,6 +126,7 @@ function Vaccine() {
                 setButtonStep1Color("default");
                 setButtonStep2Color("default");
                 setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(true);
                 setShowFinanceVaccineDevelopment(false);
@@ -127,6 +134,7 @@ function Vaccine() {
                 setShowStep1(false);
                 setShowStep2(false);
                 setShowStep3(false);
+                setShowSuperDevelopment(false);
                 break;
             case 2:
                 setButtonVaccineDevelopmentColor("default");
@@ -135,6 +143,7 @@ function Vaccine() {
                 setButtonStep1Color("default");
                 setButtonStep2Color("default");
                 setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(false);
                 setShowFinanceVaccineDevelopment(true);
@@ -142,6 +151,7 @@ function Vaccine() {
                 setShowStep1(false);
                 setShowStep2(false);
                 setShowStep3(false);
+                setShowSuperDevelopment(false);
                 break;
             case 3:
                 setButtonVaccineDevelopmentColor("default");
@@ -150,6 +160,7 @@ function Vaccine() {
                 setButtonStep1Color("default");
                 setButtonStep2Color("default");
                 setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(false);
                 setShowFinanceVaccineDevelopment(false);
@@ -157,6 +168,7 @@ function Vaccine() {
                 setShowStep1(false);
                 setShowStep2(false);
                 setShowStep3(false);
+                setShowSuperDevelopment(false);
                 break;
             case 4:
                 setButtonVaccineDevelopmentColor("default");
@@ -165,6 +177,7 @@ function Vaccine() {
                 setButtonStep1Color("primary");
                 setButtonStep2Color("default");
                 setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(false);
                 setShowFinanceVaccineDevelopment(false);
@@ -172,6 +185,7 @@ function Vaccine() {
                 setShowStep1(true);
                 setShowStep2(false);
                 setShowStep3(false);
+                setShowSuperDevelopment(false);
                 break;
             case 5:
                 setButtonVaccineDevelopmentColor("default");
@@ -180,6 +194,7 @@ function Vaccine() {
                 setButtonStep1Color("default");
                 setButtonStep2Color("primary");
                 setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(false);
                 setShowFinanceVaccineDevelopment(false);
@@ -187,6 +202,7 @@ function Vaccine() {
                 setShowStep1(false);
                 setShowStep2(true);
                 setShowStep3(false);
+                setShowSuperDevelopment(false);
                 break;
             case 6:
                 setButtonVaccineDevelopmentColor("default");
@@ -195,6 +211,7 @@ function Vaccine() {
                 setButtonStep1Color("default");
                 setButtonStep2Color("default");
                 setButtonStep3Color("primary");
+                setButtonSuperDevelopmentColor("default");
 
                 setShowVaccineDevelopment(false);
                 setShowFinanceVaccineDevelopment(false);
@@ -202,6 +219,24 @@ function Vaccine() {
                 setShowStep1(false);
                 setShowStep2(false);
                 setShowStep3(true);
+                setShowSuperDevelopment(false);
+                break;
+            case 7:
+                setButtonVaccineDevelopmentColor("default");
+                setButtonFinanceVaccineDevelopmentColor("default");
+                setButtonInternationalCooperationColor("default");
+                setButtonStep1Color("default");
+                setButtonStep2Color("default");
+                setButtonStep3Color("default");
+                setButtonSuperDevelopmentColor("primary");
+
+                setShowVaccineDevelopment(false);
+                setShowFinanceVaccineDevelopment(false);
+                setShowInternationalCooperation(false);
+                setShowStep1(false);
+                setShowStep2(false);
+                setShowStep3(false);
+                setShowSuperDevelopment(true);
                 break;
             default:
                 return null;
@@ -223,6 +258,8 @@ function Vaccine() {
                 return <div><Button onClick={handleActivationStep2}>Aktivovať</Button></div>
             case 6:
                 return <div><Button onClick={handleActivationStep3}>Aktivovať</Button></div>
+            case 7:
+                return <div><Button onClick={handleActivationSuperDevelopment}>Aktivovať</Button></div>
             default:
                 return null;
         }
@@ -237,12 +274,13 @@ function Vaccine() {
 
     //action-handlers pre aktivacie/deaktivacie----------
     const handleActivationDevelopVaccine = () => {
-        if (measuresActualState.VaccineDevelopmentPrice <= gameCurrency) {
+        if (measuresActualState.VaccineDevelopmentPrice <= gameCurrency && measuresActualState.VaccineDevelopmentPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.ActivationVaccineDevelopment !== 1) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, ActivationVaccineDevelopment: 1, DevelopmentProcessTree: false};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.VaccineDevelopmentPrice));
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.VaccineDevelopmentPriceMedUnits));
                 setMessages((prevStats) => ([...prevStats, {
                     name: "Vakcína", primaryMessage: " ● Začiatok vývoja vakcíny.", day: days, reason: 'vaccine'
                 }]));
@@ -250,13 +288,13 @@ function Vaccine() {
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
     }
 
     const handleActivationFinanceVaccineDevelopment = () => {
-        if (measuresActualState.FinanceVaccineDevelopmentPrice <= gameCurrency) {
+        if (measuresActualState.FinanceVaccineDevelopmentPrice <= gameCurrency && measuresActualState.FinanceVaccineDevelopmentPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.FinanceVaccineDevelopment !== 1) {
                 let newStep1Time = measuresActualState.step1Time - 30;
                 let newStep2Time = measuresActualState.step2Time - 30;
@@ -265,22 +303,23 @@ function Vaccine() {
                         ...prevStats,
                         FinanceVaccineDevelopment: 1,
                         step1Time: newStep1Time,
-                        step2Time: newStep2Time
+                        step2Time: newStep2Time,
+                        FinanceVaccineDevelopmentTree: false
                     };
                 });
                 setGameCurrency(prev => (prev - measuresActualState.FinanceVaccineDevelopmentPrice));
-
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.FinanceVaccineDevelopmentPriceMedUnits));
                 setModalMessage("Aktivoval si opatrenie - Finančná pomoc vedcom.");
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
     }
 
     const handleActivationInternationalCooperation = () => {
-        if (measuresActualState.InternationalCooperationPrice <= gameCurrency) {
+        if (measuresActualState.InternationalCooperationPrice <= gameCurrency && measuresActualState.InternationalCooperationPriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.InternationalCooperation !== 1) {
                 let newStep2Time = measuresActualState.step2Time - 30;
                 let newStep3Time = measuresActualState.step3Time - 30;
@@ -289,22 +328,23 @@ function Vaccine() {
                         ...prevStats,
                         InternationalCooperation: 1,
                         step2Time: newStep2Time,
-                        step3Time: newStep3Time
+                        step3Time: newStep3Time,
+                        InternationalCooperationTree: false
                     };
                 });
                 setGameCurrency(prev => (prev - measuresActualState.InternationalCooperationPrice));
-
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.InternationalCooperationPriceMedUnits));
                 setModalMessage("Aktivoval si opatrenie - Medzinárodná kooperácia pri vývoji.");
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
     }
 
     const handleActivationStep1 = () => {
-        if (measuresActualState.step1Price <= gameCurrency) {
+        if (measuresActualState.step1Price <= gameCurrency && measuresActualState.step1PriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.step1 !== 1) {
                 //80dni az 90dni - cca 3 mesiace
                 let step1 = getRandomNumberInRange(80, 90);
@@ -312,18 +352,18 @@ function Vaccine() {
                     return {...prevStats, step1: 1, step1Time: step1, Step1Tree: false, recalculateTimeForPlayer: 0};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.step1Price));
-
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.step1PriceMedUnits));
                 setModalMessage("Aktivoval si opatrenie - Urýchlenie prvej fázy vývoja.");
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
     }
 
     const handleActivationStep2 = () => {
-        if (measuresActualState.step2Price <= gameCurrency) {
+        if (measuresActualState.step2Price <= gameCurrency && measuresActualState.step2PriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.step2 !== 1) {
                 //330dni az 365dni - cca 11-12 mesiacov
                 let step2 = getRandomNumberInRange(330, 365);
@@ -331,18 +371,18 @@ function Vaccine() {
                     return {...prevStats, step2: 1, step2Time: step2, Step2Tree: false, recalculateTimeForPlayer: 0};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.step2Price));
-
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.step2PriceMedUnits));
                 setModalMessage("Aktivoval si opatrenie - Urýchlenie druhej fázy vývoja.");
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
     }
 
     const handleActivationStep3 = () => {
-        if (measuresActualState.step3Price <= gameCurrency) {
+        if (measuresActualState.step3Price <= gameCurrency && measuresActualState.step3PriceMedUnits <= medicalUnitsCurrency) {
             if (measuresActualState.step3 !== 1) {
                 //240dni az 270dni - cca 8-9 mesiacov
                 let step3 = getRandomNumberInRange(240, 270);
@@ -350,14 +390,36 @@ function Vaccine() {
                     return {...prevStats, step3: 1, step3Time: step3, Step3Tree: false, recalculateTimeForPlayer: 0};
                 });
                 setGameCurrency(prev => (prev - measuresActualState.step3Price));
-
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.step3PriceMedUnits));
                 setModalMessage("Aktivoval si opatrenie - Urýchlenie tretej fázy vývoja.");
                 handleOpenSuccess();
             }
         } else {
-            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia");
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
             handleOpenFailure();
         }
+    }
+
+    const handleActivationSuperDevelopment = () => {
+        if (measuresActualState.actualDevelopmentTime > 200) {
+            if (measuresActualState.SuperDevelopmentPriceMedUnits <= medicalUnitsCurrency) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, step3Time: prevStats.step3Time - 25};
+                });
+                setMedicalUnitsCurrency(prev => (prev - measuresActualState.SuperDevelopmentPriceMedUnits));
+
+                setModalMessage("Aktivoval si opatrenie - Urýchlenie vývoja.");
+                handleOpenSuccess();
+
+            } else {
+                setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+                handleOpenFailure();
+            }
+        } else {
+            setModalMessage("O aktiváciu sa pokúšaš príliš skoro, skús to o " + (200 - measuresActualState.actualDevelopmentTime) + " dní.");
+            handleOpenFailure();
+        }
+
     }
 
     return (
@@ -388,7 +450,7 @@ function Vaccine() {
                     <Button className={classes.buttonSize} color={buttonVaccineDevelopmentColor}
                             variant={measuresActualState.ActivationVaccineDevelopment === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Spustením tejto akcie sa začne nenávratný vývoj vakcíny (nevyhnutný liek pre výhru hry) proti nákaze.", 1, measuresActualState.VaccineDevelopmentPrice);
+                                handleButtonClick("Spustením tejto akcie sa začne nenávratný vývoj vakcíny (nevyhnutný liek pre výhru hry) proti nákaze.", 1, measuresActualState.VaccineDevelopmentPrice + " (herná mena) | " + measuresActualState.VaccineDevelopmentPriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Vývoj vakcíny
                     </Button>
@@ -407,7 +469,7 @@ function Vaccine() {
                             variant={measuresActualState.step1 === 1 ? "contained" : "outlined"}
                             onClick={() => {
                                 handleButtonClick("Spustením tejto nenávratnej akcie sa značne urýchli prvá fáza vývoja vakcíny, do ktorej spadá objav a validácia patogénu a antigénu, predklinické štúdie a vývoj klinických testov." +
-                                    "Zároveň sa naštartuje aj masívny rozvoj výroby. Na záver sa začne aj s prvou fázou testovania vakcíny - overovanie bezpečnosti.", 4, measuresActualState.step1Price);
+                                    "Zároveň sa naštartuje aj masívny rozvoj výroby. Na záver sa začne aj s prvou fázou testovania vakcíny - overovanie bezpečnosti.", 4, measuresActualState.step1Price + " (herná mena) | " + measuresActualState.step1PriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Urýchlenie prvej fázy vývoja
                     </Button>
@@ -420,7 +482,7 @@ function Vaccine() {
                             color={buttonStep2Color}
                             variant={measuresActualState.step2 === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Spustením tejto nenávratnej akcie sa značne urýchli druhá fáza vývoja vakcíny, do ktorej spadá okrem masívnej výroby aj druhá fáza testovania vakcíny - overovanie bezpečnosti a imunogenicity.", 5, measuresActualState.step2Price);
+                                handleButtonClick("Spustením tejto nenávratnej akcie sa značne urýchli druhá fáza vývoja vakcíny, do ktorej spadá okrem masívnej výroby aj druhá fáza testovania vakcíny - overovanie bezpečnosti a imunogenicity.", 5, measuresActualState.step2Price + " (herná mena) | " + measuresActualState.step2PriceMedUnits + " (zdrav. jednotky)");
                             }}>
                         Urýchlenie druhej fázy vývoja
                     </Button>
@@ -434,7 +496,7 @@ function Vaccine() {
                         color={buttonStep3Color}
                         variant={measuresActualState.step3 === 1 ? "contained" : "outlined"}
                         onClick={() => {
-                            handleButtonClick("Spustením tejto nenávratnej akcie sa značne urýchli tretia fáza vývoja vakcíny, do ktorej spadá okrem masívnej výroby aj tretia fáza testovania vakcíny - overovanie bezpečnosti a efektívnosti. Na záver sa urýchli aj registrácia vakcíny.", 6, measuresActualState.step3Price);
+                            handleButtonClick("Spustením tejto nenávratnej akcie sa značne urýchli tretia fáza vývoja vakcíny, do ktorej spadá okrem masívnej výroby aj tretia fáza testovania vakcíny - overovanie bezpečnosti a efektívnosti. Na záver sa urýchli aj registrácia vakcíny.", 6, measuresActualState.step3Price + " (herná mena) | " + measuresActualState.step3PriceMedUnits + " (zdrav. jednotky)");
                         }}>
                         Urýchlenie tretej fázy vývoja
                     </Button>
@@ -454,7 +516,7 @@ function Vaccine() {
                         color={buttonFinanceVaccineDevelopmentColor}
                         variant={measuresActualState.FinanceVaccineDevelopment === 1 ? "contained" : "outlined"}
                         onClick={() => {
-                            handleButtonClick("Pomocou finančnej pomoci vedcom vakcíny (laboratóriá, ...) sa urýchli vývoj vakcíny.", 2, measuresActualState.FinanceVaccineDevelopmentPrice);
+                            handleButtonClick("Pomocou finančnej pomoci vedcom vakcíny (laboratóriá, ...) sa urýchli vývoj vakcíny.", 2, measuresActualState.FinanceVaccineDevelopmentPrice + " (herná mena) | " + measuresActualState.FinanceVaccineDevelopmentPriceMedUnits + " (zdrav. jednotky)");
                         }}>
                         Finančná pomoc vedcom
                     </Button>
@@ -468,13 +530,26 @@ function Vaccine() {
                         color={buttonInternationalCooperationColor}
                         variant={measuresActualState.InternationalCooperation === 1 ? "contained" : "outlined"}
                         onClick={() => {
-                            handleButtonClick("Pomocou medzinárodnej kooperácii sa urýchli vývoj vakcíny.", 3, measuresActualState.InternationalCooperationPrice);
+                            handleButtonClick("Pomocou medzinárodnej kooperácii sa urýchli vývoj vakcíny.", 3, measuresActualState.InternationalCooperationPrice + " (herná mena) | " + measuresActualState.InternationalCooperationPriceMedUnits + " (zdrav. jednotky)");
                         }}>
                         Medzinárodná kooperácia pri vývoji
                     </Button>
                     {showInternationalCooperation ? <Results cislo={3}/> : null}
                 </Grid>
 
+                <Grid item xs={12} className={classes.actionButtons}>
+                    <Button
+                        disabled={(measuresActualState.DevelopmentProcessTree || measuresActualState.Step1Tree || measuresActualState.Step2Tree || measuresActualState.Step3Tree || measuresActualState.FinanceVaccineDevelopmentTree || measuresActualState.InternationalCooperationTree)}
+                        className={classes.buttonSize}
+                        color={buttonSuperDevelopmentColor}
+                        variant={"outlined"}
+                        onClick={() => {
+                            handleButtonClick("Super vývoj je možné aktivovať viackrát. Toto opatrenie sa dá aktivovať za zdratovnícke jednotky. Pomocou tejto aktivácie sa urýchli čas vývoja vakcíny o 25 dní.", 7, measuresActualState.SuperDevelopmentPriceMedUnits + " (zdrav. jednotky)");
+                        }}>
+                        Super vývoj
+                    </Button>
+                    {showSuperDevelopment ? <Results cislo={7}/> : null}
+                </Grid>
 
             </Grid>
             <br/>

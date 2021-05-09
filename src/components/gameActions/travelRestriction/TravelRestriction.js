@@ -194,7 +194,7 @@ function TravelRestriction(props) {
             setTravelRestrictionsState((prevStats) => {
                 return {...prevStats, NationalLockdown: 0};
             });
-            setGameCurrency(prev => (prev + travelRestrictionsState.NationalLockdownPrice));
+            setGameCurrency(prev => (prev + Math.round(travelRestrictionsState.NationalLockdownPrice / 2)));
             setBetaParameter(prev => (prev + travelRestrictionsState.NationalLockdownBeta));
             setModalMessage("Deaktivoval si opatrenie - Lockdown v infekčných krajinách.")
             handleOpenSuccess();
@@ -223,7 +223,7 @@ function TravelRestriction(props) {
             setTravelRestrictionsState((prevStats) => {
                 return {...prevStats, CordonSanitaire: 0};
             });
-            setGameCurrency(prev => (prev + travelRestrictionsState.CordonSanitairePrice));
+            setGameCurrency(prev => (prev + Math.round(travelRestrictionsState.CordonSanitairePrice / 2)));
             setBetaParameter(prev => (prev + travelRestrictionsState.CordonSanitaireBeta));
             setDeltaParameter(prev => (prev + travelRestrictionsState.CordonSanitaireDelta));
             setModalMessage("Deaktivoval si opatrenie - Lekársky zásah v ohniskách.")
@@ -252,7 +252,7 @@ function TravelRestriction(props) {
             setTravelRestrictionsState((prevStats) => {
                 return {...prevStats, PublicTransportRestriction: 0};
             });
-            setGameCurrency(prev => (prev + travelRestrictionsState.PublicTransportRestrictionPrice));
+            setGameCurrency(prev => (prev + Math.round(travelRestrictionsState.PublicTransportRestrictionPrice / 2)));
             setBetaParameter(prev => (prev + travelRestrictionsState.PublicTransportRestrictionBeta));
             setModalMessage("Deaktivoval si opatrenie - Obmedzenie verejnej dopravy.")
             handleOpenSuccess();
@@ -280,7 +280,7 @@ function TravelRestriction(props) {
             setTravelRestrictionsState((prevStats) => {
                 return {...prevStats, RiskCountriesRestriction: 0};
             });
-            setGameCurrency(prev => (prev + travelRestrictionsState.RiskCountriesRestrictionPrice));
+            setGameCurrency(prev => (prev + Math.round(travelRestrictionsState.RiskCountriesRestrictionPrice / 2)));
             setBetaParameter(prev => (prev + travelRestrictionsState.RiskCountriesRestrictionBeta));
             setModalMessage("Deaktivoval si opatrenie - Obmedzenie z rizikových krajín.")
             handleOpenSuccess();
@@ -308,43 +308,6 @@ function TravelRestriction(props) {
                 <br/>
                 Cena: {linkPrice}
             </Typography>
-
-            {/*<FormControl style={{width:"85px"}}>*/}
-            {/*    <InputLabel>Svetadiel</InputLabel>*/}
-            {/*    <Select>*/}
-
-            {/*        <MenuItem onClick={handleEuropeClick}>Európa</MenuItem>*/}
-            {/*        <MenuItem onClick={handleAmericaClick}>Amerika</MenuItem>*/}
-            {/*        <MenuItem onClick={handleAfricaClick}>Afrika</MenuItem>*/}
-            {/*        <MenuItem onClick={handleAsiaClick}>Ázia</MenuItem>*/}
-            {/*        <MenuItem onClick={handleAustraliaOceaniaClick}>Austrália a Oceánia</MenuItem>*/}
-            {/*        <MenuItem onClick={handleAntarticaClick}>Antarktída</MenuItem>*/}
-            {/*    </Select>*/}
-            {/*</FormControl>*/}
-            {/*{ showResultsEurope ? <RegionTravelRestriction regionName="Európa" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                        measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                        measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
-            {/*{ showResultsAmerica ?  <RegionTravelRestriction regionName="Amerika" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                        measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                        measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
-            {/*{ showResultsAfrica ?   <RegionTravelRestriction regionName="Afrika" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                        measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                        measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
-            {/*{ showResultsAsia ?   <RegionTravelRestriction regionName="Ázia" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                        measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                        measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
-            {/*{ showResultsAustraliaOceania ?   <RegionTravelRestriction regionName="Austrália a Oceánia" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                      measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                      measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
-            {/*{ showResultsAntartica ?    <RegionTravelRestriction regionName="Antarktída" measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."*/}
-            {/*                                                                   measurestext2="Uzatvoria sa letiská, čím sa medzi krajinami potenciálne zníži šírenie vírusu leteckou dopravou."*/}
-            {/*                                                                   measurestext3="Uzatvoria sa prístavy, čím sa medzi krajinami potenciálne zníži šírenie vírusu lodnou dopravou."*/}
-            {/*/> : null }*/}
 
             <RegionTravelRestriction regionEN="Europe" regionName="Európa"
                                      measurestext1="Uzatvoria sa hranice, čím sa medzi susednými krajinami potenciálne zníži šírenie vírusu."
@@ -387,7 +350,7 @@ function TravelRestriction(props) {
                     <Button className={classes.buttonSize} color={buttonNationalLockdownColor}
                             variant={travelRestrictionsState.NationalLockdown === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktivovaním lockdownov v postihnutých krajinách sa potenciálne zníži šírenie nákazy.", 1, travelRestrictionsState.NationalLockdownPrice);
+                                handleButtonClick("Aktivovaním lockdownov v postihnutých krajinách sa potenciálne zníži šírenie nákazy.", 1, travelRestrictionsState.NationalLockdownPrice + " (herná mena)");
                             }}>
                         Lockdown v infekčných krajinách
                     </Button>
@@ -398,7 +361,7 @@ function TravelRestriction(props) {
                     <Button className={classes.buttonSize} color={buttonCordonSanitaireColor}
                             variant={travelRestrictionsState.CordonSanitaire === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zaslaním lekárskych tímov do ohnísk nákazy sa potenciálne zníži šírenie nákazy a smrtnosť.", 2, travelRestrictionsState.CordonSanitairePrice);
+                                handleButtonClick("Zaslaním lekárskych tímov do ohnísk nákazy sa potenciálne zníži šírenie nákazy a smrtnosť.", 2, travelRestrictionsState.CordonSanitairePrice + " (herná mena)");
                             }}>
                         Lekársky zásah v ohniskách
                     </Button>
@@ -409,7 +372,7 @@ function TravelRestriction(props) {
                     <Button className={classes.buttonSize} color={buttonPublicTransportRestrictionColor}
                             variant={travelRestrictionsState.PublicTransportRestriction === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Obmedzením verejnej dopravy sa potenciálne zníži šírenie nákazy.", 3, travelRestrictionsState.PublicTransportRestrictionPrice);
+                                handleButtonClick("Obmedzením verejnej dopravy sa potenciálne zníži šírenie nákazy.", 3, travelRestrictionsState.PublicTransportRestrictionPrice + " (herná mena)");
                             }}>
                         Obmedzenie verejnej dopravy
                     </Button>
@@ -419,7 +382,7 @@ function TravelRestriction(props) {
                     <Button className={classes.buttonSize} color={buttonRiskCountriesRestrictionColor}
                             variant={travelRestrictionsState.RiskCountriesRestriction === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Obmedzením cestovania z/do rizikových krajín sa potenciálne zníži šírenie nákazy.", 4, travelRestrictionsState.RiskCountriesRestrictionPrice);
+                                handleButtonClick("Obmedzením cestovania z/do rizikových krajín sa potenciálne zníži šírenie nákazy.", 4, travelRestrictionsState.RiskCountriesRestrictionPrice + " (herná mena)");
                             }}>
                         Obmedzenia z rizikových krajín
                     </Button>

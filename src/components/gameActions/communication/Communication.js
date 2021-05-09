@@ -15,7 +15,7 @@ import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
 import {GameTrustState} from "../../gameTrust/GameTrustState";
 
-function Communication(props) {
+function Communication() {
     const useStyles = makeStyles((theme) => ({
         activationButtons: {
             textAlign: "center",
@@ -412,7 +412,7 @@ function Communication(props) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, EducateCommunicate: 0, EducateCommunicateActive: true};
                 });
-                setGameCurrency(prev => (prev + measuresActualState.EducateCommunicatePrice));
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.EducateCommunicatePrice / 2)));
                 setBetaParameter(prev => (prev + measuresActualState.EducateCommunicateBeta));
                 setDeltaParameter(prev => (prev + measuresActualState.EducateCommunicateDelta));
                 setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
@@ -449,7 +449,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, GovernmentHelpsVulnerable: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.GovernmentHelpsVulnerablePrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.GovernmentHelpsVulnerablePrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableBeta));
             setDeltaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableDelta));
             setModalMessage("Deaktivoval si opatrenie - Vládna pomoc zranitelným.");
@@ -480,7 +480,7 @@ function Communication(props) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, EmergencyState: 0, EmergencyStateActive: true};
                 });
-                setGameCurrency(prev => (prev + measuresActualState.EmergencyStatePrice));
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.EmergencyStatePrice / 2)));
                 setBetaParameter(prev => (prev + measuresActualState.EmergencyStateBeta));
                 setModalMessage("Deaktivoval si opatrenie - Vyhlásenie núdzového stavu.");
                 handleOpenSuccess();
@@ -513,7 +513,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, Curfew: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.CurfewPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.CurfewPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.CurfewBeta));
             setModalMessage("Deaktivoval si opatrenie - Zákaz vychádzania.");
             handleOpenSuccess();
@@ -542,7 +542,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, TravelWarning: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.TravelWarningPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.TravelWarningPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.TravelWarningBeta));
             setModalMessage("Deaktivoval si opatrenie - Cestovné výstrahy.");
             handleOpenSuccess();
@@ -573,7 +573,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, ExpertCommunication: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.ExpertCommunicationPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.ExpertCommunicationPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.ExpertCommunicationBeta));
             setDeltaParameter(prev => (prev + measuresActualState.ExpertCommunicationDelta));
             setModalMessage("Deaktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.");
@@ -606,7 +606,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, CrisisManagement: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.CrisisManagementPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.CrisisManagementPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.CrisisManagementBeta));
             setDeltaParameter(prev => (prev + measuresActualState.CrisisManagementDelta));
             setModalMessage("Deaktivoval si opatrenie - Plán krízového riadenia.");
@@ -639,7 +639,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, SupplySecurity: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SupplySecurityPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SupplySecurityPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SupplySecurityBeta));
             setDeltaParameter(prev => (prev + measuresActualState.SupplySecurityDelta));
             setModalMessage("Deaktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.");
@@ -672,7 +672,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, InternationalHelp: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.InternationalHelpPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.InternationalHelpPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.InternationalHelpBeta));
             setDeltaParameter(prev => (prev + measuresActualState.InternationalHelpDelta));
             setModalMessage("Deaktivoval si opatrenie - Medzinárodná pomoc.");
@@ -704,7 +704,7 @@ function Communication(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, InformationCampaign: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.InformationCampaignPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.InformationCampaignPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.InformationCampaignBeta));
             setModalMessage("Deaktivoval si opatrenie - Informačná kampaň.");
             setTrustValue(prev => (prev - 3));
@@ -743,7 +743,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonEducateCommunicateColor}
                             variant={measuresActualState.EducateCommunicate === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktívnou komunikáciou a vzdelávaním verejnosti o nákaze sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 1, measuresActualState.EducateCommunicatePrice);
+                                handleButtonClick("Aktívnou komunikáciou a vzdelávaním verejnosti o nákaze sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 1, measuresActualState.EducateCommunicatePrice + "  (herná mena)");
                             }}>
                         Vzdelávanie a komunikácia s verejnosťou
                     </Button>
@@ -755,7 +755,7 @@ function Communication(props) {
                             color={buttonTravelWarningColor}
                             variant={measuresActualState.TravelWarning === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín dôkladne sledujú situáciu vo svete a vydávajú cestovné výstrahy a varovania, čím sa potenciálne znižuje šírenie nákazy.", 5, measuresActualState.TravelWarningPrice);
+                                handleButtonClick("Vlády zasiahnutých krajín dôkladne sledujú situáciu vo svete a vydávajú cestovné výstrahy a varovania, čím sa potenciálne znižuje šírenie nákazy.", 5, measuresActualState.TravelWarningPrice + " (herná mena)");
                             }}>
                         Cestovné výstrahy
                     </Button>
@@ -767,7 +767,7 @@ function Communication(props) {
                             color={buttonInformationCampaignColor}
                             variant={measuresActualState.InformationCampaign === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 10, measuresActualState.InformationCampaignPrice);
+                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 10, measuresActualState.InformationCampaignPrice + " (herná mena)");
                             }}>
                         Informačná kampaň
                     </Button>
@@ -784,7 +784,8 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonGovernmentHelpsVulnerableColor}
                             variant={measuresActualState.GovernmentHelpsVulnerable === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín poskytnú pomoc (informovanosť, ...) zraniteľným občanom (dôchodcovia, zdravotne ťažko postihnutí, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 2, measuresActualState.GovernmentHelpsVulnerablePrice);
+                                handleButtonClick("Vlády zasiahnutých krajín poskytnú pomoc (informovanosť, ...) zraniteľným občanom (dôchodcovia, zdravotne ťažko postihnutí, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť." +
+                                    " Týmto opatrením sa taktiež získava dôvera obyvateľov.", 2, measuresActualState.GovernmentHelpsVulnerablePrice + " (herná mena)");
                             }}>
                         Vládna pomoc zranitelným
                     </Button>
@@ -795,7 +796,8 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonExpertCommunicationColor}
                             variant={measuresActualState.ExpertCommunication === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Aktívnou komunikáciou a poradami so zdravotníckymi expertmi a vedcami sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 6, measuresActualState.ExpertCommunicationPrice);
+                                handleButtonClick("Aktívnou komunikáciou a poradami so zdravotníckymi expertmi a vedcami sa potenciálne znižuje šírenie nákazy a smrtnosť." +
+                                    " Týmto opatrením sa taktiež získava dôvera obyvateľov.", 6, measuresActualState.ExpertCommunicationPrice + " (herná mena)");
                             }}>
                         Komunikácia so zdravoníckymi expertmi
                     </Button>
@@ -806,7 +808,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonCrisisManagementColor}
                             variant={measuresActualState.CrisisManagement === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vytovrením plánu krízového riadenia (riešenie krízovej situácie v časových dimenziách, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 7, measuresActualState.CrisisManagementPrice);
+                                handleButtonClick("Vytovrením plánu krízového riadenia (riešenie krízovej situácie v časových dimenziách, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 7, measuresActualState.CrisisManagementPrice + " (herná mena)");
                             }}>
                         Plán krízového riadenia
                     </Button>
@@ -817,7 +819,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonSupplySecurityColor}
                             variant={measuresActualState.SupplySecurity === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zaistením bezpečnosti zásobovania (medické vybavenie, potraviny, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 8, measuresActualState.SupplySecurityPrice);
+                                handleButtonClick("Zaistením bezpečnosti zásobovania (medické vybavenie, potraviny, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 8, measuresActualState.SupplySecurityPrice + " (herná mena)");
                             }}>
                         Zaistenie bezpečnosti zásobovania
                     </Button>
@@ -828,7 +830,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonInternationalHelpColor}
                             variant={measuresActualState.InternationalHelp === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zaistením medzinárodnej pomoci a kooperácie sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 9, measuresActualState.InternationalHelpPrice);
+                                handleButtonClick("Zaistením medzinárodnej pomoci a kooperácie sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 9, measuresActualState.InternationalHelpPrice + " (herná mena)");
                             }}>
                         Medzinárodná pomoc
                     </Button>
@@ -845,7 +847,7 @@ function Communication(props) {
                     <Button className={classes.buttonSize} color={buttonEmergencyStateColor}
                             variant={measuresActualState.EmergencyState === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia núdzový stav (kvôli zásobovaniu, obmedzeniu pohybu, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť.", 3, measuresActualState.EmergencyStatePrice);
+                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia núdzový stav (kvôli zásobovaniu, obmedzeniu pohybu, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť.", 3, measuresActualState.EmergencyStatePrice + " (herná mena)");
                             }}>
                         Vyhlásenie núdzového stavu
                     </Button>
@@ -857,7 +859,7 @@ function Communication(props) {
                             color={buttonCurfewColor}
                             variant={measuresActualState.Curfew === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia zákaz vychádzania, čím sa potenciálne znižuje šírenie nákazy.", 4, measuresActualState.CurfewPrice);
+                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia zákaz vychádzania, čím sa potenciálne znižuje šírenie nákazy.", 4, measuresActualState.CurfewPrice + " (herná mena)");
                             }}>
                         Zákaz vychádzania
                     </Button>

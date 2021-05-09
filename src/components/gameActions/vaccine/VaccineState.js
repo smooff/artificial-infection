@@ -24,9 +24,13 @@ export const VaccineState = atom({
         step3Time:0,
 
         //cena
-        step1Price:1,
-        step2Price:1,
-        step3Price:1,
+        step1Price:6,
+        step2Price:6,
+        step3Price:6,
+
+        step1PriceMedUnits:6,
+        step2PriceMedUnits:6,
+        step3PriceMedUnits:6,
 
         //pre povolenie pouzitia dalsich buttonov
         DevelopmentProcessTree:true,
@@ -36,15 +40,23 @@ export const VaccineState = atom({
 
         //uvodne opatrenie pre zacatie vyvoja
         ActivationVaccineDevelopment:0,
-        VaccineDevelopmentPrice:1,
+        VaccineDevelopmentPrice:5,
+        VaccineDevelopmentPriceMedUnits:5,
 
         //jedno z dvoch poslednych opatreni v strome opatreni (aktivovatelne az po aktivacii vsetkych ostatnych)
         FinanceVaccineDevelopment:0,
-        FinanceVaccineDevelopmentPrice:1,
+        FinanceVaccineDevelopmentPrice:6,
+        FinanceVaccineDevelopmentPriceMedUnits:7,
+        FinanceVaccineDevelopmentTree:true,
 
         //druhe z dvoch poslednych opatreni v strome opatreni (aktivovatelne az po aktivacii vsetkych ostatnych)
         InternationalCooperation:0,
-        InternationalCooperationPrice:1,
+        InternationalCooperationPrice:6,
+        InternationalCooperationPriceMedUnits:7,
+        InternationalCooperationTree:true,
+
+        //neobmedzene opatrenie
+        SuperDevelopmentPriceMedUnits:25,
 
         recalculateTimeForPlayer:0,
         recalculatedTime:0,

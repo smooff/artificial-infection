@@ -8,49 +8,49 @@ export const CommunicationState = atom({
         EducateCommunicateActive:true,
 
         EducateCommunicate:0,
-        EducateCommunicatePrice:1,
+        EducateCommunicatePrice:6,
         EducateCommunicateBeta:0.051,
         EducateCommunicateDelta:0.01296,
 
         GovernmentHelpsVulnerable:0,
-        GovernmentHelpsVulnerablePrice:1,
+        GovernmentHelpsVulnerablePrice:6,
         GovernmentHelpsVulnerableBeta:0.0357,
         GovernmentHelpsVulnerableDelta:0.009072,
 
         EmergencyState:0,
-        EmergencyStatePrice:1,
+        EmergencyStatePrice:5,
         EmergencyStateBeta:0.0255,
 
         Curfew:0,
-        CurfewPrice:1,
+        CurfewPrice:6,
         CurfewBeta:0.0255,
 
         TravelWarning:0,
-        TravelWarningPrice:1,
+        TravelWarningPrice:5,
         TravelWarningBeta:0.0255,
 
         ExpertCommunication:0,
-        ExpertCommunicationPrice:1,
+        ExpertCommunicationPrice:5,
         ExpertCommunicationBeta:0.0187,
         ExpertCommunicationDelta:0.004752,
 
         CrisisManagement:0,
-        CrisisManagementPrice:1,
+        CrisisManagementPrice:5,
         CrisisManagementBeta:0.034,
         CrisisManagementDelta:0.00864,
 
         SupplySecurity:0,
-        SupplySecurityPrice:1,
+        SupplySecurityPrice:4,
         SupplySecurityBeta:0.0255,
         SupplySecurityDelta:0.00648,
 
         InternationalHelp:0,
-        InternationalHelpPrice:1,
+        InternationalHelpPrice:4,
         InternationalHelpBeta:0.0425,
         InternationalHelpDelta:0.00432,
         
         InformationCampaign:0,
-        InformationCampaignPrice:1,
+        InformationCampaignPrice:6,
         InformationCampaignBeta:0.0255,
     },
 });

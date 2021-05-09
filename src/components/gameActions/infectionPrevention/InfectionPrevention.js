@@ -631,7 +631,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, EnvironmentDisinfection: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.EnvironmentDisinfectionPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.EnvironmentDisinfectionPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.EnvironmentDisinfectionBeta));
             setModalMessage("Deaktivoval si opatrenie - Čistenie a dezinfekcia prostredia.")
             handleOpenSuccess();
@@ -660,7 +660,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, PPE: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.PPEPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.PPEPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.PPEBeta));
             setModalMessage("Deaktivoval si opatrenie - Osobné ochranné prostriedky.")
             handleOpenSuccess();
@@ -689,7 +689,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, InfectiousIsolation: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.InfectiousIsolationPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.InfectiousIsolationPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.InfectiousIsolationBeta));
             setModalMessage("Deaktivoval si opatrenie - Izolácia nakazených.")
             handleOpenSuccess();
@@ -718,7 +718,7 @@ function InfectionPrevention(props) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, Quarantine: 0, quarantineState: true};
                 });
-                setGameCurrency(prev => (prev + measuresActualState.QuarantinePrice));
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.QuarantinePrice / 2)));
                 setBetaParameter(prev => (prev + measuresActualState.QuarantineBeta));
                 setModalMessage("Deaktivoval si opatrenie - Karanténa.")
                 handleOpenSuccess();
@@ -751,7 +751,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, QuarantineFacilities: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.QuarantineFacilitiesPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.QuarantineFacilitiesPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.QuarantineFacilitiesBeta));
             setModalMessage("Deaktivoval si opatrenie - Karanténne zariadenia.")
             handleOpenSuccess();
@@ -781,7 +781,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, ArmyHelp: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.ArmyHelpPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.ArmyHelpPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.ArmyHelpBeta));
             setDeltaParameter(prev => (prev + measuresActualState.ArmyHelpDelta));
             setModalMessage("Deaktivoval si opatrenie - Zapojenie polície a armády.")
@@ -812,7 +812,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, SpecialEstablishments: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SpecialEstablishmentsPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SpecialEstablishmentsPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SpecialEstablishmentsBeta));
             setDeltaParameter(prev => (prev + measuresActualState.SpecialEstablishmentsDelta));
             setModalMessage("Deaktivoval si opatrenie - Opatrenia pre špeciálne zariadenia.")
@@ -843,7 +843,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, SpecialPopulation: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SpecialPopulationPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SpecialPopulationPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SpecialPopulationBeta));
             setDeltaParameter(prev => (prev + measuresActualState.SpecialPopulationDelta));
             setModalMessage("Deaktivoval si opatrenie - Opatrenia pre osobinté skupiny.")
@@ -874,7 +874,7 @@ function InfectionPrevention(props) {
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, SocialDistancing: 0, socialDistancingState: true};
                 });
-                setGameCurrency(prev => (prev + measuresActualState.SocialDistancingPrice));
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.SocialDistancingPrice / 2)));
 
                 setModalMessage("Deaktivoval si opatrenie - Sociálny odstup.")
                 handleOpenSuccess();
@@ -907,7 +907,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, MassGathering: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.MassGatheringPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.MassGatheringPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.MassGatheringBeta));
             setModalMessage("Deaktivoval si opatrenie - Zrušenie hromadných podujatí.")
             handleOpenSuccess();
@@ -936,7 +936,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, SmallGathering: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SmallGatheringPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SmallGatheringPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SmallGatheringBeta));
             setModalMessage("Deaktivoval si opatrenie - Zrušenie malých podujatí.")
             handleOpenSuccess();
@@ -965,7 +965,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, EducationalInstitutions: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.EducationalInstitutionsPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.EducationalInstitutionsPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.EducationalInstitutionsBeta));
             setModalMessage("Deaktivoval si opatrenie - Zatvorenie vzdelávacích inštitúcií.")
             handleOpenSuccess();
@@ -994,7 +994,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, SafetyProtocols: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SafetyProtocolsPrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SafetyProtocolsPrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SafetyProtocolsBeta));
             setModalMessage("Deaktivoval si opatrenie - Protokoly o bezpečnosti pri práci.")
             handleOpenSuccess();
@@ -1022,7 +1022,7 @@ function InfectionPrevention(props) {
             setMeasuresActualState((prevStats) => {
                 return {...prevStats, Surveillance: 0};
             });
-            setGameCurrency(prev => (prev + measuresActualState.SurveillancePrice));
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SurveillancePrice / 2)));
             setBetaParameter(prev => (prev + measuresActualState.SurveillanceBeta));
             setModalMessage("Deaktivoval si opatrenie - Dohľad nad opatreniami.")
             handleOpenSuccess();
@@ -1060,7 +1060,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonEnvironmentDisinfectionColor}
                             variant={measuresActualState.EnvironmentDisinfection === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Pomocou dezinfekcie a čistenia okolitého prostredia (obchody, ...) sa potenciálne zníži prenos nákazy.", 1, measuresActualState.EnvironmentDisinfectionPrice);
+                                handleButtonClick("Pomocou dezinfekcie a čistenia okolitého prostredia (obchody, ...) sa potenciálne zníži prenos nákazy.", 1, measuresActualState.EnvironmentDisinfectionPrice + " (herná mena)");
                             }}>
                         Čistenie a dezinfekcia prostredia
                     </Button>
@@ -1071,7 +1071,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonPPEColor}
                             variant={measuresActualState.PPE === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zvýšením zásob osobných ochranných prostriedkov (rúška, rukavice, ...) sa potenciálne zníži šírenie nákazy.", 2, measuresActualState.PPEPrice);
+                                handleButtonClick("Zvýšením zásob osobných ochranných prostriedkov (rúška, rukavice, ...) sa potenciálne zníži šírenie nákazy.", 2, measuresActualState.PPEPrice + " (herná mena)");
                             }}>
                         Osobné ochranné prostriedky
                     </Button>
@@ -1082,7 +1082,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonInfectiousIsolationColor}
                             variant={measuresActualState.InfectiousIsolation === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Izoláciou jednotlivých nakazených sa potenciálne zníži šírenie nákazy.", 3, measuresActualState.InfectiousIsolationPrice);
+                                handleButtonClick("Izoláciou jednotlivých nakazených sa potenciálne zníži šírenie nákazy.", 3, measuresActualState.InfectiousIsolationPrice + " (herná mena)");
                             }}>
                         Izolácia nakazených
                     </Button>
@@ -1093,7 +1093,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonArmyHelpColor}
                             variant={measuresActualState.ArmyHelp === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Armáda a polícia poskytne pomoc so zásobovaním a dohliadaním na opatrenia. Armáda taktiež poskytne medickú pomoc. Toto opatrenie potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.ArmyHelpPrice);
+                                handleButtonClick("Armáda a polícia poskytne pomoc so zásobovaním a dohliadaním na opatrenia. Armáda taktiež poskytne medickú pomoc. Toto opatrenie potenciálne zníži šírenie nákazy a smrtnosť.", 6, measuresActualState.ArmyHelpPrice + " (herná mena)");
                             }}>
                         Zapojenie polície a armády
                     </Button>
@@ -1104,7 +1104,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSpecialEstablishmentsColor}
                             variant={measuresActualState.SpecialEstablishments === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Osobitnými opatreniami pre špeciálne zariadenia (domovy dôchodcov, ...) sa potenciálne zníži šírenie nákazy a smrtnosť.", 7, measuresActualState.SpecialEstablishmentsPrice);
+                                handleButtonClick("Osobitnými opatreniami pre špeciálne zariadenia (domovy dôchodcov, ...) sa potenciálne zníži šírenie nákazy a smrtnosť.", 7, measuresActualState.SpecialEstablishmentsPrice + " (herná mena)");
                             }}>
                         Opatrenia pre špeciálne zariadenia
                     </Button>
@@ -1115,7 +1115,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSpecialPopulationColor}
                             variant={measuresActualState.SpecialPopulation === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodcovia, zdravotne ťažko postihnutí, ...) sa potenciálne zníži šírenie nákazy a smrtnosť.", 8, measuresActualState.SpecialPopulationPrice);
+                                handleButtonClick("Opatreniami pre osobitné skupiny (dôchodcovia, zdravotne ťažko postihnutí, ...) sa potenciálne zníži šírenie nákazy a smrtnosť.", 8, measuresActualState.SpecialPopulationPrice + " (herná mena)");
                             }}>
                         Opatrenia pre osobitné skupiny
                     </Button>
@@ -1126,7 +1126,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSafetyProtocolsColor}
                             variant={measuresActualState.SafetyProtocols === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Vytvorením bezpečnostných pracovných protokolov sa potenciálne zniži šírenie nákazy.", 13, measuresActualState.SafetyProtocolsPrice);
+                                handleButtonClick("Vytvorením bezpečnostných pracovných protokolov sa potenciálne zniži šírenie nákazy.", 13, measuresActualState.SafetyProtocolsPrice + " (herná mena)");
                             }}>
                         Protokoly o bezpečnosti pri práci
                     </Button>
@@ -1137,7 +1137,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSurveillanceColor}
                             variant={measuresActualState.Surveillance === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť prenos nákazy.", 14, measuresActualState.SurveillancePrice);
+                                handleButtonClick("Dohľadom na dodržiavanie opatrení sa môže potenciálne znížiť prenos nákazy.", 14, measuresActualState.SurveillancePrice + " (herná mena)");
                             }}>
                         Dohľad nad opatreniami
                     </Button>
@@ -1155,7 +1155,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonQuarantineColor}
                             variant={measuresActualState.Quarantine === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zavedením povinnej karantény sa potenciálne zníži šírenie nákazy.", 4, measuresActualState.QuarantinePrice);
+                                handleButtonClick("Zavedením povinnej karantény sa potenciálne zníži šírenie nákazy.", 4, measuresActualState.QuarantinePrice + " (herná mena)");
                             }}>
                         Karanténa
                     </Button>
@@ -1167,7 +1167,7 @@ function InfectionPrevention(props) {
                             color={buttonQuarantineFacilitiesColor}
                             variant={measuresActualState.QuarantineFacilities === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zriadením karanténnych/izolačných zariadení sa potenciálne zníži šírenie nákazy.", 5, measuresActualState.QuarantineFacilitiesPrice);
+                                handleButtonClick("Zriadením karanténnych/izolačných zariadení sa potenciálne zníži šírenie nákazy.", 5, measuresActualState.QuarantineFacilitiesPrice + " (herná mena)");
                             }}>
                         Karanténne zariadenia
                     </Button>
@@ -1183,7 +1183,7 @@ function InfectionPrevention(props) {
                     <Button className={classes.buttonSize} color={buttonSocialDistancingColor}
                             variant={measuresActualState.SocialDistancing === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zavedením sociálneho odstupu sa potenciálne zniži šírenie nákazy.", 9, measuresActualState.SocialDistancingPrice);
+                                handleButtonClick("Zavedením sociálneho odstupu sa potenciálne zniži šírenie nákazy.", 9, measuresActualState.SocialDistancingPrice + " (herná mena)");
                             }}>
                         Sociálny odstup
                     </Button>
@@ -1195,7 +1195,7 @@ function InfectionPrevention(props) {
                             color={buttonMassGatheringColor}
                             variant={measuresActualState.MassGathering === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zrušením hromadných podujatí sa potenciálne zníži šírenie nákazy.", 10, measuresActualState.MassGatheringPrice);
+                                handleButtonClick("Zrušením hromadných podujatí sa potenciálne zníži šírenie nákazy.", 10, measuresActualState.MassGatheringPrice + " (herná mena)");
                             }}>
                         Zrušenie hromadných podujatí
                     </Button>
@@ -1207,7 +1207,7 @@ function InfectionPrevention(props) {
                             color={buttonSmallGatheringColor}
                             variant={measuresActualState.SmallGathering === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zrušením malých podujatí a stretnutí sa potenciálne zníži šírenie nákazy.", 11, measuresActualState.SmallGatheringPrice);
+                                handleButtonClick("Zrušením malých podujatí a stretnutí sa potenciálne zníži šírenie nákazy.", 11, measuresActualState.SmallGatheringPrice + " (herná mena)");
                             }}>
                         Zrušenie malých podujatí
                     </Button>
@@ -1219,7 +1219,7 @@ function InfectionPrevention(props) {
                             color={buttonEducationalInstitutionsColor}
                             variant={measuresActualState.EducationalInstitutions === 1 ? "contained" : "outlined"}
                             onClick={() => {
-                                handleButtonClick("Zatvorením vzdelávacích inštitúcií sa potenciálne zníži šírenie nákazy.", 12, measuresActualState.EducationalInstitutionsPrice);
+                                handleButtonClick("Zatvorením vzdelávacích inštitúcií sa potenciálne zníži šírenie nákazy.", 12, measuresActualState.EducationalInstitutionsPrice + " (herná mena)");
                             }}>
                         Zatvorenie vzdelávacích inštitúcií
                     </Button>

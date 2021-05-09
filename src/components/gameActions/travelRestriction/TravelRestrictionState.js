@@ -5,7 +5,7 @@ export const TravelRestrictionState = atom({
     key: 'TravelRestrictionState',
     default: {
         NationalLockdown: 0,
-        NationalLockdownPrice:5,
+        NationalLockdownPrice:6,
         NationalLockdownBeta:0.0255,
 
         CordonSanitaire:0,
@@ -14,11 +14,11 @@ export const TravelRestrictionState = atom({
         CordonSanitaireDelta:0.00432,
 
         PublicTransportRestriction:0,
-        PublicTransportRestrictionPrice:3,
+        PublicTransportRestrictionPrice:5,
         PublicTransportRestrictionBeta:0.0425,
 
         RiskCountriesRestriction:0,
-        RiskCountriesRestrictionPrice:2,
+        RiskCountriesRestrictionPrice:5,
         RiskCountriesRestrictionBeta:0.034,
     },
 });
@@ -44,7 +44,7 @@ export const TravelRestrictionMeasuresSelector = selector({
 
 //selector pre prepocet dovery
 export const TravelRestrictionLockDownSelector = selector({
-    key: 'TravelRestrictionMeasuresSelector',
+    key: 'TravelRestrictionLockDownSelector',
     get: ({get}) => {
         const bigState = get(TravelRestrictionState);
         let count = 0;

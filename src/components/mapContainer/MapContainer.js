@@ -19,7 +19,7 @@ import {GameIntervalState} from "../../data/GameIntervalState";
 import {
     RegionAirportsSelector,
     RegionBordersSelector,
-    RegionSeaportsSelector,
+    RegionSeaportsSelector, RegionTravelRestrictionMeasuresSelector,
     RegionTravelRestrictionState
 } from "../gameActions/travelRestriction/RegionTravelRestrictionState";
 import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
@@ -45,6 +45,7 @@ import {TrustMessageState} from "../../data/TrustMessageState";
 import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
 import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
 import {NewMessagesCounter} from "../../data/NewMessagesCounter";
+import {GameOverState} from "../../data/GameOverState";
 
 
 const geoUrl = require('./topologies.json');
@@ -160,11 +161,11 @@ const MapContainer = ({setTooltipContent}) => {
     //
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
 
-    //data pre graf
-    let susceptibleGraphData = useRecoilValue(susceptiblesSelector);
-    let infectiousGraphData = useRecoilValue(infectiousSelector);
-    let recoveredGraphData = useRecoilValue(recoveredSelector);
-    let deceasedGraphData = useRecoilValue(deceasedSelector);
+    //data pre graf a pre game over
+    let susceptibleWorldData = useRecoilValue(susceptiblesSelector);
+    let infectiousWorldData = useRecoilValue(infectiousSelector);
+    let recoveredWorldData = useRecoilValue(recoveredSelector);
+    let deceasedWorldData = useRecoilValue(deceasedSelector);
     const [, setGraphData] = useRecoilState(GraphDataState);
 
     //spravy z hry
@@ -193,7 +194,7 @@ const MapContainer = ({setTooltipContent}) => {
             return colorScale(infectiousNum);
         } else if (mapColor === 'deceased') {
             const colorScale = scaleLinear()
-                .domain([0, populationNum * 0.4])
+                .domain([0, populationNum * 0.95])
                 .range(["#dcdbdd", "#070707"]);
             return colorScale(deceasedNum);
         }
@@ -243,16 +244,27 @@ const MapContainer = ({setTooltipContent}) => {
         setMessages((prevStats) => ([...prevStats, {
             iso: countryName,
             name: data.NAME,
-            primaryMessage: " ● Nakazila sa nová krajina - " + data.NAME,
+            primaryMessage: " ● Nakazila sa nová krajina - " + data.NAME +". Oblasť " + data.subregion + ".",
             day: days,
             reason: 'infecting'
         }]));
 
         setMessageCounter(prev => (prev + 1));
 
-        if (clickableGameCurrency < 10) {
-            setClickAbleGameCurrency(prev => (prev + 1));
+        if(days<150){
+            if(Math.random()>0.5){
+                if (clickableGameCurrency < 10) {
+                    setClickAbleGameCurrency(prev => (prev + 1));
+                }
+            }
+        }else{
+            if(Math.random()>0.7){
+                if (clickableGameCurrency < 10) {
+                    setClickAbleGameCurrency(prev => (prev + 1));
+                }
+            }
         }
+
 
         return {
             ...data,
@@ -570,6 +582,9 @@ const MapContainer = ({setTooltipContent}) => {
 
     };
 
+    //game over check
+    const [, setGameOverState] = useRecoilState(GameOverState);
+
     //opatrenia pre nakazenie novych krajin
     const [oblastneOpatrenia,] = useRecoilState(RegionTravelRestrictionState);
     //check pre vyber prvej krajiny
@@ -598,10 +613,14 @@ const MapContainer = ({setTooltipContent}) => {
     const infectionPreventionMeasuresNumber = useRecoilValue(InfectionPreventionMeasuresSelector);
     //pocet aktivnych opatreni z trasovania/testovania
     const tracingTestingMeasuresNumber = useRecoilValue(TracingTestingMeasuresSelector);
-    //pocet aktivnych opatreni z obmedzenia cestovania
-    const travelRestrictionMeasuresNumber = useRecoilValue(TravelRestrictionMeasuresSelector);
     //pocet aktivnych opatreni z vakciny
     const vaccineMeasuresNumber = useRecoilValue(VaccineMeasuresSelector);
+    //pocet aktivnych opatreni z obmedzenia cestovania
+    const travelRestrictionMeasuresNumber = useRecoilValue(TravelRestrictionMeasuresSelector);
+    //pocet aktivnych opatreni z region - obmedzenia cestovania
+    const regionTravelRestrictionMeasuresNumber = useRecoilValue(RegionTravelRestrictionMeasuresSelector);
+    //sucet aktivnych opatreni z region travel restriction a travel restriction
+    const allTravelRestrictionMeasuresNumber = travelRestrictionMeasuresNumber + regionTravelRestrictionMeasuresNumber;
 
     //pocet celosvetovych zosnulych
     const deceasedWorlWideNumber = useRecoilValue(deceasedSelector);
@@ -615,19 +634,19 @@ const MapContainer = ({setTooltipContent}) => {
     const seaportsMeasureState = useRecoilValue(RegionSeaportsSelector);
 
     //dovera
-    const [, setTrustValue] = useRecoilState(GameTrustState);
+    const [trustValue, setTrustValue] = useRecoilState(GameTrustState);
 
     function gameTrustHandle() {
         let triggerPoint = 0;
         let trustDecrease = 0;
         let messageString = "";
         if (infectiousCountriesNumber > 10 && (cureMeasuresNumber === 0 && communicationMeasuresNumber === 0 && infectionPreventionMeasuresNumber === 0
-            && tracingTestingMeasuresNumber === 0 && travelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
+            && tracingTestingMeasuresNumber === 0 && allTravelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
             trustDecrease += 4;
             triggerPoint++;
             messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín bez akéhokoľvek aktivovaného opatrenia. Aktivuj nejaké opatrenie.\n");
         }
-        if (infectiousCountriesNumber > 15 && (travelRestrictionMeasuresNumber === 0)) {
+        if (infectiousCountriesNumber > 15 && (allTravelRestrictionMeasuresNumber === 0)) {
             trustDecrease += 4;
             triggerPoint++;
             messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín bez akéhokoľvek aktivovaného opatrenia z obmedzenia cestovnia. Aktivuj nejaké opatrenie z tejto sekcie. \n");
@@ -644,10 +663,17 @@ const MapContainer = ({setTooltipContent}) => {
         }
 
         //1 milion
-        if (deceasedWorlWideNumber > 1000000 && cureMeasuresNumber === 0) {
+        if (deceasedWorlWideNumber > 1000000 && (cureMeasuresNumber === 0 && communicationMeasuresNumber === 0 && infectionPreventionMeasuresNumber === 0
+            && tracingTestingMeasuresNumber === 0 && allTravelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
             trustDecrease += 3;
             triggerPoint++;
-            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj opatrenie zo sekcie Liečba. \n");
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí bez akéhokoľvek aktivovaného opatrenia. Aktivuj nejaké opatrenie. \n");
+        }
+        //2 milion
+        if (deceasedWorlWideNumber > 2000000 && cureMeasuresNumber === 0) {
+            trustDecrease += 3;
+            triggerPoint++;
+            messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj viacero opatrení zo sekcie Liečba. \n");
         }
         //10 milionov
         if (deceasedWorlWideNumber > 10000000 && cureMeasuresNumber < 2) {
@@ -905,6 +931,11 @@ const MapContainer = ({setTooltipContent}) => {
         }
 
         if (triggerPoint !== 0) {
+            if((trustValue-trustDecrease)<1){
+                setGameOverState((prevStats) => {
+                    return {...prevStats, lose: 1, loseReason: "Stratil si všetku hernú dôveru."};
+                });
+            }
             setTrustValue(prev => (prev - trustDecrease));
             setTrustMessages((prevStats) => ([...prevStats, {
                 name: "Dôvera",
@@ -962,7 +993,21 @@ const MapContainer = ({setTooltipContent}) => {
             let maxDevelopmentTime = vaccineState.step1Time + vaccineState.step2Time + vaccineState.step3Time;
             //prepocet casu vyvoja vakciny od zaciatku jej vyvoja
             if (vaccineState.ActivationVaccineDevelopment === 1) {
-
+                if (vaccineState.actualDevelopmentTime > maxDevelopmentTime) {
+                    setMessages((prevStats) => ([...prevStats, {
+                        name: "Vakcína",
+                        primaryMessage: " ● Vývoj vakcíny bol dokončený.",
+                        day: days,
+                        reason: 'vaccine'
+                    }]));
+                    setVaccineState((prevStats) => {
+                        return {
+                            ...prevStats,
+                            actualDevelopmentTime: maxDevelopmentTime,
+                            vaccineDevelopmentFinished: true,
+                        };
+                    });
+                }
                 if (vaccineState.actualDevelopmentTime < maxDevelopmentTime) {
                     let actualVaccineTime = vaccineState.actualDevelopmentTime + 1;
 
@@ -1206,12 +1251,36 @@ const MapContainer = ({setTooltipContent}) => {
 
 
             setGraphData((prevStats) => ([...prevStats, {
-                inf: infectiousGraphData,
-                sus: susceptibleGraphData,
-                rec: recoveredGraphData,
-                dec: deceasedGraphData,
+                inf: infectiousWorldData,
+                sus: susceptibleWorldData,
+                rec: recoveredWorldData,
+                dec: deceasedWorldData,
                 day: days
             }]));
+
+            //pridanie docasnej hernej meny kazdych 20 dni
+            if ((days % 20) === 0) {
+                if (days > 0 && days < 100) {
+                    if (clickableGameCurrency < 10) {
+                        setClickAbleGameCurrency(prev => (prev + 4));
+                    }
+                }
+                if (days >= 100 && days < 150) {
+                    if (clickableGameCurrency < 10) {
+                        setClickAbleGameCurrency(prev => (prev + 2));
+                    }
+                }
+                if (days >= 150 && days<225) {
+                    if (clickableGameCurrency < 10) {
+                        setClickAbleGameCurrency(prev => (prev + 2));
+                    }
+                }
+                if (days >= 225) {
+                    if (clickableGameCurrency < 10) {
+                        setClickAbleGameCurrency(prev => (prev + 3));
+                    }
+                }
+            }
 
             // setAllStats(
             //     (prevStats) => ({
@@ -1229,7 +1298,20 @@ const MapContainer = ({setTooltipContent}) => {
                     ...prevAllCountriesState, ...countries
                 }
             });
+
+
+            if(recoveredWorldData>1000000){
+                setGameOverState((prevStats) => {
+                    return {...prevStats, win: 1, winReason: "Dokázal si vyliečiť viac ako 1 milión ovyvateľov."};
+                });
+            }else if(infectiousWorldData===0 && recoveredWorldData===0 && days>100){
+                setGameOverState((prevStats) => {
+                    return {...prevStats, lose: 1, loseReason: "Nedokázal si vyliečiť viac ako 1 milión ovyvateľov."};
+                });
+            }
         }
+
+
         // setAllCountries((prevAllCountriesState) => ({
         //     ...prevAllCountriesState, ...{
         //         [countryName]: {

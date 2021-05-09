@@ -8,10 +8,10 @@ export const TracingTestingState = atom({
         contactTracingState:true,
 
         Testing:0,
-        TestingPrice:2,
+        TestingPrice:3,
 
         AdvancedDetectionSystem:0,
-        AdvancedDetectionSystemPrice:3,
+        AdvancedDetectionSystemPrice:5,
         AdvancedDetectionSystemBeta:0.0391,
 
         TestingCapacityEnhancement :0,
@@ -19,27 +19,27 @@ export const TracingTestingState = atom({
         TestingCapacityEnhancementBeta:-0.017,
 
         TestingInformation:0,
-        TestingInformationPrice:1,
+        TestingInformationPrice:3,
         TestingInformationBeta:-0.017,
 
         InfrastructureTesting:0,
-        InfrastructureTestingPrice:1,
+        InfrastructureTestingPrice:3,
         InfrastructureTestingBeta:0.0085,
 
         BorderHealthCheck:0,
-        BorderHealthCheckPrice:2,
+        BorderHealthCheckPrice:4,
         BorderHealthCheckBeta:0.0153,
 
         AirportHealthCheck:0,
-        AirportHealthCheckPrice:2,
+        AirportHealthCheckPrice:3,
         AirportHealthCheckBeta:-0.034,
 
         ContactTracing:0,
-        ContactTracingPrice:3,
+        ContactTracingPrice:4,
         ContactTracingBeta:0.0255,
 
         AdvancedContactTracing:0,
-        AdvancedContactTracingPrice:3,
+        AdvancedContactTracingPrice:4,
         AdvancedContactTracingBeta:0.0255,
     },
 });
