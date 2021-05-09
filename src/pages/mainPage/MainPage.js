@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 
 import {makeStyles} from '@material-ui/core/styles';
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function MainPage(props) {
+function MainPage() {
 
 
     const classes = useStyles();
@@ -107,7 +107,7 @@ function MainPage(props) {
     const [unpauseOutline, setUnpauseOutline] = useState("contained");
     const [forwardOutline, setForwardOutline] = useState("outlined");
 
-    const gamePause = () => {
+    const gamePause = useCallback(() => {
         setgameFlow(false);
 
         setPauseColor("primary");
@@ -117,7 +117,7 @@ function MainPage(props) {
         setPauseOutline("contained");
         setUnpauseOutline("outlined");
         setForwardOutline("outlined");
-    }
+    },[setgameFlow])
 
     const gameUnpause = () => {
         setgameFlow(true);
@@ -258,7 +258,7 @@ function MainPage(props) {
             setOpenGameOver(true);
             gamePause();
         };
-    }, [gameOver]);
+    }, [gameOver, gamePause]);
 
 
     //react-tooltip

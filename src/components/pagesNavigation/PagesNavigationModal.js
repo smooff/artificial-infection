@@ -22,7 +22,7 @@ function PagesNavigationModal() {
     function refreshPage() {
         setTimeout(() => {
             window.location.reload(false);
-        }, 500);
+        }, 350);
     }
 
     return (
