@@ -2,5 +2,8 @@ import {atom} from "recoil";
 
 export const GammaState = atom({
     key: 'GammaState',
-    default: 0.0622677,
+    default:
+        0
+        //0.0622677,
+        //0.00622677
 });
