@@ -102,10 +102,18 @@ function CountriesListRightBar({dataSelector, dataSelectorCount}) {
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
+                                            let textColor = 'black';
+                                            if(column.id==="infectivity"){
+                                                if(value===0){
+                                                    textColor='green';
+                                                }else{
+                                                    textColor='red';
+                                                }
+                                            }
                                             return (
-                                                <TableCell style={{backgroundColor: 'white', color: 'black',}}
+                                                <TableCell style={{backgroundColor: 'white', color: textColor,}}
                                                            key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                    {column.id==="infectivity"? value===1 ? "Áno":"Nie" :column.format && typeof value === 'number' ? column.format(value) : value}
                                                 </TableCell>
                                             );
                                         })}

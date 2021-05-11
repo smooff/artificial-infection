@@ -34411,67 +34411,6 @@
         {
           "arcs": [
             [
-              [
-                36
-              ]
-            ],
-            [
-              [
-                37
-              ]
-            ],
-            [
-              [
-                38
-              ]
-            ],
-            [
-              [
-                39
-              ]
-            ],
-            [
-              [
-                40
-              ]
-            ],
-            [
-              [
-                41
-              ]
-            ],
-            [
-              [
-                42
-              ]
-            ],
-            [
-              [
-                43
-              ]
-            ]
-          ],
-          "type": "MultiPolygon",
-          "properties": {
-            "NAME": "Antarctica",
-            "NAME_LONG": "Antarctica",
-            "ABBREV": "Ant.",
-            "FORMAL_EN": "",
-            "POP_EST": 4050,
-            "POP_RANK": 4,
-            "GDP_MD_EST": 810,
-            "POP_YEAR": 2013,
-            "GDP_YEAR": 2013,
-            "ISO_A2": "AQ",
-            "ISO_A3": "ATA",
-            "CONTINENT": "Antarctica",
-            "REGION_UN": "Antarctica",
-            "SUBREGION": "Antarctica"
-          }
-        },
-        {
-          "arcs": [
-            [
               44
             ]
           ],

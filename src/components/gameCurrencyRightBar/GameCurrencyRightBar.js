@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import GameCurrencyModal from "./GameCurrencyModal";
+import {LocalAtmTwoTone} from "@material-ui/icons";
 
 function GameCurrencyRightBar() {
 
@@ -15,6 +16,8 @@ function GameCurrencyRightBar() {
             marginLeft: "15px",
         }, buttonText: {
             textTransform: 'none',
+        },drawerIcons:{
+            marginRight:"20px"
         }
     }));
     const classes = useStyles();
@@ -50,7 +53,8 @@ function GameCurrencyRightBar() {
             <Grid item xs={6}>
                 <Typography>
                     <Button onClick={handleClickOpenCurrency} className={classes.buttonText}>
-                        Herná mena: {gameCurrency}</Button>
+                        <LocalAtmTwoTone className={classes.drawerIcons}/>
+                         {gameCurrency}</Button>
                 </Typography>
             </Grid>
             <Grid item xs={6}>

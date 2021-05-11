@@ -23,8 +23,13 @@ import {
 } from "../../components/mapContainer/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
-import {Apps, Contacts, FastForward, Pause, PlayArrow, Public} from "@material-ui/icons";
-
+import {
+    AirplanemodeInactive, DeveloperBoardTwoTone, EmailTwoTone, ExitToAppTwoTone,
+    FastForward, ForumTwoTone, ListAltTwoTone, LocalHospitalTwoTone,
+    Pause,
+    PlayArrow, PollTwoTone, SecurityTwoTone
+} from "@material-ui/icons";
+import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalendarTwoTone';
 import TravelRestriction from "../../components/gameActions/travelRestriction/TravelRestriction";
 import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
 import {GameTimeState} from "../../data/GameTimeState";
@@ -87,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
         height: '100% !important',
         // padding: theme.spacing(3),
     },
+    drawerIcons:{
+        marginRight:"20px"
+    }
 }));
 
 
@@ -416,27 +424,27 @@ function MainPage() {
                 <Divider/>
                 <List>
                     <ListItem button onClick={handleClickOpenTravelRestriction}>
-                        <Public/>
+                        <AirplanemodeInactive className={classes.drawerIcons}/>
                         <ListItemText primary="Obmedzenia cestovania"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenTracingTesting}>
-                        <Contacts/>
+                        <PermContactCalendarTwoToneIcon className={classes.drawerIcons}/>
                         <ListItemText primary="Trasovanie kontaktov a testovanie"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenInfectionPrevention}>
-                        <Apps/>
+                        <SecurityTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Prevencia nakazenia"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenCure}>
-                        <Apps/>
+                        <LocalHospitalTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Liečba"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenCommunication}>
-                        <Apps/>
+                        <ForumTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Komunikácia a spolupráca"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenVaccine}>
-                        <Apps/>
+                        <DeveloperBoardTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Vakcína"/>
                     </ListItem>
                 </List>
@@ -445,15 +453,15 @@ function MainPage() {
 
                 <List>
                     <ListItem button onClick={handleClickOpenCountriesList}>
-                        <Apps/>
+                        <ListAltTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Prehľad všetkých krajín"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenGraph}>
-                        <Apps/>
+                        <PollTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Globálny graf"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenMessages}>
-                        <Apps/>
+                        <EmailTwoTone className={classes.drawerIcons}/>
                         <MessageWrapper/>
                     </ListItem>
                 </List>
@@ -462,7 +470,7 @@ function MainPage() {
 
                 <List>
                     <ListItem button onClick={handleClickOpenPageNavigation}>
-                        <Apps/>
+                        <ExitToAppTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Návrat na úvodnú stránku"/>
                     </ListItem>
                 </List>

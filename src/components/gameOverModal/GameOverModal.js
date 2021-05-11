@@ -6,7 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import GraphContainer from "../graphContainer/GraphContainer";
 import ListItemText from "@material-ui/core/ListItemText";
-import {Apps} from "@material-ui/icons";
+import {EmailTwoTone, ExitToAppTwoTone, ListAltTwoTone, PollTwoTone} from "@material-ui/icons";
 import CountriesListRightBar from "../countriesListRightBar/countriesListRightBar";
 import {
     infectiousCountriesCountSelector,
@@ -26,6 +26,9 @@ function GameOverModal({data}) {
         actionsButtons: {
             textAlign: "center",
             marginTop: "6px"
+        },
+        drawerIcons:{
+            marginRight:"20px"
         }
     }));
     const classes = useStyles();
@@ -82,21 +85,22 @@ function GameOverModal({data}) {
 
                 <List>
                     <ListItem button onClick={handleClickOpenCountriesList}>
-                        <Apps/>
+                        <ListAltTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Prehľad všetkých krajín"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenGraph}>
-                        <Apps/>
+                        <PollTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Globálny graf"/>
                     </ListItem>
                     <ListItem button onClick={handleClickOpenMessages}>
-                        <Apps/>
+                        <EmailTwoTone className={classes.drawerIcons}/>
                         <MessageWrapper/>
                     </ListItem>
 
                     <Divider/>
 
                     <ListItem button onClick={handleClickOpenPageNavigation} className={classes.actionsButtons}>
+                        <ExitToAppTwoTone/>
                         <ListItemText primary="Návrat na úvodnú stránku"/>
                     </ListItem>
                 </List>
