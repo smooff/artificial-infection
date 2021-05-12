@@ -5,7 +5,7 @@ import {GraphDataState} from "../../data/GraphDataState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 
-function GraphContainer() {
+function GraphContainer({dataWidth, dataHeight}) {
     //vyber typu grafu
     const [graphType, setGraphType] = useState(() => ['infectious']);
     const handleGraphType = (event, newType) => {
@@ -16,6 +16,15 @@ function GraphContainer() {
     };
 
     const data = useRecoilValue(GraphDataState);
+
+    let graphHeight = 500;
+    let graphWidth = 900;
+    if (dataHeight < 400) {
+        graphHeight = dataHeight * 0.65;
+    }
+    if (dataWidth < 820) {
+        graphWidth = dataWidth * 0.9;
+    }
 
     return (
         <div>
@@ -38,10 +47,10 @@ function GraphContainer() {
                     <Text style={{color: 'black'}}>Zosnulí</Text>
                 </ToggleButton>
             </ToggleButtonGroup>
-            <ResponsiveContainer width={900} height={500}>
+            <ResponsiveContainer width={graphWidth} height={graphHeight}>
                 <LineChart
-                    width={900}
-                    height={500}
+                    width={graphWidth}
+                    height={graphHeight}
                     data={data}
                     margin={{
                         top: 5,

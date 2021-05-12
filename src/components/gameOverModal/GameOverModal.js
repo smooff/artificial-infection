@@ -18,7 +18,7 @@ import MessageWrapper from "../messageModal/MessageWrapper";
 import PagesNavigationModal from "../pagesNavigation/PagesNavigationModal";
 
 
-function GameOverModal({data}) {
+function GameOverModal({data, dataWidth, dataHeight}) {
     const useStyles = makeStyles((theme) => ({
         itemAligns: {
             textAlign: "center",
@@ -113,13 +113,13 @@ function GameOverModal({data}) {
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseCountriesList}>
                     Zoznam krajín
                 </DialogTitle>
-                <CountriesListRightBar dataSelector={separateCountryByInfectivitySelector}
+                <CountriesListRightBar dataHeight={dataHeight} dataSelector={separateCountryByInfectivitySelector}
                                        dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
             <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
                     aria-labelledby="customized-dialog-title"
                     open={openGraph}>
-                <GraphContainer/>
+                <GraphContainer dataWidth={dataWidth} dataHeight={dataHeight}/>
             </Dialog>
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
                     aria-labelledby="customized-dialog-title"

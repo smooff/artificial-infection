@@ -15,13 +15,20 @@ import {useRecoilValue} from "recoil";
 import {Text} from "recharts";
 
 
-function CountriesListRightBar({dataSelector, dataSelectorCount}) {
+function CountriesListRightBar({dataSelector, dataSelectorCount, dataHeight}) {
+
+    let tableContainer = 440;
+
+    if(dataHeight<400){
+        tableContainer = dataHeight*0.44;
+    }
+
     const useStyles = makeStyles((theme) => ({
         root: {
             width: '100%',
         },
         container: {
-            maxHeight: 440,
+            maxHeight: tableContainer,
         },
     }));
     const classes = useStyles();
@@ -38,35 +45,35 @@ function CountriesListRightBar({dataSelector, dataSelectorCount}) {
         {
             id: 'population',
             label: 'Populácia',
-            minWidth: 100,
+            minWidth: 60,
             align: 'right',
             format: (value) => value.toLocaleString('de-DE'),
         },
         {
             id: 'susceptibles',
             label: 'Náchylní',
-            minWidth: 100,
+            minWidth: 60,
             align: 'right',
             format: (value) => value.toLocaleString('de-DE'),
         },
         {
             id: 'infectious',
             label: 'Infekční',
-            minWidth: 100,
+            minWidth: 60,
             align: 'right',
             format: (value) => value.toLocaleString('de-DE'),
         },
         {
             id: 'recovered',
             label: 'Zotavení',
-            minWidth: 100,
+            minWidth: 60,
             align: 'right',
             format: (value) => value.toLocaleString('de-DE'),
         },
         {
             id: 'deceased',
             label: 'Zosnulí',
-            minWidth: 100,
+            minWidth: 60,
             align: 'right',
             format: (value) => value.toLocaleString('de-DE'),
         }
@@ -76,8 +83,8 @@ function CountriesListRightBar({dataSelector, dataSelectorCount}) {
         <DialogContent dividers>
             {/*<Grid container direction={"row"}>*/}
             <Typography variant="h5">
-                Infikovnané krajiny:<Text style={{color: 'red'}}>
-                {count[0]}</Text> Neinfikované krajiny:<Text style={{color: 'limegreen'}}>
+                Infikované krajiny: <Text style={{color: 'red'}}>
+                {count[0]}</Text> Neinfikované krajiny: <Text style={{color: 'limegreen'}}>
                 {count[1]}</Text>
             </Typography>
             <Paper className={classes.root}>

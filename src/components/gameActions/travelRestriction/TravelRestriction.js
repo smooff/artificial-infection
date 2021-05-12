@@ -10,6 +10,7 @@ import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState";
 import MuiAlert from "@material-ui/lab/Alert";
 import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
+import PriceInfoSingleMeasurment from "../PriceInfoSingleMeasurment";
 
 
 function TravelRestriction(props) {
@@ -29,11 +30,11 @@ function TravelRestriction(props) {
     const classes = useStyles();
 
 
-    const [linkText, setLinkText] = useState();
+    const [linkText, setLinkText] = useState("pre zobrazenie popisu klikni na opatrenie");
     const changeLinkText = (text) => {
         setLinkText(text);
     };
-    const [linkPrice, setLinkPrice] = useState();
+    const [linkPrice, setLinkPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
     const changeLinkPrice = (price) => {
         setLinkPrice(price);
     };
@@ -304,9 +305,7 @@ function TravelRestriction(props) {
                 Aktiváciou týchto opatrení sa znižuje riziko šírenia nákazy na jednotlivých svetadieloch alebo
                 celosvetovo.
                 <Divider/>
-                Popis: {linkText}
-                <br/>
-                Cena: {linkPrice}
+                <PriceInfoSingleMeasurment price={linkPrice} text={linkText}/>
             </Typography>
 
             <RegionTravelRestriction regionEN="Europe" regionName="Európa"
@@ -389,6 +388,9 @@ function TravelRestriction(props) {
                     {showRiskCountriesRestriction ? <Results cislo={4}/> : null}
                 </Grid>
             </Grid>
+
+            <br/>
+
         </DialogContent>
 
     );

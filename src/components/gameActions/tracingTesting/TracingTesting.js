@@ -12,6 +12,7 @@ import {GameCurrencyState} from "../../../data/currencies/GameCurrencyState";
 import Divider from "@material-ui/core/Divider";
 import MuiAlert from "@material-ui/lab/Alert";
 import {BetaState} from "../../../data/parameters/BetaState";
+import PriceInfoSingleMeasurment from "../PriceInfoSingleMeasurment";
 
 function TracingTesting(props) {
     const useStyles = makeStyles((theme) => ({
@@ -30,8 +31,8 @@ function TracingTesting(props) {
     const classes = useStyles();
 
     //sprava pre jednotlive opatrenie
-    const [text, setText] = useState("");
-    const [price, setPrice] = useState();
+    const [text, setText] = useState("pre zobrazenie popisu klikni na opatrenie");
+    const [price, setPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
 
     //data s opatreniami
     const [measuresActualState, setMeasuresActualState] = useRecoilState(TracingTestingState);
@@ -623,13 +624,7 @@ function TracingTesting(props) {
             </Typography>
             <Divider/>
             <Grid container>
-                <Grid item xs={12}>
-                    <Typography className={classes.title} color="textPrimary" gutterBottom>
-                        Popis: {text}
-                        <br/>
-                        Cena: {price}
-                    </Typography>
-                </Grid>
+                <PriceInfoSingleMeasurment price={price} text={text}/>
 
                 <Grid item xs={12} className={classes.actionButtons}>
                     <Button className={classes.buttonSize} color={buttonTestingColor}
@@ -744,6 +739,9 @@ function TracingTesting(props) {
                     {showAdvancedContactTracing ? <Results cislo={10}/> : null}
                 </Grid>
             </Grid>
+
+            <br/>
+            <Divider/>
 
         </DialogContent>
 

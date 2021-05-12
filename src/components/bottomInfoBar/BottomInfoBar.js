@@ -9,7 +9,7 @@ function BottomInfoBar({name, dataSelector}) {
     const useStyles = makeStyles((theme) => ({
         root: {},
         title:{
-             fontSize:"25px"
+             fontSize:"20px"
         }
 
     }));

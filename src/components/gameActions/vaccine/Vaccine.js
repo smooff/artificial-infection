@@ -16,6 +16,7 @@ import {getRandomNumberInRange} from "../../mapContainer/MapContainer";
 import {MessageModalState} from "../../../data/MessageModalState";
 import {GameTimeState} from "../../../data/GameTimeState";
 import {MedicalUnitsCurrencyState} from "../../../data/currencies/MedicalUnitsCurrencyState";
+import PriceInfoSingleMeasurment from "../PriceInfoSingleMeasurment";
 
 function Vaccine() {
     const useStyles = makeStyles((theme) => ({
@@ -34,9 +35,9 @@ function Vaccine() {
     const classes = useStyles();
 
 
-    const [linkText, setLinkText] = useState();
+    const [linkText, setLinkText] = useState("pre zobrazenie popisu klikni na opatrenie");
 
-    const [linkPrice, setLinkPrice] = useState();
+    const [linkPrice, setLinkPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
 
 
     //herna mena
@@ -440,9 +441,7 @@ function Vaccine() {
                 Tieto opatrenia sa týkajú vývoju vakcíny potrebnej na vyhratie hry. A následného urýchlenie klinického
                 vývoja, chemickej výroby a ďalších.
                 <Divider/>
-                Popis: {linkText}
-                <br/>
-                Cena: {linkPrice}
+                <PriceInfoSingleMeasurment price={linkPrice} text={linkText}/>
             </Typography>
 
             <Grid container>
@@ -592,6 +591,9 @@ function Vaccine() {
 
 
             </Grid>
+
+            <br/>
+
         </DialogContent>
 
     );

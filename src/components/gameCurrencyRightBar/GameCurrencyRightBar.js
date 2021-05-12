@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Button, CircularProgress, Dialog, DialogTitle} from "@material-ui/core";
+import {Box, Button, CircularProgress, Dialog, DialogTitle, Tooltip} from "@material-ui/core";
 import {useRecoilState} from "recoil";
 import {GameCurrencyState} from "../../data/currencies/GameCurrencyState";
 import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
@@ -16,8 +16,8 @@ function GameCurrencyRightBar() {
             marginLeft: "15px",
         }, buttonText: {
             textTransform: 'none',
-        },drawerIcons:{
-            marginRight:"20px"
+        }, drawerIcons: {
+            marginRight: "20px"
         }
     }));
     const classes = useStyles();
@@ -52,32 +52,36 @@ function GameCurrencyRightBar() {
         <Grid container>
             <Grid item xs={6}>
                 <Typography>
-                    <Button onClick={handleClickOpenCurrency} className={classes.buttonText}>
-                        <LocalAtmTwoTone className={classes.drawerIcons}/>
-                         {gameCurrency}</Button>
+                    <Tooltip title="Herná mena">
+                        <Button onClick={handleClickOpenCurrency} className={classes.buttonText}>
+                            <LocalAtmTwoTone className={classes.drawerIcons}/>
+                            {gameCurrency}</Button>
+                    </Tooltip>
                 </Typography>
             </Grid>
             <Grid item xs={6}>
-                <Button onClick={addCurrency} className={classes.progressBar}>
-                    <Box position="relative" display="inline-flex">
-                        <CircularProgress variant="determinate" value={clickableGameCurrency * 10}
-                                          color={clickableGameCurrency === 10 ? "secondary" : "primary"}/>
-                        <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <Typography variant="caption" component="div" color="textSecondary">
-                                {clickableGameCurrency}
-                            </Typography>
+                <Tooltip title="Herná mena na prevzatie">
+                    <Button onClick={addCurrency} className={classes.progressBar}>
+                        <Box position="relative" display="inline-flex">
+                            <CircularProgress variant="determinate" value={clickableGameCurrency * 10}
+                                              color={clickableGameCurrency === 10 ? "secondary" : "primary"}/>
+                            <Box
+                                top={0}
+                                left={0}
+                                bottom={0}
+                                right={0}
+                                position="absolute"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                <Typography variant="caption" component="div" color="textSecondary">
+                                    {clickableGameCurrency}
+                                </Typography>
+                            </Box>
                         </Box>
-                    </Box>
-                </Button>
+                    </Button>
+                </Tooltip>
             </Grid>
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseCurrency}
                     aria-labelledby="customized-dialog-title"

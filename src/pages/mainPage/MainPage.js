@@ -8,9 +8,9 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import MapContainer from "../../components/mapContainer/MapContainer";
+import MapContainer, {getWindowDimensions} from "../../components/mapContainer/MapContainer";
 
-import {Button, Dialog, DialogTitle} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, Tooltip} from "@material-ui/core";
 
 import {useRecoilState} from "recoil";
 import {
@@ -53,54 +53,82 @@ import {MessageModalState} from "../../data/MessageModalState";
 import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
 import {GameOverState} from "../../data/GameOverState";
 import GameOverModal from "../../components/gameOverModal/GameOverModal";
-
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-    root: {},
-    downInfoBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginRight: drawerWidth,
-        backgroundColor: 'lightgrey',
-    },
-    bottom: {
-        width: '100%',
-        position: 'fixed',
-        bottom: 15,
-    },
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginRight: drawerWidth,
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    gameSpeedButtons: {
-        margin: '2px',
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    content: {
-        // flexGrow: 1,
-        backgroundColor: 'lightgrey',
-        position: 'absolute',
-        width: '100% !important',
-        height: '100% !important',
-        // padding: theme.spacing(3),
-    },
-    drawerIcons:{
-        marginRight:"20px"
-    }
-}));
+import Typography from "@material-ui/core/Typography";
 
 
 function MainPage() {
 
+    let drawerWidth = 240;
+
+    function useWindowDimensions() {
+        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+        useEffect(() => {
+            function handleResize() {
+                setWindowDimensions(getWindowDimensions());
+            }
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
+
+        return windowDimensions;
+    }
+
+    const {height, width} = useWindowDimensions();
+
+    const mobileDrawerBreakpoint = 820;
+
+    if (width < mobileDrawerBreakpoint) {
+        drawerWidth = 200;
+    }
+    const useStyles = makeStyles((theme) => ({
+        root: {},
+        downInfoBar: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginRight: drawerWidth,
+            backgroundColor: 'lightgrey',
+        },
+        bottom: {
+            width: '100%',
+            position: 'fixed',
+            bottom: 15,
+        },
+        appBar: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginRight: drawerWidth,
+        },
+        drawer: {
+            width: drawerWidth,
+            flexShrink: 0,
+        },
+        drawerPaper: {
+            width: drawerWidth,
+        },
+        gameSpeedButtons: {
+            margin: "2px"
+        },
+        gameSpeedButtonsMobile: {
+            margin: '1px',
+        },
+        // necessary for content to be below app bar
+        toolbar: theme.mixins.toolbar,
+        content: {
+            // flexGrow: 1,
+            backgroundColor: 'lightgrey',
+            position: 'absolute',
+            width: '100% !important',
+            height: '100% !important',
+            // padding: theme.spacing(3),
+        },
+        drawerIcons: {
+            marginRight: "20px"
+        },
+        gameSpeedButtonsWrapperMobile: {
+            padding: "0px"
+        },
+        gameSpeedButtonsWrapper: {}
+    }));
 
     const classes = useStyles();
 
@@ -126,7 +154,7 @@ function MainPage() {
         setPauseOutline("contained");
         setUnpauseOutline("outlined");
         setForwardOutline("outlined");
-    },[setgameFlow])
+    }, [setgameFlow])
 
     const gameUnpause = () => {
         setgameFlow(true);
@@ -259,7 +287,7 @@ function MainPage() {
     };
 
     //game over check
-    const [gameOver, ] = useRecoilState(GameOverState);
+    const [gameOver,] = useRecoilState(GameOverState);
     const [openGameOver, setOpenGameOver] = React.useState(false);
 
     useEffect(() => {
@@ -278,8 +306,6 @@ function MainPage() {
     const handleMapColor = (event, newColor) => {
         setmapColor(newColor);
     };
-
-
 
 
     return (
@@ -379,34 +405,47 @@ function MainPage() {
                     aria-label="text alignment"
                     style={{display: 'flex'}}
                 >
-                    <ToggleButton value="infectious" aria-label="left aligned" style={{flex: 1}}>
-                        Infekční
-                    </ToggleButton>
-                    <ToggleButton value="deceased" aria-label="centered" style={{flex: 1}}>
-                        Zosnulí
-                    </ToggleButton>
+                    <Tooltip title="Mapa infekčných">
+                        <ToggleButton value="infectious" aria-label="left aligned" style={{flex: 1}}>
+                            Infekční
+                        </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="Mapa zosnulých">
+                        <ToggleButton value="deceased" aria-label="centered" style={{flex: 1}}>
+                            Zosnulí
+                        </ToggleButton>
+                    </Tooltip>
                 </ToggleButtonGroup>
 
                 <Divider/>
                 <List>
                     <ListItem button>
-                        <ListItemText>
-                            <DateRightBar dateState={GameTimeState}/>
-                        </ListItemText>
+                        <Tooltip title="Herný dátum">
+                            <ListItemText>
+                                <DateRightBar dateState={GameTimeState}/>
+                            </ListItemText>
+                        </Tooltip>
                     </ListItem>
-                    <ListItem button>
-                        <Button onClick={gamePause} color={pauseColor} variant={pauseOutline}
-                                className={classes.gameSpeedButtons}>
-                            <Pause/>
-                        </Button>
-                        <Button onClick={gameUnpause} color={unpauseColor} variant={unpauseOutline}
-                                className={classes.gameSpeedButtons}>
-                            <PlayArrow/>
-                        </Button>
-                        <Button onClick={gameForward} color={forwardColor} variant={forwardOutline}
-                                className={classes.gameSpeedButtons}>
-                            <FastForward/>
-                        </Button>
+                    <ListItem button
+                              className={width < mobileDrawerBreakpoint ? classes.gameSpeedButtonsWrapperMobile : classes.gameSpeedButtonsWrapper}>
+                        <Tooltip title="Stopnutie hry">
+                            <Button onClick={gamePause} color={pauseColor} variant={pauseOutline}
+                                    className={width < mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                <Pause/>
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="Pokračovať v hre">
+                            <Button onClick={gameUnpause} color={unpauseColor} variant={unpauseOutline}
+                                    className={width < mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                <PlayArrow/>
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="Zrýchliť hru">
+                            <Button onClick={gameForward} color={forwardColor} variant={forwardOutline}
+                                    className={width < mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                <FastForward/>
+                            </Button>
+                        </Tooltip>
                     </ListItem>
 
                     <Divider/>
@@ -483,7 +522,7 @@ function MainPage() {
                 <DialogTitle id="customized-dialog-title" onClose={handleClickCloseCountriesList}>
                     Zoznam krajín
                 </DialogTitle>
-                <CountriesListRightBar dataSelector={separateCountryByInfectivitySelector}
+                <CountriesListRightBar dataHeight={height} dataSelector={separateCountryByInfectivitySelector}
                                        dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
@@ -538,7 +577,7 @@ function MainPage() {
             <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
                     aria-labelledby="customized-dialog-title"
                     open={openGraph}>
-                <GraphContainer/>
+                <GraphContainer dataWidth={width} dataHeight={height}/>
             </Dialog>
 
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust}
@@ -563,8 +602,13 @@ function MainPage() {
                 <PagesNavigationModal/>
             </Dialog>
 
-            <Dialog  fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
-              <GameOverModal data={gameOver}/>
+            <Dialog fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
+                <GameOverModal data={gameOver} dataWidth={width} dataHeight={height}/>
+            </Dialog>
+
+            {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
+            <Dialog onClose={height < width} open={width < height}>
+                <Typography>Pre používanie aplikácie otočte zariadenie na šírku (horizontálne)</Typography>
             </Dialog>
         </div>
     );

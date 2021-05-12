@@ -1,28 +1,32 @@
-import React, {useState} from 'react';
-import {Button, Container, createMuiTheme, Dialog, ThemeProvider, Typography} from "@material-ui/core";
+import React, {useEffect, useState} from 'react';
+import {Button, Container, Dialog, Typography} from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
+import ScreenOrientation from "../screenOrientation";
+import {getWindowDimensions} from "../../components/mapContainer/MapContainer";
 
-
-const theme = createMuiTheme({
-    typography: {
-        // In Chinese and Japanese the characters are usually larger,
-        // so a smaller fontsize may be appropriate.
-        fontSize: 20,
-        h1: {
-            color: 'white',
-            opacity: 0.8,
-        },
-        h2: {
-            color: '#F8F8FF',
-            opacity: 0.7,
-        },
-    },
-});
 
 function WelcomePage() {
+
+    function useWindowDimensions() {
+        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+        useEffect(() => {
+            function handleResize() {
+                setWindowDimensions(getWindowDimensions());
+            }
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
+
+        return windowDimensions;
+    }
+
+    const {height, width} = useWindowDimensions();
+
     const useStyles = makeStyles((theme) => ({
         inviteModal: {
             padding: "10px"
@@ -36,6 +40,18 @@ function WelcomePage() {
             fontSize: "20px",
 
         },
+        titulok: {
+            color: 'white',
+            opacity: 0.8,
+        },
+        podtitulok: {
+            color: '#F8F8FF',
+            opacity: 0.7,
+        },
+        titulokWrapper: {
+            marginTop: "10%"
+        },
+        titulokWrapperMobile: {}
     }));
     const classes = useStyles();
 
@@ -53,17 +69,17 @@ function WelcomePage() {
                     direction="column"
                     justify="center"
                     alignItems="center"
-                    spacing={5}
+                    spacing={height > 360 ? 5 : 1}
                 >
-                    <Grid item xs={12}>
-                        <ThemeProvider theme={theme}>
-                            <Typography variant="h1" component="h2">
-                                Bakalárska práca
-                            </Typography>
-                            <Typography variant="h2" component="h2">
-                                Strategická hra založená na simulácii epidémie
-                            </Typography>
-                        </ThemeProvider>
+                    <Grid item xs={12} className={height > 280 ? classes.titulokWrapper : classes.titulokWrapperMobile}>
+                        <Typography variant={width < 400 ? "h2" : width < 820 ? "h3" : "h1"} component="h2"
+                                    className={classes.titulok}>
+                            Bakalárska práca
+                        </Typography>
+                        <Typography variant={width < 400 ? "h3" : width < 820 ? "h4" : "h2"} component="h2"
+                                    className={classes.podtitulok}>
+                            Strategická hra založená na simulácii epidémie
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Link to="/game">
@@ -91,7 +107,9 @@ function WelcomePage() {
                         Prečítal som a rozumiem
                     </Button>
                 </Dialog>
+                <ScreenOrientation/>
             </Container>
+
         </div>
     );
 }

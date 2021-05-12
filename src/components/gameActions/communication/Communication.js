@@ -14,6 +14,7 @@ import {CommunicationState} from "./CommunicationState";
 import {BetaState} from "../../../data/parameters/BetaState";
 import {DeltaState} from "../../../data/parameters/DeltaState";
 import {GameTrustState} from "../../gameTrust/GameTrustState";
+import PriceInfoSingleMeasurment from "../PriceInfoSingleMeasurment";
 
 function Communication() {
     const useStyles = makeStyles((theme) => ({
@@ -32,8 +33,8 @@ function Communication() {
     const classes = useStyles();
 
     //sprava pre jednotlive opatrenie
-    const [text, setText] = useState("");
-    const [price, setPrice] = useState();
+    const [text, setText] = useState("pre zobrazenie popisu klikni na opatrenie");
+    const [price, setPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
 
     //data s opatreniami
     const [measuresActualState, setMeasuresActualState] = useRecoilState(CommunicationState);
@@ -731,13 +732,7 @@ function Communication() {
             </Typography>
             <Divider/>
             <Grid container>
-                <Grid item xs={12}>
-                    <Typography className={classes.title} color="textPrimary" gutterBottom>
-                        Popis: {text}
-                        <br/>
-                        Cena: {price}
-                    </Typography>
-                </Grid>
+                <PriceInfoSingleMeasurment price={price} text={text}/>
 
                 <Grid item xs={12} className={classes.actionButtons}>
                     <Button className={classes.buttonSize} color={buttonEducateCommunicateColor}
@@ -866,6 +861,8 @@ function Communication() {
                     {showCurfew ? <Results cislo={4}/> : null}
                 </Grid>
             </Grid>
+
+            <br/>
 
         </DialogContent>
 

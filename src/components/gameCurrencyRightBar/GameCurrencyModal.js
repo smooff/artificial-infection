@@ -46,6 +46,7 @@ function GameCurrencyModal() {
     const [button1, setButton1] = useState("default");
     const [button2, setButton2] = useState("default");
     const [button3, setButton3] = useState("default");
+    const [button4, setButton4] = useState("default");
     const handleButtonClick = (textMessage, buttonNumber, buttonCena) => {
         setText(textMessage);
         setCena(buttonCena);
@@ -54,16 +55,25 @@ function GameCurrencyModal() {
                 setButton1("primary");
                 setButton2("default");
                 setButton3("default");
+                setButton4("default");
                 break;
             case 2:
                 setButton1("default");
                 setButton2("primary");
                 setButton3("default");
+                setButton4("default");
                 break;
             case 3:
                 setButton1("default");
                 setButton2("default");
                 setButton3("primary");
+                setButton4("default");
+                break;
+            case 4:
+                setButton1("default");
+                setButton2("default");
+                setButton3("default");
+                setButton4("primary");
                 break;
             default:
                 return null;
@@ -126,9 +136,30 @@ function GameCurrencyModal() {
         <div>
             <Card>
                 <CardContent>
+                    <Grid container xs={12} className={classes.itemAlign}>
+                        <Grid item xs={12} className={classes.itemAlign}>
+                            {text === "" ? "" :
+                                <div>
+                                    <Typography className={classes.textColor}>Popis</Typography>
+                                    <Typography>{text}</Typography>
+                                    <Typography color={"secondary"}>
+                                        {cena > 0 ? cena === 5 ? "Cena: " + cena + " hernej meny / 10 jednotiek" : "Cena: " + cena + " zdrav. jednotiek / jedna aktivácia" : ""}
+                                    </Typography>
+                                </div>}
+                        </Grid>
+                    </Grid>
+
+                    <br/>
+                    <Divider/>
+
                     <Grid container spacing={3}>
+
+
                         <Grid item xs={3} className={classes.itemAlign}>
-                            <Typography variant={"h6"}>Aktuálna herná mena</Typography>
+                            <Typography variant={"h6"}>
+                                <Button color={button4} className={classes.headerButton} onClick={() => {
+                                    handleButtonClick("Aktuálny počet hernej meny.", 4, 0)
+                                }}>Aktuálna herná mena</Button></Typography>
                         </Grid>
 
                         <Grid item xs={3} className={classes.itemAlign}>
@@ -155,20 +186,6 @@ function GameCurrencyModal() {
                                     handleButtonClick("Zakúpením permanentného zníženia smrtnosti sa počas celej zníži hry smrtnosť nákazy. Táto akcia sa dá viacnásobne zakúpiť za zdravotnícke jednotky a je nevratná.", 3, mortalityInhibitorPrice)
                                 }}>Permanentné zníženie smrtnosti</Button>
                             </Typography>
-                        </Grid>
-                    </Grid>
-
-                    <br/>
-
-                    <Grid container xs={12} className={classes.itemAlign}>
-                        <Grid item xs={12} className={classes.itemAlign}>
-                            {text === "" ? "" :
-                                <div>
-                                    <Typography className={classes.textColor}>Popis</Typography>
-                                    <Typography>{text}</Typography>
-                                    <Typography
-                                        variant={"h6"}> Cena: {cena} {cena === 5 ? "hernej meny / 10 jednotiek" : "zdrav. jednotiek / jedna aktivácia"}</Typography>
-                                </div>}
                         </Grid>
                     </Grid>
 
