@@ -69,14 +69,14 @@ function WelcomePage() {
                     direction="column"
                     justify="center"
                     alignItems="center"
-                    spacing={height > 360 ? 5 : 1}
+                    spacing={height > 380 ? 5 : 1}
                 >
-                    <Grid item xs={12} className={height > 280 ? classes.titulokWrapper : classes.titulokWrapperMobile}>
+                    <Grid item xs={12} className={height > 300 ? classes.titulokWrapper : classes.titulokWrapperMobile}>
                         <Typography variant={width < 400 ? "h2" : width < 820 ? "h3" : "h1"} component="h2"
                                     className={classes.titulok}>
                             Bakalárska práca
                         </Typography>
-                        <Typography variant={width < 400 ? "h3" : width < 820 ? "h4" : "h2"} component="h2"
+                        <Typography variant={width < 300 ? "h3" : width < 820 ? "h4" : "h2"} component="h2"
                                     className={classes.podtitulok}>
                             Strategická hra založená na simulácii epidémie
                         </Typography>
