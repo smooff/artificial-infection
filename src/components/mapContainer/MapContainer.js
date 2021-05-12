@@ -54,6 +54,15 @@ export function getRandomNumberInRange(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
+//pracuje s vyskou a sirkou okna, aby bola mapa aj stranka responz.
+export function getWindowDimensions() {
+    const {innerWidth: width, innerHeight: height} = window;
+    return {
+        width,
+        height
+    };
+}
+
 const MapContainer = ({setTooltipContent}) => {
     const [data, setData] = useState([]);
 
@@ -92,15 +101,6 @@ const MapContainer = ({setTooltipContent}) => {
     const mapData = useRecoilValue(mapContainerState);
 
 
-    //pracuje s vyskou a sirkou okna, aby bola mapa responz.
-    function getWindowDimensions() {
-        const {innerWidth: width, innerHeight: height} = window;
-        return {
-            width,
-            height
-        };
-    }
-
     function useWindowDimensions() {
         const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -117,7 +117,6 @@ const MapContainer = ({setTooltipContent}) => {
     }
 
     const {height, width} = useWindowDimensions();
-    //PO TADIALTO
 
 
 //--------------------------------------------------------->Z MAINPAGE
@@ -1331,6 +1330,10 @@ const MapContainer = ({setTooltipContent}) => {
 
     const mapHeight = height * 0.745;
     const mapWidth = width * 0.75;
+
+    //responzivna mapa
+    let mapScale = ((width/80)*11.2);
+
     return (
         <div>
             <Dialog fullWidth={true} maxWidth={"xs"} onClose={handleCloseCountryModal}
@@ -1343,7 +1346,7 @@ const MapContainer = ({setTooltipContent}) => {
             <ComposableMap
                 projectionConfig={{
                     rotate: [-10, 0, 0],
-                    scale: 250
+                    scale: mapScale
                 }}
                 width={mapWidth}
                 height={mapHeight}

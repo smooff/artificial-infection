@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     downInfoBar: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginRight: drawerWidth,
+        backgroundColor: 'lightgrey',
     },
     bottom: {
         width: '100%',
@@ -331,16 +332,16 @@ function MainPage() {
                     {/*</BottomNavigation>*/}
                     <Grid container direction="row" justify="space-around" alignItems="center" spacing={1}
                           className={classes.downInfoBar}>
-                        <Grid item xs={3}>
+                        <Grid item xs={6} md={3}>
                             <BottomInfoBar name="Náchylní" dataSelector={susceptiblesSelector}/>
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={6} md={3}>
                             <BottomInfoBar name="Infekční" dataSelector={infectiousSelector}/>
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={6} md={3}>
                             <BottomInfoBar name="Zotavení" dataSelector={recoveredSelector}/>
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={6} md={3}>
                             <BottomInfoBar name="Zosnulí" dataSelector={deceasedSelector}/>
                         </Grid>
                     </Grid>
