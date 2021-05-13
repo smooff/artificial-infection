@@ -81,7 +81,8 @@ function WelcomePage() {
                     alignItems="center"
                     spacing={height > 380 ? 5 : 1}
                 >
-                    <Grid item xs={12} className={height > 300 ? classes.titleTextWrapper : classes.titleTextWrapperMobile}>
+                    <Grid item xs={12}
+                          className={height > 300 ? classes.titleTextWrapper : classes.titleTextWrapperMobile}>
                         <Typography variant={width < 400 ? "h2" : width < 820 ? "h3" : "h1"} component="h2"
                                     className={classes.titleText}>
                             Bakalárska práca
@@ -120,7 +121,7 @@ function WelcomePage() {
                 <ScreenOrientation/>
             </Container>
 
-            <Dialog fullWidth={true} maxWidth={"xl"} onClose={handleClickCloseTutorial} open={openTutorial}>
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseTutorial} open={openTutorial}>
                 <TutorialImageCarousel/>
             </Dialog>
         </div>
