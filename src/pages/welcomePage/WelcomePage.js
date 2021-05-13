@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import ScreenOrientation from "../screenOrientation";
 import {getWindowDimensions} from "../../components/mapContainer/MapContainer";
+import TutorialImageCarousel from "../../components/TutorialImageCarousel/TutorialImageCarousel";
 
 
 function WelcomePage() {
@@ -27,7 +28,7 @@ function WelcomePage() {
 
     const {height, width} = useWindowDimensions();
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         inviteModal: {
             padding: "10px"
         }, textCentering: {
@@ -40,18 +41,18 @@ function WelcomePage() {
             fontSize: "20px",
 
         },
-        titulok: {
+        titleText: {
             color: 'white',
             opacity: 0.8,
         },
-        podtitulok: {
+        subTitleText: {
             color: '#F8F8FF',
             opacity: 0.7,
         },
-        titulokWrapper: {
+        titleTextWrapper: {
             marginTop: "10%"
         },
-        titulokWrapperMobile: {}
+        titleTextWrapperMobile: {},
     }));
     const classes = useStyles();
 
@@ -59,6 +60,15 @@ function WelcomePage() {
     const [openInviteModal, setOpenInviteModal] = useState(true);
     const handleCloseInviteModal = () => {
         setOpenInviteModal(false);
+    };
+
+    //tutorial modal
+    const [openTutorial, setOpenTutorial] = React.useState(false);
+    const handleClickOpenTutorial = () => {
+        setOpenTutorial(true);
+    };
+    const handleClickCloseTutorial = () => {
+        setOpenTutorial(false);
     };
 
     return (
@@ -71,13 +81,13 @@ function WelcomePage() {
                     alignItems="center"
                     spacing={height > 380 ? 5 : 1}
                 >
-                    <Grid item xs={12} className={height > 300 ? classes.titulokWrapper : classes.titulokWrapperMobile}>
+                    <Grid item xs={12} className={height > 300 ? classes.titleTextWrapper : classes.titleTextWrapperMobile}>
                         <Typography variant={width < 400 ? "h2" : width < 820 ? "h3" : "h1"} component="h2"
-                                    className={classes.titulok}>
+                                    className={classes.titleText}>
                             Bakalárska práca
                         </Typography>
                         <Typography variant={width < 300 ? "h3" : width < 820 ? "h4" : "h2"} component="h2"
-                                    className={classes.podtitulok}>
+                                    className={classes.subTitleText}>
                             Strategická hra založená na simulácii epidémie
                         </Typography>
                     </Grid>
@@ -87,7 +97,7 @@ function WelcomePage() {
                         </Link>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button size={"small"} variant="contained">Ako hrať?</Button>
+                        <Button size={"small"} variant="contained" onClick={handleClickOpenTutorial}>Ako hrať?</Button>
                     </Grid>
                 </Grid>
 
@@ -110,6 +120,9 @@ function WelcomePage() {
                 <ScreenOrientation/>
             </Container>
 
+            <Dialog fullWidth={true} maxWidth={"xl"} onClose={handleClickCloseTutorial} open={openTutorial}>
+                <TutorialImageCarousel/>
+            </Dialog>
         </div>
     );
 }
