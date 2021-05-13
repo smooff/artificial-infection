@@ -54,6 +54,7 @@ import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigati
 import {GameOverState} from "../../data/GameOverState";
 import GameOverModal from "../../components/gameOverModal/GameOverModal";
 import Typography from "@material-ui/core/Typography";
+import ScreenOrientation from "../screenOrientation";
 
 
 function MainPage() {
@@ -607,9 +608,7 @@ function MainPage() {
             </Dialog>
 
             {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
-            <Dialog onClose={height < width} open={width < height}>
-                <Typography>Pre používanie aplikácie otočte zariadenie na šírku (horizontálne)</Typography>
-            </Dialog>
+            <ScreenOrientation/>
         </div>
     );
 }

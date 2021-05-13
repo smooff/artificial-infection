@@ -23,17 +23,19 @@ function ScreenOrientation() {
 
     const useStyles = makeStyles((theme) => ({
         root: {
-            maxWidth: width*0.9,
-            maxHeight: height*0.9,
-            padding:"0"
+            maxWidth: width * 0.9,
+            maxHeight: height * 0.9,
+            padding: "0",
+            marginLeft: "10px"
         },
     }));
 
     const classes = useStyles();
     return (
         <div>
-            <Dialog onClose={height<width} open={width<height}>
-                <Typography className={classes.root}>Pre používanie aplikácie otočte zariadenie na šírku (horizontálne)</Typography>
+            <Dialog onClose={height < width} open={width < height}>
+                <Typography className={classes.root} variant={"h5"} color={"secondary"}>Pre používanie aplikácie otočte
+                    zariadenie na šírku (horizontálne)</Typography>
             </Dialog>
         </div>
     );
