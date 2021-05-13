@@ -53,7 +53,6 @@ import {MessageModalState} from "../../data/MessageModalState";
 import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
 import {GameOverState} from "../../data/GameOverState";
 import GameOverModal from "../../components/gameOverModal/GameOverModal";
-import Typography from "@material-ui/core/Typography";
 import ScreenOrientation from "../screenOrientation";
 
 
