@@ -46,6 +46,7 @@ import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
 import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
 import {NewMessagesCounter} from "../../data/NewMessagesCounter";
 import {GameOverState} from "../../data/GameOverState";
+import {CurrencyInfectedPopulationBreakpointState} from "../../data/currencies/CurrencyInfectedPopulationBreakpointState";
 
 
 const geoUrl = require('./topologies.json');
@@ -152,6 +153,9 @@ const MapContainer = ({setTooltipContent}) => {
 
 //---------------------------
 
+    //breakypointy pre pridavanie hernej meny na zaklade narastu infikovanych
+    const [infectedBreakpoints,setInfectedBreakpoints] = useRecoilState(CurrencyInfectedPopulationBreakpointState);
+
     //parametre
     const [betaParameter,] = useRecoilState(BetaState);
     const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
@@ -250,19 +254,13 @@ const MapContainer = ({setTooltipContent}) => {
 
         setMessageCounter(prev => (prev + 1));
 
-        if(days<150){
-            if(Math.random()>0.5){
+
+            if(Math.random()>0.25){
                 if (clickableGameCurrency < 10) {
                     setClickAbleGameCurrency(prev => (prev + 1));
                 }
             }
-        }else{
-            if(Math.random()>0.7){
-                if (clickableGameCurrency < 10) {
-                    setClickAbleGameCurrency(prev => (prev + 1));
-                }
-            }
-        }
+
 
 
         return {
@@ -274,9 +272,15 @@ const MapContainer = ({setTooltipContent}) => {
     }
 
 
-    const susceptibleCalculate = (S, I, N, beta) => {
+    const susceptibleCalculate = (S, I, N, beta, vaccineDevelopmentFinished) => {
+        let nachylny;
+        if(vaccineDevelopmentFinished===true){
+             nachylny = (S - Math.ceil(gammaParameter * S));
+        }else{
+             nachylny = (S - Math.ceil((betaParameter * S * I) / N));
+        }
         // let nachylny = Math.round(S - (beta * S * I) / N);
-        let nachylny = (S - Math.ceil((betaParameter * S * I) / N));
+
         // console.log('nach',nachylny);
 
 
@@ -291,7 +295,14 @@ const MapContainer = ({setTooltipContent}) => {
         return [nachylny];
     }
 
-    const infectiousCalculate = (S, I, N, beta, gamma, delta, infArrayState) => {
+    const infectiousCalculate = (S, I, N, beta, gamma, delta, infArrayState,vaccineDevelopmentFinished) => {
+        if(vaccineDevelopmentFinished===true){
+            let infekcny = I - Math.ceil(gammaParameter * I);
+            if(infekcny<0){
+                infekcny=0;
+            }
+            return [infekcny, 0, I, 0, [10,11,12], 0];
+        }
         let infekcny = (I + Math.ceil((betaParameter * S * I) / N)) - Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
         // console.log('inf', data.Infectious);
         // console.log('round do R: ', Math.round(gamma * I));
@@ -380,7 +391,26 @@ const MapContainer = ({setTooltipContent}) => {
         return [infekcny, povodnyInfekcny, infekcnyPushToRD, infekcnyVacsiNezPopulaciaCheck, infArrayLocal, LoopPushToRD];
     }
 
-    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD) => {
+    const recoveredCalculate = (I, R, gamma, delta, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD,vaccineDevelopmentFinished) => {
+        if(vaccineDevelopmentFinished===true){
+            let zotaveny;
+
+            let checkSusDropUnderZero = (S - Math.ceil(gammaParameter * S));
+            let transferFromSus = Math.ceil(gammaParameter * S);
+            if(checkSusDropUnderZero<0){
+                transferFromSus = S;
+            }
+
+            let checkInfDropUnderZero = (I - Math.ceil(gammaParameter * I));
+            let transferFromInf = Math.ceil(gammaParameter * I);
+            if(checkInfDropUnderZero<0){
+                transferFromInf = I;
+            }
+
+             zotaveny = (R+transferFromSus+transferFromInf);
+
+            return zotaveny
+        }
         //if funkcny v pripade presunu z kompartmentu I do R,
         //kde I sa dostava do zapornej hodnoty a je potrebne to vykompenzovat v R (aj v D) upravenym-znizenym pripocitanim
         if (I2 < 0) {
@@ -458,7 +488,10 @@ const MapContainer = ({setTooltipContent}) => {
         return zotaveny;
     }
 
-    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD) => {
+    const deceasedCalculate = (I, D, delta, gamma, I2, infekcnyPush, infekcnyVacsiNezPopulaciaCheckValue, N, beta, S, LoopPushToRD,vaccineDevelopmentFinished) => {
+        if(vaccineDevelopmentFinished===true){
+            return D;
+        }
         //rovnake osetrenie ako vo funkcii vyssie
         if (I2 < 0) {
             let splittedI2 = I2 / (gammaParameter + deltaParameter);
@@ -543,12 +576,12 @@ const MapContainer = ({setTooltipContent}) => {
         // console.log('NovaPopulacia: ', new Intl.NumberFormat('de-DE').format(data.Susceptible + data.Infectious + data.Recovered + data.Deceased),
         //     '\n rozdiel populacie: ', new Intl.NumberFormat('de-DE').format(data.Population - (data.Susceptible + data.Infectious + data.Recovered + data.Deceased)));
 
-        const [susceptibleValue] = susceptibleCalculate(S, I, N, beta);
-        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, infekcnyArrayFromLocal, LoopPushToRD] = infectiousCalculate(S, I, N, beta, gamma, delta, infArrayState);
+        const [susceptibleValue] = susceptibleCalculate(S, I, N, beta, vaccineState.vaccineDevelopmentFinished);
+        const [actualInfectiousNumber, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, infekcnyArrayFromLocal, LoopPushToRD] = infectiousCalculate(S, I, N, beta, gamma, delta, infArrayState,vaccineState.vaccineDevelopmentFinished);
         // console.log(actualInfectiousNumber, negativeNumberInfectious);
         const infectiousValue = actualInfectiousNumber;
-        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD);
-        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD);
+        const recoveredValue = recoveredCalculate(I, R, gamma, delta, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD,vaccineState.vaccineDevelopmentFinished);
+        const deceasedValue = deceasedCalculate(I, D, delta, gamma, negativeNumberInfectious, infekcnyPushToRD, infekcnyVacsiNezPopulaciaChecking, N, beta, S, LoopPushToRD,vaccineState.vaccineDevelopmentFinished);
         // const infekcny = data.Infectious + +50000;
 
         // if (povodnyNachylny >= 0) {
@@ -699,7 +732,7 @@ const MapContainer = ({setTooltipContent}) => {
             messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z viacerých možných dôvodov. Aktivuj opatrenia zo sekcie Liečba, Vakcína, Komunikácia alebo Prevencia nakazenia. \n");
         }
 
-        if (days > 60 && vaccineMeasuresNumber === 0) {
+        if (days > 90 && vaccineMeasuresNumber === 0) {
             trustDecrease += 1;
             triggerPoint++;
             messageString = messageString.concat(" ● Dôvera klesá z dôvodu nevyvíjania vakcíny. Aktivuj opatrenie zo sekcie Vakcína. \n");
@@ -935,7 +968,11 @@ const MapContainer = ({setTooltipContent}) => {
                     return {...prevStats, lose: 1, loseReason: "Stratil si všetku hernú dôveru."};
                 });
             }
-            setTrustValue(prev => (prev - trustDecrease));
+            if(trustValue-trustDecrease<0){
+                setTrustValue(0);
+            }else{
+                setTrustValue(prev => (prev - trustDecrease));
+            }
             setTrustMessages((prevStats) => ([...prevStats, {
                 name: "Dôvera",
                 primaryMessage: messageString,
@@ -946,6 +983,19 @@ const MapContainer = ({setTooltipContent}) => {
 
     }
 
+    function addCurrency() {
+
+        //pridanie meny za kazdych 50mil infikovanych
+        if(infectiousWorldData>infectedBreakpoints){
+            if(infectiousWorldData<1000000000){
+                if (clickableGameCurrency < 10) {
+                    setClickAbleGameCurrency(prev => (prev + 1));
+                }
+                setInfectedBreakpoints(prev => (prev + 50000000))
+            }
+        }
+
+    }
 
     useInterval(() => {
         // setInfectiousIncrement(infectiousIncrement + 1000000);
@@ -1280,7 +1330,7 @@ const MapContainer = ({setTooltipContent}) => {
                     }
                 }
             }
-
+            addCurrency();
             // setAllStats(
             //     (prevStats) => ({
             //         ...{
@@ -1303,7 +1353,11 @@ const MapContainer = ({setTooltipContent}) => {
                 setGameOverState((prevStats) => {
                     return {...prevStats, win: 1, winReason: "Dokázal si vyliečiť viac ako 1 milión ovyvateľov."};
                 });
-            }else if(infectiousWorldData===0 && recoveredWorldData===0 && days>100){
+            }else if(susceptibleWorldData<1000000 && infectiousWorldData===0 && recoveredWorldData===0 && days>100){
+                setGameOverState((prevStats) => {
+                    return {...prevStats, lose: 1, loseReason: "Nedokázal si vyliečiť viac ako 1 milión ovyvateľov."};
+                });
+            }else if((susceptibleWorldData+infectiousWorldData<1000000) && recoveredWorldData===0 && days>100){
                 setGameOverState((prevStats) => {
                     return {...prevStats, lose: 1, loseReason: "Nedokázal si vyliečiť viac ako 1 milión ovyvateľov."};
                 });
@@ -1328,7 +1382,7 @@ const MapContainer = ({setTooltipContent}) => {
     }, intervalSpeed);
 //-------------------------------------------------------------------->
 
-    const mapHeight = height * 0.745;
+    const mapHeight = height * 0.75;
     const mapWidth = width * 0.75;
 
     //responzivna mapa

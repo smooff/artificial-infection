@@ -33,7 +33,7 @@ function ScreenOrientation() {
     const classes = useStyles();
     return (
         <div>
-            <Dialog onClose={height < width} open={width < height}>
+            <Dialog onClose={height < width && width>=700} open={width < height && width<700}>
                 <Typography className={classes.root} variant={"h5"} color={"secondary"}>Pre používanie aplikácie otočte
                     zariadenie na šírku (horizontálne)</Typography>
             </Dialog>

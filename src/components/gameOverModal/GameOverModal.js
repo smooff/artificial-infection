@@ -16,9 +16,10 @@ import MessageModal from "../messageModal/MessageModal";
 import {MessageModalState} from "../../data/MessageModalState";
 import MessageWrapper from "../messageModal/MessageWrapper";
 import PagesNavigationModal from "../pagesNavigation/PagesNavigationModal";
+import {useRecoilValue} from "recoil";
 
 
-function GameOverModal({data, dataWidth, dataHeight}) {
+function GameOverModal({data, dataWidth, dataHeight, pointsRecovered, pointsInfected, pointsSusceptibles}) {
     const useStyles = makeStyles((theme) => ({
         itemAligns: {
             textAlign: "center",
@@ -27,13 +28,16 @@ function GameOverModal({data, dataWidth, dataHeight}) {
             textAlign: "center",
             marginTop: "6px"
         },
-        drawerIcons:{
-            marginRight:"20px"
+        drawerIcons: {
+            marginRight: "20px"
         }
     }));
     const classes = useStyles();
 
     const endType = data;
+
+    //za kazdy milion obyv. je 1000 skore
+    const playerPoints = Math.round((useRecoilValue(pointsRecovered) + useRecoilValue(pointsInfected) + useRecoilValue(pointsSusceptibles)) / 1000);
 
     const [openGraph, setOpenGraph] = React.useState(false);
     const handleClickOpenGraph = () => {
@@ -79,6 +83,10 @@ function GameOverModal({data, dataWidth, dataHeight}) {
                 </Typography>
                 <Typography className={classes.itemAligns}>
                     {endType.win === 1 ? endType.winReason : endType.loseReason}
+                </Typography>
+
+                <Typography className={classes.itemAligns}>
+                    Tvoje skóre: {endType.win === 1 ? playerPoints : 0}
                 </Typography>
 
                 <Divider/>

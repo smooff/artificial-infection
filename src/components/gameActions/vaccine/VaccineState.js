@@ -56,7 +56,7 @@ export const VaccineState = atom({
         InternationalCooperationTree:true,
 
         //neobmedzene opatrenie
-        SuperDevelopmentPriceMedUnits:25,
+        SuperDevelopmentPriceMedUnits:20,
 
         recalculateTimeForPlayer:0,
         recalculatedTime:0,

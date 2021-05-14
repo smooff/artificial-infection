@@ -1,5 +1,10 @@
 import {atom, selector} from "recoil";
 
+const beta = 0.941;
+const beta2 = 0.0504;
+const betaDiff = beta - beta2;
+const x = Math.round((betaDiff/5.24)*10000)/10000;
+
 
 export const TracingTestingState = atom({
     key: 'TracingTestingState',
@@ -12,35 +17,35 @@ export const TracingTestingState = atom({
 
         AdvancedDetectionSystem:0,
         AdvancedDetectionSystemPrice:5,
-        AdvancedDetectionSystemBeta:0.0391,
+        AdvancedDetectionSystemBeta:0.23*x,
 
         TestingCapacityEnhancement :0,
         TestingCapacityEnhancementPrice:3,
-        TestingCapacityEnhancementBeta:-0.017,
+        TestingCapacityEnhancementBeta:-0.1*x,
 
         TestingInformation:0,
         TestingInformationPrice:3,
-        TestingInformationBeta:-0.017,
+        TestingInformationBeta:-0.1*x,
 
         InfrastructureTesting:0,
         InfrastructureTestingPrice:3,
-        InfrastructureTestingBeta:0.0085,
+        InfrastructureTestingBeta:0.05*x,
 
         BorderHealthCheck:0,
         BorderHealthCheckPrice:4,
-        BorderHealthCheckBeta:0.0153,
+        BorderHealthCheckBeta:0.09*x,
 
         AirportHealthCheck:0,
         AirportHealthCheckPrice:3,
-        AirportHealthCheckBeta:-0.034,
+        AirportHealthCheckBeta:-0.2*x,
 
         ContactTracing:0,
         ContactTracingPrice:4,
-        ContactTracingBeta:0.0255,
+        ContactTracingBeta:0.15*x,
 
         AdvancedContactTracing:0,
         AdvancedContactTracingPrice:4,
-        AdvancedContactTracingBeta:0.0255,
+        AdvancedContactTracingBeta:0.15*x,
     },
 });
 

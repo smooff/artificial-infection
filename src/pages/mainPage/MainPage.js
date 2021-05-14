@@ -603,7 +603,7 @@ function MainPage() {
             </Dialog>
 
             <Dialog fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
-                <GameOverModal data={gameOver} dataWidth={width} dataHeight={height}/>
+                <GameOverModal data={gameOver} dataWidth={width} dataHeight={height} pointsRecovered={recoveredSelector} pointsInfected={infectiousSelector} pointsSusceptibles={susceptiblesSelector}/>
             </Dialog>
 
             {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
