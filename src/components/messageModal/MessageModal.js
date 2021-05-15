@@ -5,11 +5,11 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import {NewMessagesCounter} from "../../data/NewMessagesCounter";
+import {NewMessagesCounter} from "../../data/messages/NewMessagesCounter";
 
 
 function MessageModal({dataSelector}) {
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         title: {
             fontSize: "25px"
         },
@@ -36,18 +36,19 @@ function MessageModal({dataSelector}) {
 
     const data = useRecoilValue(dataSelector);
 
-    const [,setMessageCounter] = useRecoilState(NewMessagesCounter);
+    const [, setMessageCounter] = useRecoilState(NewMessagesCounter);
 
     function addDays(date, days) {
         date.setDate(date.getDate() + days);
         return date;
     }
+
     setMessageCounter(0);
     return (
         <div>
             <Card>
                 <CardContent>
-                    <List className={classes.list}>
+                    <List>
                         {data.slice(0).reverse().map(({name, primaryMessage, day, reason}) => {
                                 return (
                                     <div>

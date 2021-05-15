@@ -6,12 +6,10 @@ import {useRecoilValue} from "recoil";
 
 
 function BottomInfoBar({name, dataSelector}) {
-    const useStyles = makeStyles((theme) => ({
-        root: {},
-        title:{
-             fontSize:"20px"
+    const useStyles = makeStyles(() => ({
+        title: {
+            fontSize: "20px"
         }
-
     }));
     const classes = useStyles();
 
@@ -19,19 +17,16 @@ function BottomInfoBar({name, dataSelector}) {
 
     return (
         <div>
-            <Card className={classes.root}>
+            <Card>
                 <CardContent>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                         {name}
                     </Typography>
                     <Typography variant="h5" component="h2">
-                       {new Intl.NumberFormat('de-DE').format(data)}
+                        {new Intl.NumberFormat('de-DE').format(data)}
                     </Typography>
-
                 </CardContent>
-
             </Card>
-
         </div>
     );
 }

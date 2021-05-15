@@ -11,7 +11,7 @@ import {BetaState} from "../../data/parameters/BetaState";
 import {DeltaState} from "../../data/parameters/DeltaState";
 
 function GameCurrencyModal() {
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         itemAlign: {
             textAlign: "center",
         }, buttonsAlign: {

@@ -11,7 +11,7 @@ import {LocalAtmTwoTone} from "@material-ui/icons";
 
 function GameCurrencyRightBar() {
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         progressBar: {
             marginLeft: "15px",
         }, buttonText: {
@@ -84,9 +84,8 @@ function GameCurrencyRightBar() {
                 </Tooltip>
             </Grid>
             <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseCurrency}
-                    aria-labelledby="customized-dialog-title"
                     open={openCurrency}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseCurrency}>
+                <DialogTitle onClose={handleCloseCurrency}>
                     Herná mena
                 </DialogTitle>
                 <GameCurrencyModal/>

@@ -1,6 +1,6 @@
 import {atom} from "recoil";
 
-//urcuje ci uz bola prva infikovana krajina nasatavena
+//urcuje pocet aktivovanych inhibitorov (spomalovacov) sirenia nakazy a smrtnosti
 export const ActivableInhibitorsState = atom({
     key: 'ActivableInhibitorsState',
     default: {

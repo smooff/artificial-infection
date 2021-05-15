@@ -11,16 +11,16 @@ import CountriesListRightBar from "../countriesListRightBar/countriesListRightBa
 import {
     infectiousCountriesCountSelector,
     separateCountryByInfectivitySelector
-} from "../mapContainer/MapContainerState";
+} from "../../data/map/MapContainerState";
 import MessageModal from "../messageModal/MessageModal";
-import {MessageModalState} from "../../data/MessageModalState";
+import {MessageModalState} from "../../data/messages/MessageModalState";
 import MessageWrapper from "../messageModal/MessageWrapper";
 import PagesNavigationModal from "../pagesNavigation/PagesNavigationModal";
 import {useRecoilValue} from "recoil";
 
 
 function GameOverModal({data, dataWidth, dataHeight, pointsRecovered, pointsInfected, pointsSusceptibles}) {
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         itemAligns: {
             textAlign: "center",
         },
@@ -115,24 +115,18 @@ function GameOverModal({data, dataWidth, dataHeight, pointsRecovered, pointsInfe
 
             </CardContent>
         </Card>
-            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList}
-                    aria-labelledby="customized-dialog-title"
-                    open={openCountriesList}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClickCloseCountriesList}>
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList} open={openCountriesList}>
+                <DialogTitle onClose={handleClickCloseCountriesList}>
                     Zoznam krajín
                 </DialogTitle>
                 <CountriesListRightBar dataHeight={dataHeight} dataSelector={separateCountryByInfectivitySelector}
                                        dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
-            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
-                    aria-labelledby="customized-dialog-title"
-                    open={openGraph}>
+            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph} open={openGraph}>
                 <GraphContainer dataWidth={dataWidth} dataHeight={dataHeight}/>
             </Dialog>
-            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
-                    aria-labelledby="customized-dialog-title"
-                    open={openMessages}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseMessages}>
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages} open={openMessages}>
+                <DialogTitle onClose={handleCloseMessages}>
                     Správy
                 </DialogTitle>
                 <MessageModal dataSelector={MessageModalState}/>

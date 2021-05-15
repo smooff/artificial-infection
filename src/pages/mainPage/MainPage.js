@@ -8,7 +8,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import MapContainer, {getWindowDimensions} from "../../components/mapContainer/MapContainer";
+import MapContainer from "../../components/mapContainer/MapContainer";
 
 import {Button, Dialog, DialogTitle, Tooltip} from "@material-ui/core";
 
@@ -20,60 +20,54 @@ import {
     recoveredSelector,
     separateCountryByInfectivitySelector,
     susceptiblesSelector
-} from "../../components/mapContainer/MapContainerState";
+} from "../../data/map/MapContainerState";
 import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
 import DateRightBar from "../../components/dateRightBar/DateRightBar";
 import {
-    AirplanemodeInactive, DeveloperBoardTwoTone, EmailTwoTone, ExitToAppTwoTone,
-    FastForward, ForumTwoTone, ListAltTwoTone, LocalHospitalTwoTone,
+    AirplanemodeInactive,
+    DeveloperBoardTwoTone,
+    EmailTwoTone,
+    ExitToAppTwoTone,
+    FastForward,
+    ForumTwoTone,
+    ListAltTwoTone,
+    LocalHospitalTwoTone,
     Pause,
-    PlayArrow, PollTwoTone, SecurityTwoTone
+    PlayArrow,
+    PollTwoTone,
+    SecurityTwoTone
 } from "@material-ui/icons";
 import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalendarTwoTone';
-import TravelRestriction from "../../components/gameActions/travelRestriction/TravelRestriction";
+import TravelRestriction from "../../components/gameControls/TravelRestriction";
 import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
-import {GameTimeState} from "../../data/GameTimeState";
-import {GameFlowState} from "../../data/GameFlowState";
-import {GameIntervalState} from "../../data/GameIntervalState";
-import TracingTesting from "../../components/gameActions/tracingTesting/TracingTesting";
-import InfectionPrevention from "../../components/gameActions/infectionPrevention/InfectionPrevention";
-import Cure from "../../components/gameActions/cure/Cure";
-import Communication from "../../components/gameActions/communication/Communication";
-import Vaccine from "../../components/gameActions/vaccine/Vaccine";
+import {GameTimeState} from "../../data/gameTime/GameTimeState";
+import {GameFlowState} from "../../data/gameTime/GameFlowState";
+import {GameIntervalState} from "../../data/gameTime/GameIntervalState";
+import TracingTesting from "../../components/gameControls/TracingTesting";
+import InfectionPrevention from "../../components/gameControls/InfectionPrevention";
+import Cure from "../../components/gameControls/Cure";
+import Communication from "../../components/gameControls/Communication";
+import Vaccine from "../../components/gameControls/Vaccine";
 import GraphContainer from "../../components/graphContainer/GraphContainer";
 import MessageModal from "../../components/messageModal/MessageModal";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
-import {mapColorDataState} from "../../data/MapColorDataState";
+import {mapColorDataState} from "../../data/map/MapColorDataState";
 import GameTrust from "../../components/gameTrust/GameTrust";
-import {GameTrustState} from "../../components/gameTrust/GameTrustState";
-import {TrustMessageState} from "../../data/TrustMessageState";
+import {GameTrustState} from "../../data/gameTrust/GameTrustState";
+import {TrustMessageState} from "../../data/gameTrust/TrustMessageState";
 import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurrencyRightBar";
 import MessageWrapper from "../../components/messageModal/MessageWrapper";
-import {MessageModalState} from "../../data/MessageModalState";
+import {MessageModalState} from "../../data/messages/MessageModalState";
 import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
 import {GameOverState} from "../../data/GameOverState";
 import GameOverModal from "../../components/gameOverModal/GameOverModal";
-import ScreenOrientation from "../screenOrientation";
+import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
+import Typography from "@material-ui/core/Typography";
 
 
 function MainPage() {
 
     let drawerWidth = 240;
-
-    function useWindowDimensions() {
-        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-        useEffect(() => {
-            function handleResize() {
-                setWindowDimensions(getWindowDimensions());
-            }
-
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
-
-        return windowDimensions;
-    }
 
     const {height, width} = useWindowDimensions();
 
@@ -82,17 +76,11 @@ function MainPage() {
     if (width < mobileDrawerBreakpoint) {
         drawerWidth = 200;
     }
-    const useStyles = makeStyles((theme) => ({
-        root: {},
+    const useStyles = makeStyles(() => ({
         downInfoBar: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginRight: drawerWidth,
             backgroundColor: 'lightgrey',
-        },
-        bottom: {
-            width: '100%',
-            position: 'fixed',
-            bottom: 15,
         },
         appBar: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -111,15 +99,11 @@ function MainPage() {
         gameSpeedButtonsMobile: {
             margin: '1px',
         },
-        // necessary for content to be below app bar
-        toolbar: theme.mixins.toolbar,
         content: {
-            // flexGrow: 1,
             backgroundColor: 'lightgrey',
             position: 'absolute',
             width: '100% !important',
             height: '100% !important',
-            // padding: theme.spacing(3),
         },
         drawerIcons: {
             marginRight: "20px"
@@ -127,13 +111,19 @@ function MainPage() {
         gameSpeedButtonsWrapperMobile: {
             padding: "0px"
         },
-        gameSpeedButtonsWrapper: {}
+        gameSpeedButtonsWrapper: {},
+        toggleButtonGroup: {
+            display: 'flex'
+        },
+        toggleButton: {
+            flex: 1
+        }
     }));
 
     const classes = useStyles();
 
     //herny cas a interakcie s nim
-    const [, setgameFlow] = useRecoilState(GameFlowState);
+    const [, setGameFlow] = useRecoilState(GameFlowState);
     const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
 
     const [pauseColor, setPauseColor] = useState("default");
@@ -145,7 +135,7 @@ function MainPage() {
     const [forwardOutline, setForwardOutline] = useState("outlined");
 
     const gamePause = useCallback(() => {
-        setgameFlow(false);
+        setGameFlow(false);
 
         setPauseColor("primary");
         setUnpauseColor("default");
@@ -154,10 +144,10 @@ function MainPage() {
         setPauseOutline("contained");
         setUnpauseOutline("outlined");
         setForwardOutline("outlined");
-    }, [setgameFlow])
+    }, [setGameFlow])
 
     const gameUnpause = () => {
-        setgameFlow(true);
+        setGameFlow(true);
 
         setPauseColor("default");
         setUnpauseColor("primary");
@@ -171,7 +161,7 @@ function MainPage() {
     }
 
     const gameForward = () => {
-        setgameFlow(true);
+        setGameFlow(true);
 
         setPauseColor("default");
         setUnpauseColor("default");
@@ -184,7 +174,7 @@ function MainPage() {
         setIntervalSpeed(1000);
     }
 
-    //zoznam krajin
+    //modal zoznam krajin
     const [openCountriesList, setOpenCountriesList] = React.useState(false);
     const handleClickOpenCountriesList = () => {
         gamePause();
@@ -297,65 +287,23 @@ function MainPage() {
         };
     }, [gameOver, gamePause]);
 
-
-    //react-tooltip
-    const [, setContent] = useState("");
-
     //mapa data - farba
-    const [mapColor, setmapColor] = useRecoilState(mapColorDataState);
+    const [mapColor, setMapColor] = useRecoilState(mapColorDataState);
     const handleMapColor = (event, newColor) => {
-        setmapColor(newColor);
+        setMapColor(newColor);
     };
 
 
     return (
-        <div className={classes.root}>
+        <div>
             <CssBaseline/>
-            {/*<AppBar position="fixed" className={classes.appBar}>*/}
-            {/*    <Toolbar>*/}
-            {/*        <Grid container xs={12}>*/}
-            {/*            <Grid item xs={3}>*/}
-            {/*            <Typography variant="h6" noWrap>*/}
-            {/*                Main Page*/}
-            {/*            </Typography>*/}
-            {/*            </Grid>*/}
-            {/*            <Grid xs={9}>*/}
-            {/*                <Typography variant="h6" noWrap>*/}
-            {/*                    <NewsBar msg="ahoj"/>*/}
-            {/*                </Typography>*/}
-            {/*            </Grid>*/}
-            {/*        </Grid>*/}
-            {/*    </Toolbar>*/}
-            {/*</AppBar>*/}
             <main className={classes.content}>
-                {/*<div className={classes.toolbar}/>*/}
-                <Grid
-                    container
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
+                <Grid container direction="row" justify="center" alignItems="center">
 
-                    // spacing={2}
-                >
-                    <Grid item xs={12}
-                        // style={{maxHeight: '15rem'}}
-                          className={classes.appBar}
-                    >
-                        <MapContainer setTooltipContent={setContent}/>
+                    <Grid item xs={12} className={classes.appBar}>
+                        <MapContainer/>
                     </Grid>
-                    {/*<BottomNavigation*/}
-                    {/*    value={value}*/}
-                    {/*    onChange={(event, newValue) => {*/}
-                    {/*        setValue(newValue);*/}
-                    {/*    }}*/}
-                    {/*    showLabels*/}
-                    {/*    className={classes.appBar}*/}
-                    {/*>*/}
-                    {/*            <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>*/}
-                    {/*            <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>*/}
-                    {/*            <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
-                    {/*            <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
-                    {/*</BottomNavigation>*/}
+
                     <Grid container direction="row" justify="space-around" alignItems="center" spacing={1}
                           className={classes.downInfoBar}>
                         <Grid item xs={6} md={3}>
@@ -371,53 +319,30 @@ function MainPage() {
                             <BottomInfoBar name="Zosnulí" dataSelector={deceasedSelector}/>
                         </Grid>
                     </Grid>
-                    {/*<MapContainer/>*/}
-
-                    {/*<ReactTooltip>{content}</ReactTooltip>*/}
-
-                    {/*<DataContainer/>*/}
 
                 </Grid>
-                {/*<Grid container className={classes.downInfoBar} xs={12} justify="center"*/}
-                {/*      alignItems="center">*/}
-
-                {/*    <BottomInfoBar name="Susceptibles" type="Susceptibles" count="SusceptiblesCount"/>*/}
-                {/*    <BottomInfoBar name="Infectious" type="Infectious" count="InfectiousCount"/>*/}
-                {/*    <BottomInfoBar name="Recovered" type="Recovered" count="RecoveredCount"/>*/}
-                {/*    <BottomInfoBar name="Deceased" type="Deceased" count="DeceasedCount"/>*/}
-
-                {/*</Grid>*/}
             </main>
 
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                anchor="right"
-            >
+            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}
+                    anchor="right">
 
-                <ToggleButtonGroup
-                    value={mapColor}
-                    exclusive
-                    onChange={handleMapColor}
-                    aria-label="text alignment"
-                    style={{display: 'flex'}}
-                >
-                    <Tooltip title="Mapa infekčných">
-                        <ToggleButton value="infectious" aria-label="left aligned" style={{flex: 1}}>
-                            Infekční
-                        </ToggleButton>
-                    </Tooltip>
-                    <Tooltip title="Mapa zosnulých">
-                        <ToggleButton value="deceased" aria-label="centered" style={{flex: 1}}>
-                            Zosnulí
-                        </ToggleButton>
-                    </Tooltip>
+                <ToggleButtonGroup value={mapColor} exclusive onChange={handleMapColor}
+                                   className={classes.toggleButtonGroup}>
+                    <ToggleButton value="infectious" className={classes.toggleButton}>
+                        <Tooltip title="Mapa infekčných">
+                            <Typography> Infekční</Typography>
+                        </Tooltip>
+                    </ToggleButton>
+
+                    <ToggleButton value="deceased" className={classes.toggleButton}>
+                        <Tooltip title="Mapa zosnulých">
+                            <Typography> Zosnulí</Typography>
+                        </Tooltip>
+                    </ToggleButton>
                 </ToggleButtonGroup>
 
                 <Divider/>
+
                 <List>
                     <ListItem button>
                         <Tooltip title="Herný dátum">
@@ -461,7 +386,9 @@ function MainPage() {
                         </ListItemText>
                     </ListItem>
                 </List>
+
                 <Divider/>
+
                 <List>
                     <ListItem button onClick={handleClickOpenTravelRestriction}>
                         <AirplanemodeInactive className={classes.drawerIcons}/>
@@ -514,85 +441,72 @@ function MainPage() {
                         <ListItemText primary="Návrat na úvodnú stránku"/>
                     </ListItem>
                 </List>
+
             </Drawer>
 
-            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList}
-                    aria-labelledby="customized-dialog-title"
-                    open={openCountriesList}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClickCloseCountriesList}>
+            <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList} open={openCountriesList}>
+                <DialogTitle onClose={handleClickCloseCountriesList}>
                     Zoznam krajín
                 </DialogTitle>
                 <CountriesListRightBar dataHeight={height} dataSelector={separateCountryByInfectivitySelector}
                                        dataSelectorCount={infectiousCountriesCountSelector}/>
             </Dialog>
 
-            <Dialog onClose={handleCloseTravelRestriction} aria-labelledby="customized-dialog-title"
-                    open={openTravelRestriction}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseTravelRestriction}>
+            <Dialog onClose={handleCloseTravelRestriction} open={openTravelRestriction}>
+                <DialogTitle onClose={handleCloseTravelRestriction}>
                     Obmedzenia cestovania
                 </DialogTitle>
                 <TravelRestriction/>
             </Dialog>
 
-            <Dialog onClose={handleCloseTracingTesting} aria-labelledby="customized-dialog-title"
-                    open={openTracingTesting}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseTracingTesting}>
+            <Dialog onClose={handleCloseTracingTesting} open={openTracingTesting}>
+                <DialogTitle onClose={handleCloseTracingTesting}>
                     Trasovanie kontaktov a testovanie
                 </DialogTitle>
                 <TracingTesting/>
             </Dialog>
 
-            <Dialog onClose={handleCloseInfectionPrevention} aria-labelledby="customized-dialog-title"
-                    open={openInfectionPrevention}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseInfectionPrevention}>
+            <Dialog onClose={handleCloseInfectionPrevention} open={openInfectionPrevention}>
+                <DialogTitle onClose={handleCloseInfectionPrevention}>
                     Prevencia nakazenia
                 </DialogTitle>
                 <InfectionPrevention/>
             </Dialog>
 
-            <Dialog onClose={handleCloseCure} aria-labelledby="customized-dialog-title"
-                    open={openCure}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseCure}>
+            <Dialog onClose={handleCloseCure} open={openCure}>
+                <DialogTitle onClose={handleCloseCure}>
                     Liečba
                 </DialogTitle>
                 <Cure/>
             </Dialog>
 
-            <Dialog onClose={handleCloseCommunication} aria-labelledby="customized-dialog-title"
-                    open={openCommunication}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseCommunication}>
+            <Dialog onClose={handleCloseCommunication} open={openCommunication}>
+                <DialogTitle onClose={handleCloseCommunication}>
                     Komunikácia a spolupráca
                 </DialogTitle>
                 <Communication/>
             </Dialog>
 
-            <Dialog onClose={handleCloseVaccine} aria-labelledby="customized-dialog-title"
-                    open={openVaccine}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseVaccine}>
+            <Dialog onClose={handleCloseVaccine} open={openVaccine}>
+                <DialogTitle onClose={handleCloseVaccine}>
                     Vakcína
                 </DialogTitle>
                 <Vaccine/>
             </Dialog>
 
-            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph}
-                    aria-labelledby="customized-dialog-title"
-                    open={openGraph}>
+            <Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph} open={openGraph}>
                 <GraphContainer dataWidth={width} dataHeight={height}/>
             </Dialog>
 
-            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust}
-                    aria-labelledby="customized-dialog-title"
-                    open={openTrust}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseTrust}>
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust} open={openTrust}>
+                <DialogTitle onClose={handleCloseTrust}>
                     Dôvera
                 </DialogTitle>
                 <MessageModal dataSelector={TrustMessageState}/>
             </Dialog>
 
-            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages}
-                    aria-labelledby="customized-dialog-title"
-                    open={openMessages}>
-                <DialogTitle id="customized-dialog-title" onClose={handleCloseMessages}>
+            <Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages} open={openMessages}>
+                <DialogTitle onClose={handleCloseMessages}>
                     Správy
                 </DialogTitle>
                 <MessageModal dataSelector={MessageModalState}/>
@@ -603,11 +517,12 @@ function MainPage() {
             </Dialog>
 
             <Dialog fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
-                <GameOverModal data={gameOver} dataWidth={width} dataHeight={height} pointsRecovered={recoveredSelector} pointsInfected={infectiousSelector} pointsSusceptibles={susceptiblesSelector}/>
+                <GameOverModal data={gameOver} dataWidth={width} dataHeight={height} pointsRecovered={recoveredSelector}
+                               pointsInfected={infectiousSelector} pointsSusceptibles={susceptiblesSelector}/>
             </Dialog>
 
             {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
-            <ScreenOrientation/>
+            <ResponsiveDesign/>
         </div>
     );
 }

@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 
 function PagesNavigationModal() {
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         itemsAlign: {
             textAlign: "center",
         },

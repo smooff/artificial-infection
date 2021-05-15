@@ -4,6 +4,4 @@ export const GammaState = atom({
     key: 'GammaState',
     default:
         0
-        //0.0622677,
-        //0.00622677
 });

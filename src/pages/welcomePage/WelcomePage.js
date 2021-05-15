@@ -1,30 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Container, Dialog, Typography} from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
-import ScreenOrientation from "../screenOrientation";
-import {getWindowDimensions} from "../../components/mapContainer/MapContainer";
-import TutorialImageCarousel from "../../components/TutorialImageCarousel/TutorialImageCarousel";
+import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
+import TutorialImageCarousel from "../../components/tutorialImageCarousel/TutorialImageCarousel";
 
 
 function WelcomePage() {
-
-    function useWindowDimensions() {
-        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-        useEffect(() => {
-            function handleResize() {
-                setWindowDimensions(getWindowDimensions());
-            }
-
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
-
-        return windowDimensions;
-    }
 
     const {height, width} = useWindowDimensions();
 
@@ -102,11 +86,10 @@ function WelcomePage() {
                     </Grid>
                 </Grid>
 
-                <Dialog fullWidth={true} maxWidth={"xs"}
-                        aria-labelledby="customized-dialog-title"
-                        open={openInviteModal}>
+                <Dialog fullWidth={true} maxWidth={"xs"} open={openInviteModal}>
                     <Grid className={classes.textCentering}>
-                        UPOZORNENIE</Grid>
+                        UPOZORNENIE
+                    </Grid>
                     <Grid className={classes.inviteModal}>
                         Táto webová aplikácia je určená na účely zábavy, nie ako reálny pandemický simulátor.
                         <Divider/>
@@ -118,7 +101,7 @@ function WelcomePage() {
                         Prečítal som a rozumiem
                     </Button>
                 </Dialog>
-                <ScreenOrientation/>
+                <ResponsiveDesign/>
             </Container>
 
             <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseTutorial} open={openTutorial}>

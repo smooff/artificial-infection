@@ -5,11 +5,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import {useRecoilState} from "recoil";
-import {mapContainerState} from "./MapContainerState";
+import {mapContainerState} from "../../data/map/MapContainerState";
 
 
 function SingleCountryModal(props) {
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         textCentering:{
             textAlign: "center",
             fontSize:"20px",
@@ -23,7 +23,7 @@ function SingleCountryModal(props) {
 
     return (
         <DialogContent className={classes.textCentering} dividers>
-            <DialogTitle id="customized-dialog-title" >
+            <DialogTitle>
                 {allCountries[props.singleCountryData].NAME}
             </DialogTitle>
 

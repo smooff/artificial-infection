@@ -1,67 +1,6 @@
-/**{*/
-/*  margin: 0;*/
-/*  box-sizing: border-box;*/
-/*  height: 100%;*/
-/*}*/
-
-/*.App:after{*/
-/*  content: "";*/
-/*  display: table;*/
-/*  clear: both;*/
-/*}*/
-
-/*.rightBar{*/
-/*  border: 5px solid cadetblue;*/
-/*  float: left;*/
-/*  width: 10%;*/
-/*  background-color: #f1f1f1;*/
-/*  padding-left: 20px;*/
-/*}*/
-
-/*.leftBar{*/
-/*  border: 5px solid yellow;*/
-/*  float: left;*/
-/*  width: 90%;*/
-/*  min-height: 100%;*/
-/*  height: auto ;*/
-/*  !*position: relative;*!*/
-
-/*}*/
-
-/*.map{*/
-/*  border: 5px solid black;*/
-/*  background-color: white;*/
-/*  padding: 20px;*/
-/*  margin-top: 20px;*/
-/*  margin-bottom: 20px;*/
-/*}*/
-
-/*.bottomBar{*/
-/*  padding: 20px;*/
-/*  border: 5px solid darkred;*/
-/*  min-height: 10%;*/
-/*}*/
-
-/*@media screen and (max-width: 800px) {*/
-/*  .leftBar, .rightBar {*/
-/*    width: 100%;*/
-/*    padding: 0;*/
-/*  }*/
-/*}*/
-
-/*body{*/
-/*  background: url("images/backTestVirus.gif") no-repeat center center fixed;*/
-/*  -webkit-background-size: cover;*/
-/*  -moz-background-size: cover;*/
-/*  -o-background-size: cover;*/
-/*  background-size: cover;*/
-/*}*/
-
-
-/*html, body {margin: 0; height: 100%; overflow: hidden}*/
-
 .welcomePageCss {
-    background: url("images/virusBackground.gif") ; background-size: cover;
+    background: url("images/virusBackground.gif");
+    background-size: cover;
     position: absolute;
     width: 100% !important;
     height: 100% !important;

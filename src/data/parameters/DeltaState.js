@@ -5,5 +5,4 @@ export const DeltaState = atom({
     default:
          0.0959,
         //0.0099
-
 });
