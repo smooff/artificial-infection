@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Card, CardContent, Typography} from "@material-ui/core";
+import {Button, Card, CardContent, Snackbar, Typography} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
@@ -9,6 +9,7 @@ import {GameCurrencyState} from "../../data/currencies/GameCurrencyState";
 import {ActivableInhibitorsState} from "../../data/ActivableInhibitorsState";
 import {BetaState} from "../../data/parameters/BetaState";
 import {DeltaState} from "../../data/parameters/DeltaState";
+import MuiAlert from "@material-ui/lab/Alert";
 
 function GameCurrencyModal() {
     const useStyles = makeStyles(() => ({
@@ -107,6 +108,11 @@ function GameCurrencyModal() {
                     return null;
             }
             setGameCurrency(prev => (prev - buyPrice));
+            setModalMessage("Zakúpil si zdravotnícke jednotky.");
+            handleOpenSuccess();
+        }else{
+            setModalMessage("Nemáš dostatok hlavnej hernej meny na zakúpenie zdravotníckych jednotiek.");
+            handleOpenFailure();
         }
     }
 
@@ -115,12 +121,16 @@ function GameCurrencyModal() {
             switch (buttonNumber) {
                 case 2:
                     setBetaParameter(prev => (prev - infectivityInhibitorStrength));
+                    setModalMessage("Aktivoval si permanentné zníženie šírenia.");
+                    handleOpenSuccess();
                     setInhibitors((prevStats) => {
                         return {...prevStats, infectivityInhibitor: prevStats.infectivityInhibitor + 1};
                     });
                     break;
                 case 3:
                     setDeltaParameter(prev => (prev - mortalityInhibitorStrength));
+                    setModalMessage("Aktivoval si permanentné zníženie smrtnosti.");
+                    handleOpenSuccess();
                     setInhibitors((prevStats) => {
                         return {...prevStats, mortalityInhibitor: prevStats.mortalityInhibitor + 1};
                     });
@@ -129,11 +139,51 @@ function GameCurrencyModal() {
                     return null;
             }
             setMedicalUnitsCurrency(prev => (prev - buyPrice));
+        }else{
+            setModalMessage("Nemáš dostatok zdravotníckych jednotiek na zakúpenie daného vylepšenia.");
+            handleOpenFailure();
         }
     }
 
+    const [openCurrencySuccess, setOpenCurrencySuccess] = React.useState(false);
+    const handleOpenSuccess = () => {
+        setOpenCurrencySuccess(true);
+    };
+    const handleCloseSuccess = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCurrencySuccess(false);
+    };
+
+    const [openCurrencyFailure, setOpenCurrencyFailure] = React.useState(false);
+    const handleOpenFailure = () => {
+        setOpenCurrencyFailure(true);
+    };
+    const handleCloseFailure = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCurrencyFailure(false);
+    };
+
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+    const [modalMessage, setModalMessage] = useState();
+
     return (
         <div>
+            <Snackbar open={openCurrencySuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
+                <Alert onClose={handleCloseSuccess} severity="success">
+                    {modalMessage}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openCurrencyFailure} autoHideDuration={6000} onClose={handleCloseFailure}>
+                <Alert onClose={handleCloseFailure} severity="warning">
+                    {modalMessage}
+                </Alert>
+            </Snackbar>
             <Card>
                 <CardContent>
                     <Grid container xs={12} className={classes.itemAlign}>
