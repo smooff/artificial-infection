@@ -130,10 +130,13 @@ function WelcomePage() {
                     Strategická hra založená na simulácii epidémie
                 </Typography>
                 <Divider/>
+                    <br/>
                     <Typography>
                         Webová aplikácia AI: Artificial Infection je open-source hra založená na viacerých strategických sci-fi mechanikách.
                     </Typography>
+                    <br/>
                     <Divider/>
+
                 <Typography variant={"h6"}>
                    Autor práce: Šimon Zaujec
                 </Typography>
