@@ -275,11 +275,13 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
 
     //kazdych 30 dni sa strhne dovera za lockdown ale aj za aktivaciu lockdownu
     if (lockDownMeasureState !== 0) {
+        //jednorazova aktivacia strhne 7 dovery
         if (strictMeasuresTime.lockdown === 0) {
             trustDecrease += 7;
             triggerPoint++;
             messageString = messageString.concat(" ● Dôvera klesla z dôvodu akitvácie lockdownu. \n");
         }
+        //kazdych 30 dni
         if (strictMeasuresTime.lockdown === 30) {
             trustDecrease += 7;
             triggerPoint++;
@@ -541,17 +543,12 @@ export const addCurrency = (infectiousWorldData, infectedBreakpoints, clickableG
                 setClickAbleGameCurrency(prev => (prev + 4));
             }
         }
-        if (days >= 100 && days < 150) {
+        if (days >= 100 && days < 220) {
             if (clickableGameCurrency < 10) {
                 setClickAbleGameCurrency(prev => (prev + 2));
             }
         }
-        if (days >= 150 && days < 225) {
-            if (clickableGameCurrency < 10) {
-                setClickAbleGameCurrency(prev => (prev + 2));
-            }
-        }
-        if (days >= 225) {
+        if (days >= 220) {
             if (clickableGameCurrency < 10) {
                 setClickAbleGameCurrency(prev => (prev + 3));
             }

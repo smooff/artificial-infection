@@ -37,6 +37,12 @@ function WelcomePage() {
             marginTop: "10%"
         },
         titleTextWrapperMobile: {},
+        buttons:{
+            minWidth:"100px"
+        },
+        aboutInfo:{
+            marginLeft:"10px"
+        }
     }));
     const classes = useStyles();
 
@@ -55,6 +61,14 @@ function WelcomePage() {
         setOpenTutorial(false);
     };
 
+    const [openAbout, setOpenAbout] = React.useState(false);
+    const handleClickOpenAbout = () => {
+        setOpenAbout(true);
+    };
+    const handleClickCloseAbout = () => {
+        setOpenAbout(false);
+    };
+
     return (
         <div className="welcomePageCss">
             <Container fixed>
@@ -69,20 +83,19 @@ function WelcomePage() {
                           className={height > 300 ? classes.titleTextWrapper : classes.titleTextWrapperMobile}>
                         <Typography variant={width < 400 ? "h2" : width < 820 ? "h3" : "h1"} component="h2"
                                     className={classes.titleText}>
-                            Bakalárska práca
-                        </Typography>
-                        <Typography variant={width < 300 ? "h3" : width < 820 ? "h4" : "h2"} component="h2"
-                                    className={classes.subTitleText}>
-                            Strategická hra založená na simulácii epidémie
+                            AI: Artificial Infection
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Link to="/game">
-                            <Button variant="contained">Hrať hru</Button>
+                            <Button variant="contained" className={classes.buttons}>Hrať hru</Button>
                         </Link>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button size={"small"} variant="contained" onClick={handleClickOpenTutorial}>Ako hrať?</Button>
+                    <Grid item xs={6}>
+                        <Button size={"small"} variant="contained" onClick={handleClickOpenTutorial} className={classes.buttons}>Ako hrať?</Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button size={"small"} variant="contained" onClick={handleClickOpenAbout} className={classes.buttons}>O aplikácii</Button>
                     </Grid>
                 </Grid>
 
@@ -106,6 +119,28 @@ function WelcomePage() {
 
             <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseTutorial} open={openTutorial}>
                 <TutorialImageCarousel/>
+            </Dialog>
+
+            <Dialog fullWidth={true} maxWidth={"xs"} onClose={handleClickCloseAbout} open={openAbout}>
+                <Grid className={classes.aboutInfo}>
+                <Typography variant={"h4"}>
+                    Bakalárska práca:
+                </Typography>
+                <Typography variant={"h4"}>
+                    Strategická hra založená na simulácii epidémie
+                </Typography>
+                <Divider/>
+                    <Typography>
+                        Webová aplikácia AI: Artificial Infection je open-source hra založená na viacerých strategických sci-fi mechanikách.
+                    </Typography>
+                    <Divider/>
+                <Typography variant={"h6"}>
+                   Autor práce: Šimon Zaujec
+                </Typography>
+                <Typography variant={"h6"}>
+                    Vedúci práce: Ing. Roderik Ploszek
+                </Typography>
+                </Grid>
             </Dialog>
         </div>
     );

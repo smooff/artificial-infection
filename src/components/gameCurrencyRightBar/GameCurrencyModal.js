@@ -98,7 +98,7 @@ function GameCurrencyModal() {
     //pocet zdrav. jednotiek za nakup
     let medicalUnitsCount = 10;
 
-    function purchaseMedicalUnits(buyPrice, buttonNumber) {
+    const purchaseMedicalUnits = (buyPrice, buttonNumber) => {
         if (buyPrice <= gameCurrency) {
             switch (buttonNumber) {
                 case 1:
@@ -110,13 +110,13 @@ function GameCurrencyModal() {
             setGameCurrency(prev => (prev - buyPrice));
             setModalMessage("Zakúpil si zdravotnícke jednotky.");
             handleOpenSuccess();
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok hlavnej hernej meny na zakúpenie zdravotníckych jednotiek.");
             handleOpenFailure();
         }
     }
 
-    function purchaseInhibitors(buyPrice, buttonNumber) {
+    const purchaseInhibitors = (buyPrice, buttonNumber) => {
         if (buyPrice <= medicalUnitsCurrency) {
             switch (buttonNumber) {
                 case 2:
@@ -139,7 +139,7 @@ function GameCurrencyModal() {
                     return null;
             }
             setMedicalUnitsCurrency(prev => (prev - buyPrice));
-        }else{
+        } else {
             setModalMessage("Nemáš dostatok zdravotníckych jednotiek na zakúpenie daného vylepšenia.");
             handleOpenFailure();
         }
@@ -170,6 +170,7 @@ function GameCurrencyModal() {
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
+
     const [modalMessage, setModalMessage] = useState();
 
     return (
