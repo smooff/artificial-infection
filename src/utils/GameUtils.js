@@ -3,7 +3,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
     if (allCountries[currentCountry].infectivity === 1) {
 
         //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
-        if (allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0003 || allCountries[currentCountry].Infectious > 10000) {
+        if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0003 || allCountries[currentCountry].Infectious > 10000) && allCountries[currentCountry].Infectious > 15) {
 
             //INFIKOVANIE CEZ HRANICE
             allCountries[currentCountry].border.forEach(element => {
@@ -35,7 +35,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
         for (const property in allCountries) {
             if (allCountries.hasOwnProperty(property)) {
                 //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
-                if (allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0004 || allCountries[currentCountry].Infectious > 35000) {
+                if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0004 || allCountries[currentCountry].Infectious > 35000) && allCountries[currentCountry].Infectious > 20) {
 
                     //REGION
                     if (allCountries[property].region === allCountries[currentCountry].region) {
@@ -60,7 +60,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                 }
 
                 //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
-                if (allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 20000) {
+                if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 20000) && allCountries[currentCountry].Infectious > 20) {
                     //SUBREGION
                     if (allCountries[property].subregion === allCountries[currentCountry].subregion) {
                         if (allCountries[property].infectivity === 0) {
@@ -83,7 +83,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
             }
         }
         //infikovanie cez LETISKA
-        if (allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 15000) {
+        if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 15000) && allCountries[currentCountry].Infectious > 25) {
 
             //vyber krajiny na nakazanie
             const pickCountryToInfectViaPlanes = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
@@ -102,7 +102,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                                                 if (regionRestrictions[regionToInfect].airports === 0) {
                                                     countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes, "airTraffic");
                                                 } else if (regionRestrictions[regionToInfect].airports === 1) {
-                                                    if (Math.random() < 0.05) {
+                                                    if (Math.random() < 0.0501) {
                                                         countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes, "airTraffic");
                                                     }
                                                 }
@@ -135,7 +135,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
         }
 
         //infikovanie cez PRISTAVY
-        if (allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0005 || allCountries[currentCountry].Infectious > 17000) {
+        if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0005 || allCountries[currentCountry].Infectious > 17000) && allCountries[currentCountry].Infectious > 30) {
 
             //vyber krajiny na nakazanie
             const pickCountryToInfectViaShips = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
@@ -154,7 +154,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                                                 if (regionRestrictions[regionToInfect].seaports === 0) {
                                                     countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips, "seaTraffic");
                                                 } else if (regionRestrictions[regionToInfect].seaports === 1) {
-                                                    if (Math.random() < 0.05) {
+                                                    if (Math.random() < 0.0502) {
                                                         countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips, "seaTraffic");
                                                     }
                                                 }
