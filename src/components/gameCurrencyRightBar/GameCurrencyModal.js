@@ -209,7 +209,7 @@ function GameCurrencyModal() {
                         <Grid item xs={3} className={classes.itemAlign}>
                             <Typography variant={"h6"}>
                                 <Button color={button4} className={classes.headerButton} onClick={() => {
-                                    handleButtonClick("Aktuálny počet hernej meny.", 4, 0)
+                                    handleButtonClick("Hernú menu získavaš viacerými spôsobmi - napr. šanca na získanie za novo-nakazenú krajinu, plynutím času...", 4, 0)
                                 }}>Aktuálna herná mena</Button></Typography>
                         </Grid>
 

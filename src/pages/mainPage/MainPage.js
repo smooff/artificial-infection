@@ -63,6 +63,7 @@ import {GameOverState} from "../../data/GameOverState";
 import GameOverModal from "../../components/gameOverModal/GameOverModal";
 import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
 import Typography from "@material-ui/core/Typography";
+import {GameStartState} from "../../data/GameStartState";
 
 
 function MainPage() {
@@ -117,6 +118,9 @@ function MainPage() {
         },
         toggleButton: {
             flex: 1
+        },
+        aboutInfo: {
+            marginLeft: "10px",
         }
     }));
 
@@ -126,12 +130,12 @@ function MainPage() {
     const [, setGameFlow] = useRecoilState(GameFlowState);
     const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
 
-    const [pauseColor, setPauseColor] = useState("default");
-    const [unpauseColor, setUnpauseColor] = useState("primary");
+    const [pauseColor, setPauseColor] = useState("primary");
+    const [unpauseColor, setUnpauseColor] = useState("default");
     const [forwardColor, setForwardColor] = useState("default");
 
-    const [pauseOutline, setPauseOutline] = useState("outlined");
-    const [unpauseOutline, setUnpauseOutline] = useState("contained");
+    const [pauseOutline, setPauseOutline] = useState("contained");
+    const [unpauseOutline, setUnpauseOutline] = useState("outlined");
     const [forwardOutline, setForwardOutline] = useState("outlined");
 
     const gamePause = useCallback(() => {
@@ -274,6 +278,13 @@ function MainPage() {
     };
     const handleClickClosePageNavigation = () => {
         setOpenPageNavigation(false);
+    };
+
+    //game started check
+    const [openGameStartModal, setOpenGameStartModal] = useRecoilState(GameStartState);
+    const handleCloseGameStartModal = () => {
+        setOpenGameStartModal(false);
+        gameUnpause();
     };
 
     //game over check
@@ -523,6 +534,34 @@ function MainPage() {
 
             {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
             <ResponsiveDesign/>
+
+            <Dialog fullWidth={true} maxWidth={"xs"} open={openGameStartModal}>
+                <Grid className={classes.aboutInfo}>
+                    <Typography variant={"h6"}>
+                        Cieľ:
+                    </Typography>
+                    <Typography>
+                        Cieľom hry je vyliečiť aspoň 1-milión ľudí (Zotavení) pomocou vakcíny.
+                        <br/>
+                        <br/>
+                    </Typography>
+                    <Typography variant={"h6"}>
+                        Tipy:
+                    </Typography>
+                    <Typography>
+                        1. Hernú menu získavaš viacerými spôsobmi - napr. šanca na získanie za novo-nakazenú krajinu,
+                        plynutím času...
+                        <br/>
+                        2. Zdravotnícke jednotky je možné zakúpiť po kliknutí na symbol hernej meny (dolár).
+                        <br/>
+                    </Typography>
+                    <br/>
+                </Grid>
+                <Button color={"primary"} variant={"contained"} onClick={handleCloseGameStartModal}>
+                    <PlayArrow/>
+                </Button>
+
+            </Dialog>
         </div>
     );
 }
