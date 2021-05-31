@@ -554,6 +554,8 @@ function MainPage() {
                         <br/>
                         2. Zdravotnícke jednotky je možné zakúpiť po kliknutí na symbol hernej meny (dolár).
                         <br/>
+                        3. Skóre na konci hry sa počíta z počtu zotavených ľudí.
+                        <br/>
                     </Typography>
                     <br/>
                 </Grid>
