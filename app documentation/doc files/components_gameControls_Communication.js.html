@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/gameControls/Communication.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/gameControls/Communication.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useState} from 'react';
+import {Button, DialogContent, Snackbar,} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import {makeStyles} from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import {useRecoilState} from "recoil";
+import {GameCurrencyState} from "../../data/currencies/GameCurrencyState";
+import Divider from "@material-ui/core/Divider";
+import MuiAlert from "@material-ui/lab/Alert";
+import {CommunicationState} from "../../data/gameControls/CommunicationState";
+import {BetaState} from "../../data/parameters/BetaState";
+import {DeltaState} from "../../data/parameters/DeltaState";
+import {GameTrustState} from "../../data/gameTrust/GameTrustState";
+import PriceInfoSingleMeasurement from "./PriceInfoSingleMeasurement";
+
+/**
+ * Renders a Communication component.
+ * Component is used to display measurements (type Communication) inside a modal.
+ * All other measurements modal has similar structure (Cure.js,InfectionPrevention.js,RegionTravelRestriction.js,TracingTesting.js,TravelRestriction.js,Vaccine.js)
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
+function Communication() {
+    /**
+     * used for styling specific components
+     * this kind of styling is used nearly in every component in the app
+     */
+    const useStyles = makeStyles(() => ({
+        activationButtons: {
+            textAlign: "center",
+            marginTop: "6px",
+        },
+        actionButtons: {
+            textAlign: "center",
+            marginTop: "10px",
+        }, buttonSize: {
+            width: "260px",
+        }
+    }));
+    const classes = useStyles();
+
+    /**
+     * value (and setter), which stores text for specific measurement
+     */
+    const [text, setText] = useState("pre zobrazenie popisu klikni na opatrenie");
+    /**
+     * value (and setter), which stores price for specific measurement
+     */
+    const [price, setPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
+
+    /**
+     * value (and setter), which stores global measures of specific type
+     */
+    const [measuresActualState, setMeasuresActualState] = useRecoilState(CommunicationState);
+
+    /**
+     * setter, which sets game trust state - after activating specific measurement
+     */
+    const [, setTrustValue] = useRecoilState(GameTrustState);
+
+    /**
+     * value (and setter), which stores main game currency
+     */
+    const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    /**
+     * setter, which sets beta parameter after activating specific measurement
+     */
+    const [, setBetaParameter] = useRecoilState(BetaState);
+    /**
+     * setter, which sets delta parameter after activating specific measurement
+     */
+    const [, setDeltaParameter] = useRecoilState(DeltaState);
+
+    /**
+     * value, which determines if measurement activating was successful
+     */
+    const [openCommunicationSuccess, setOpenCommunicationSuccess] = React.useState(false);
+    /**
+     * arrow function, which provide successful activation of measurement - opening modal
+     */
+    const handleOpenSuccess = () => {
+        setOpenCommunicationSuccess(true);
+    };
+    /**
+     * arrow function, which provide successful activation of measurement - closing modal
+     */
+    const handleCloseSuccess = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCommunicationSuccess(false);
+    };
+    /**
+     * value, which determines if measurement activating was not successful
+     */
+    const [openCommunicationFailure, setOpenCommunicationFailure] = React.useState(false);
+    /**
+     * arrow function, which provide non-successful activation of measurement - opening modal
+     */
+    const handleOpenFailure = () => {
+        setOpenCommunicationFailure(true);
+    };
+    /**
+     * arrow function, which provide non-successful activation of measurement - closing modal
+     */
+    const handleCloseFailure = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCommunicationFailure(false);
+    };
+
+    /**
+     * value (and setter), which stores modal message - activation process
+     */
+    const [modalMessage, setModalMessage] = useState();
+
+    /**
+     * Renders a MuiAlert component.
+     * Component is used to display message if the measurement was activated or not
+     * @returns {JSX.Element}
+     * @constructor
+     */
+    function Alert(props) {
+        return &lt;MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
+    /**
+     * value (and setter), which specifies color of the button for specific meaurement
+     */
+    const [buttonEducateCommunicateColor, setButtonEducateCommunicateColor] = useState("default");
+    const [buttonGovernmentHelpsVulnerableColor, setButtonGovernmentHelpsVulnerableColor] = useState("default");
+    const [buttonEmergencyStateColor, setButtonEmergencyStateColor] = useState("default");
+    const [buttonCurfewColor, setButtonCurfewColor] = useState("default");
+    const [buttonTravelWarningColor, setButtonTravelWarningColor] = useState("default");
+    const [buttonExpertCommunicationColor, setButtonExpertCommunicationColor] = useState("default");
+    const [buttonCrisisManagementColor, setButtonCrisisManagementColor] = useState("default");
+    const [buttonSupplySecurityColor, setButtonSupplySecurityColor] = useState("default");
+    const [buttonInternationalHelpColor, setButtonInternationalHelpColor] = useState("default");
+    const [buttonInformationCampaignColor, setButtonInformationCampaignColor] = useState("default");
+
+    /**
+     * value (and setter), which specifies if button with specific measurement was clicked
+     */
+    const [showEducateCommunicate, setShowEducateCommunicate] = React.useState(false);
+    const [showGovernmentHelpsVulnerable, setShowGovernmentHelpsVulnerable] = React.useState(false);
+    const [showEmergencyState, setShowEmergencyState] = React.useState(false);
+    const [showCurfew, setShowCurfew] = React.useState(false);
+    const [showTravelWarning, setShowTravelWarning] = React.useState(false);
+    const [showExpertCommunication, setShowExpertCommunication] = React.useState(false);
+    const [showCrisisManagement, setShowCrisisManagement] = React.useState(false);
+    const [showSupplySecurity, setShowSupplySecurity] = React.useState(false);
+    const [showInternationalHelp, setShowInternationalHelp] = React.useState(false);
+    const [showInformationCampaign, setShowInformationCampaign] = React.useState(false);
+
+    /**
+     * Arrow function that handles click on specific measurement button.
+     * @param textMessage - text of specific measurement
+     * @param buttonNumber - all buttons have own numbers - for coloring
+     * @param buttonPrice - price of specific measurement
+     * @returns {null}
+     */
+    const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
+        setText(textMessage);
+        setPrice(buttonPrice);
+        switch (buttonNumber) {
+            case 1:
+                setButtonEducateCommunicateColor("primary");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(true);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 2:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("primary");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(true);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 3:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("primary");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(true);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 4:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("primary");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(true);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 5:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("primary");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(true);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 6:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("primary");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(true);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 7:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("primary");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(true);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 8:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("primary");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(true);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(false);
+                break;
+            case 9:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("primary");
+                setButtonInformationCampaignColor("default");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(true);
+                setShowInformationCampaign(false);
+                break;
+            case 10:
+                setButtonEducateCommunicateColor("default");
+                setButtonGovernmentHelpsVulnerableColor("default");
+                setButtonEmergencyStateColor("default");
+                setButtonCurfewColor("default");
+                setButtonTravelWarningColor("default");
+                setButtonExpertCommunicationColor("default");
+                setButtonCrisisManagementColor("default");
+                setButtonSupplySecurityColor("default");
+                setButtonInternationalHelpColor("default");
+                setButtonInformationCampaignColor("primary");
+
+                setShowEducateCommunicate(false);
+                setShowGovernmentHelpsVulnerable(false);
+                setShowEmergencyState(false);
+                setShowCurfew(false);
+                setShowTravelWarning(false);
+                setShowExpertCommunication(false);
+                setShowCrisisManagement(false);
+                setShowSupplySecurity(false);
+                setShowInternationalHelp(false);
+                setShowInformationCampaign(true);
+                break;
+            default:
+                return null;
+        }
+    }
+    /**
+     * Arrow function that determines which button is activated, and based on that it renders sub-buttons for activation/deactivation
+     * @param param - button number (id), which determines which button was clicked
+     * @returns {JSX.Element|null}
+     */
+    const renderSwitch = (param) => {
+        switch (param) {
+            case 1:
+                return &lt;div>&lt;Button onClick={handleActivationEducateCommunicate}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationEducateCommunicate}>Deaktivovať&lt;/Button>&lt;/div>
+            case 2:
+                return &lt;div>&lt;Button onClick={handleActivationGovernmentHelpsVulnerable}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationGovernmentHelpsVulnerable}>Deaktivovať&lt;/Button>&lt;/div>
+            case 3:
+                return &lt;div>&lt;Button onClick={handleActivationEmergencyState}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationEmergencyState}>Deaktivovať&lt;/Button>&lt;/div>
+            case 4:
+                return &lt;div>&lt;Button onClick={handleActivationCurfew}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationCurfew}>Deaktivovať&lt;/Button>&lt;/div>
+            case 5:
+                return &lt;div>&lt;Button onClick={handleActivationTravelWarning}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationTravelWarning}>Deaktivovať&lt;/Button>&lt;/div>
+            case 6:
+                return &lt;div>&lt;Button onClick={handleActivationExpertCommunication}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationExpertCommunication}>Deaktivovať&lt;/Button>&lt;/div>
+            case 7:
+                return &lt;div>&lt;Button onClick={handleActivationCrisisManagement}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationCrisisManagement}>Deaktivovať&lt;/Button>&lt;/div>
+            case 8:
+                return &lt;div>&lt;Button onClick={handleActivationSupplySecurity}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationSupplySecurity}>Deaktivovať&lt;/Button>&lt;/div>
+            case 9:
+                return &lt;div>&lt;Button onClick={handleActivationInternationalHelp}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationInternationalHelp}>Deaktivovať&lt;/Button>&lt;/div>
+            case 10:
+                return &lt;div>&lt;Button onClick={handleActivationInformationCampaign}>Aktivovať&lt;/Button>&lt;Button
+                    onClick={handleDeactivationInformationCampaign}>Deaktivovať&lt;/Button>&lt;/div>
+            default:
+                return null;
+        }
+    }
+
+    //arrow function for wrapping buttons
+    const Results = (c) => (
+        &lt;Grid className={classes.activationButtons}>
+            {renderSwitch(c.cislo)}
+        &lt;/Grid>
+    )
+
+    /**
+     * arrow function, which is used for activating specific measurement - EducateCommunicate
+     */
+    const handleActivationEducateCommunicate = () => {
+        //check if there is enough main game currency for activation
+        if (measuresActualState.EducateCommunicatePrice &lt;= gameCurrency) {
+            //check if the measurement is not already activated
+            if (measuresActualState.EducateCommunicate === 0) {
+                //activation of measurement - set measurement state to 1, and deactivate measurement tree lock
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, EducateCommunicate: 1, EducateCommunicateActive: false};
+                });
+                //decrease game currency
+                setGameCurrency(prev => (prev - measuresActualState.EducateCommunicatePrice));
+                //change global beta parameter
+                setBetaParameter(prev => (prev - measuresActualState.EducateCommunicateBeta));
+                //change global delta parameter
+                setDeltaParameter(prev => (prev - measuresActualState.EducateCommunicateDelta));
+                //set message - successful activation
+                setModalMessage("Aktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
+                //increase game trust
+                setTrustValue(prev => (prev + 4));
+                //call function, which tells that activation was successful
+                handleOpenSuccess();
+            }
+            //if there is not enough currency
+        } else {
+            //set message - non-successful activation
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            //call function, which tells that activation was non-successful
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationEducateCommunicate = () => {
+        if (measuresActualState.EducateCommunicate === 1) {
+            if (measuresActualState.InformationCampaign === 0 &amp;&amp; measuresActualState.TravelWarning === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, EducateCommunicate: 0, EducateCommunicateActive: true};
+                });
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.EducateCommunicatePrice / 2)));
+                setBetaParameter(prev => (prev + measuresActualState.EducateCommunicateBeta));
+                setDeltaParameter(prev => (prev + measuresActualState.EducateCommunicateDelta));
+                setModalMessage("Deaktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
+                setTrustValue(prev => (prev - 5));
+                handleOpenSuccess();
+            } else {
+                setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
+                handleOpenFailure();
+            }
+        }
+    }
+
+    const handleActivationGovernmentHelpsVulnerable = () => {
+        if (measuresActualState.GovernmentHelpsVulnerablePrice &lt;= gameCurrency) {
+            if (measuresActualState.GovernmentHelpsVulnerable === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, GovernmentHelpsVulnerable: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.GovernmentHelpsVulnerablePrice));
+                setBetaParameter(prev => (prev - measuresActualState.GovernmentHelpsVulnerableBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.GovernmentHelpsVulnerableDelta));
+                setModalMessage("Aktivoval si opatrenie - Vládna pomoc zranitelným.");
+                setTrustValue(prev => (prev + 3));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationGovernmentHelpsVulnerable = () => {
+        if (measuresActualState.GovernmentHelpsVulnerable === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, GovernmentHelpsVulnerable: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.GovernmentHelpsVulnerablePrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.GovernmentHelpsVulnerableDelta));
+            setModalMessage("Deaktivoval si opatrenie - Vládna pomoc zranitelným.");
+            setTrustValue(prev => (prev - 4));
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationEmergencyState = () => {
+        if (measuresActualState.EmergencyStatePrice &lt;= gameCurrency) {
+            if (measuresActualState.EmergencyState === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, EmergencyState: 1, EmergencyStateActive: false};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.EmergencyStatePrice));
+                setBetaParameter(prev => (prev - measuresActualState.EmergencyStateBeta));
+                setModalMessage("Aktivoval si opatrenie - Vyhlásenie núdzového stavu.");
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationEmergencyState = () => {
+        if (measuresActualState.EmergencyState === 1) {
+            if (measuresActualState.Curfew === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, EmergencyState: 0, EmergencyStateActive: true};
+                });
+                setGameCurrency(prev => (prev + Math.round(measuresActualState.EmergencyStatePrice / 2)));
+                setBetaParameter(prev => (prev + measuresActualState.EmergencyStateBeta));
+                setModalMessage("Deaktivoval si opatrenie - Vyhlásenie núdzového stavu.");
+                handleOpenSuccess();
+            } else {
+                setModalMessage("Nemôžeš deaktivovať toto opatrenie. Najprv deaktivuj nadväzujúce opatrenia.");
+                handleOpenFailure();
+            }
+        }
+    }
+
+    const handleActivationCurfew = () => {
+        if (measuresActualState.CurfewPrice &lt;= gameCurrency) {
+            if (measuresActualState.Curfew === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, Curfew: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.CurfewPrice));
+                setBetaParameter(prev => (prev - measuresActualState.CurfewBeta));
+                setModalMessage("Aktivoval si opatrenie - Zákaz vychádzania.");
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationCurfew = () => {
+        if (measuresActualState.Curfew === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, Curfew: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.CurfewPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.CurfewBeta));
+            setModalMessage("Deaktivoval si opatrenie - Zákaz vychádzania.");
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationTravelWarning = () => {
+        if (measuresActualState.TravelWarningPrice &lt;= gameCurrency) {
+            if (measuresActualState.TravelWarning === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, TravelWarning: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.TravelWarningPrice));
+                setBetaParameter(prev => (prev - measuresActualState.TravelWarningBeta));
+                setModalMessage("Aktivoval si opatrenie - Cestovné výstrahy.");
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationTravelWarning = () => {
+        if (measuresActualState.TravelWarning === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, TravelWarning: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.TravelWarningPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.TravelWarningBeta));
+            setModalMessage("Deaktivoval si opatrenie - Cestovné výstrahy.");
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationExpertCommunication = () => {
+        if (measuresActualState.ExpertCommunicationPrice &lt;= gameCurrency) {
+            if (measuresActualState.ExpertCommunication === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, ExpertCommunication: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.ExpertCommunicationPrice));
+                setBetaParameter(prev => (prev - measuresActualState.ExpertCommunicationBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.ExpertCommunicationDelta));
+                setModalMessage("Aktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.");
+                setTrustValue(prev => (prev + 2));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationExpertCommunication = () => {
+        if (measuresActualState.ExpertCommunication === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, ExpertCommunication: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.ExpertCommunicationPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.ExpertCommunicationBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.ExpertCommunicationDelta));
+            setModalMessage("Deaktivoval si opatrenie - Komunikácia so zdravoníckymi expertmi.");
+            setTrustValue(prev => (prev - 3));
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationCrisisManagement = () => {
+        if (measuresActualState.CrisisManagementPrice &lt;= gameCurrency) {
+            if (measuresActualState.CrisisManagement === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, CrisisManagement: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.CrisisManagementPrice));
+                setBetaParameter(prev => (prev - measuresActualState.CrisisManagementBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.CrisisManagementDelta));
+                setModalMessage("Aktivoval si opatrenie - Plán krízového riadenia.");
+                setTrustValue(prev => (prev + 3));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationCrisisManagement = () => {
+        if (measuresActualState.CrisisManagement === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, CrisisManagement: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.CrisisManagementPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.CrisisManagementBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.CrisisManagementDelta));
+            setModalMessage("Deaktivoval si opatrenie - Plán krízového riadenia.");
+            setTrustValue(prev => (prev - 4));
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationSupplySecurity = () => {
+        if (measuresActualState.SupplySecurityPrice &lt;= gameCurrency) {
+            if (measuresActualState.SupplySecurity === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, SupplySecurity: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.SupplySecurityPrice));
+                setBetaParameter(prev => (prev - measuresActualState.SupplySecurityBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.SupplySecurityDelta));
+                setModalMessage("Aktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.");
+                setTrustValue(prev => (prev + 2));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationSupplySecurity = () => {
+        if (measuresActualState.SupplySecurity === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, SupplySecurity: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.SupplySecurityPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.SupplySecurityBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.SupplySecurityDelta));
+            setModalMessage("Deaktivoval si opatrenie - Zaistenie bezpečnosti zásobovania.");
+            setTrustValue(prev => (prev - 3));
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationInternationalHelp = () => {
+        if (measuresActualState.InternationalHelpPrice &lt;= gameCurrency) {
+            if (measuresActualState.InternationalHelp === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, InternationalHelp: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.InternationalHelpPrice));
+                setBetaParameter(prev => (prev - measuresActualState.InternationalHelpBeta));
+                setDeltaParameter(prev => (prev - measuresActualState.InternationalHelpDelta));
+                setModalMessage("Aktivoval si opatrenie - Medzinárodná pomoc.");
+                setTrustValue(prev => (prev + 4));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationInternationalHelp = () => {
+        if (measuresActualState.InternationalHelp === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, InternationalHelp: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.InternationalHelpPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.InternationalHelpBeta));
+            setDeltaParameter(prev => (prev + measuresActualState.InternationalHelpDelta));
+            setModalMessage("Deaktivoval si opatrenie - Medzinárodná pomoc.");
+            setTrustValue(prev => (prev - 5));
+            handleOpenSuccess();
+        }
+    }
+
+    const handleActivationInformationCampaign = () => {
+        if (measuresActualState.InformationCampaignPrice &lt;= gameCurrency) {
+            if (measuresActualState.InformationCampaign === 0) {
+                setMeasuresActualState((prevStats) => {
+                    return {...prevStats, InformationCampaign: 1};
+                });
+                setGameCurrency(prev => (prev - measuresActualState.InformationCampaignPrice));
+                setBetaParameter(prev => (prev - measuresActualState.InformationCampaignBeta));
+                setModalMessage("Aktivoval si opatrenie - Informačná kampaň.");
+                setTrustValue(prev => (prev + 2));
+                handleOpenSuccess();
+            }
+        } else {
+            setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            handleOpenFailure();
+        }
+    }
+    const handleDeactivationInformationCampaign = () => {
+        if (measuresActualState.InformationCampaign === 1) {
+
+            setMeasuresActualState((prevStats) => {
+                return {...prevStats, InformationCampaign: 0};
+            });
+            setGameCurrency(prev => (prev + Math.round(measuresActualState.InformationCampaignPrice / 2)));
+            setBetaParameter(prev => (prev + measuresActualState.InformationCampaignBeta));
+            setModalMessage("Deaktivoval si opatrenie - Informačná kampaň.");
+            setTrustValue(prev => (prev - 3));
+            handleOpenSuccess();
+        }
+    }
+
+    return (
+        &lt;DialogContent dividers>
+            {/*renders successful message*/}
+            &lt;Snackbar open={openCommunicationSuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
+                &lt;Alert onClose={handleCloseSuccess} severity="success">
+                    {modalMessage}
+                &lt;/Alert>
+            &lt;/Snackbar>
+            {/*renders non-successful message*/}
+            &lt;Snackbar open={openCommunicationFailure} autoHideDuration={6000} onClose={handleCloseFailure}>
+                &lt;Alert onClose={handleCloseFailure} severity="warning">
+                    {modalMessage}
+                &lt;/Alert>
+            &lt;/Snackbar>
+            {/*general information about measurement type*/}
+            &lt;Typography gutterBottom>
+                Aktiváciou týchto opatrení sa znižuje smrtnosť a šírenie nákazy.
+            &lt;/Typography>
+            &lt;Divider/>
+            {/*grid wrapping measurements*/}
+            &lt;Grid container>
+                {/*renders price and text of measurement*/}
+                &lt;PriceInfoSingleMeasurement price={price} text={text}/>
+
+                {/*grid wrapping button of one specific measurement*/}
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    {/*renders button with styled color, size...*/}
+                    &lt;Button className={classes.buttonSize} color={buttonEducateCommunicateColor}
+                            variant={measuresActualState.EducateCommunicate === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Aktívnou komunikáciou a vzdelávaním verejnosti o nákaze sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 1, measuresActualState.EducateCommunicatePrice + "  (herná mena)");
+                            }}>
+                        Vzdelávanie a komunikácia s verejnosťou
+                    &lt;/Button>
+                    {/*renders activation/deactivation buttons after clicking measurement button*/}
+                    {showEducateCommunicate ? &lt;Results cislo={1}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button disabled={measuresActualState.EducateCommunicateActive} className={classes.buttonSize}
+                            color={buttonTravelWarningColor}
+                            variant={measuresActualState.TravelWarning === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vlády zasiahnutých krajín dôkladne sledujú situáciu vo svete a vydávajú cestovné výstrahy a varovania, čím sa potenciálne znižuje šírenie nákazy.", 5, measuresActualState.TravelWarningPrice + " (herná mena)");
+                            }}>
+                        Cestovné výstrahy
+                    &lt;/Button>
+                    {showTravelWarning ? &lt;Results cislo={5}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button disabled={measuresActualState.EducateCommunicateActive} className={classes.buttonSize}
+                            color={buttonInformationCampaignColor}
+                            variant={measuresActualState.InformationCampaign === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Spustením informačnej kampane (weby s dôležitými informáciami, ...) sa potenciálne znižuje šírenie nákazy. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 10, measuresActualState.InformationCampaignPrice + " (herná mena)");
+                            }}>
+                        Informačná kampaň
+                    &lt;/Button>
+                    {showInformationCampaign ? &lt;Results cislo={10}/> : null}
+                &lt;/Grid>
+
+            &lt;/Grid>
+
+            &lt;br/>
+            &lt;Divider/>
+
+            &lt;Grid container>
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonGovernmentHelpsVulnerableColor}
+                            variant={measuresActualState.GovernmentHelpsVulnerable === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vlády zasiahnutých krajín poskytnú pomoc (informovanosť, ...) zraniteľným občanom (dôchodcovia, zdravotne ťažko postihnutí, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť." +
+                                    " Týmto opatrením sa taktiež získava dôvera obyvateľov.", 2, measuresActualState.GovernmentHelpsVulnerablePrice + " (herná mena)");
+                            }}>
+                        Vládna pomoc zranitelným
+                    &lt;/Button>
+                    {showGovernmentHelpsVulnerable ? &lt;Results cislo={2}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonExpertCommunicationColor}
+                            variant={measuresActualState.ExpertCommunication === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Aktívnou komunikáciou a poradami so zdravotníckymi expertmi a vedcami sa potenciálne znižuje šírenie nákazy a smrtnosť." +
+                                    " Týmto opatrením sa taktiež získava dôvera obyvateľov.", 6, measuresActualState.ExpertCommunicationPrice + " (herná mena)");
+                            }}>
+                        Komunikácia so zdravoníckymi expertmi
+                    &lt;/Button>
+                    {showExpertCommunication ? &lt;Results cislo={6}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonCrisisManagementColor}
+                            variant={measuresActualState.CrisisManagement === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vytovrením plánu krízového riadenia (riešenie krízovej situácie v časových dimenziách, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 7, measuresActualState.CrisisManagementPrice + " (herná mena)");
+                            }}>
+                        Plán krízového riadenia
+                    &lt;/Button>
+                    {showCrisisManagement ? &lt;Results cislo={7}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonSupplySecurityColor}
+                            variant={measuresActualState.SupplySecurity === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zaistením bezpečnosti zásobovania (medické vybavenie, potraviny, ...) sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 8, measuresActualState.SupplySecurityPrice + " (herná mena)");
+                            }}>
+                        Zaistenie bezpečnosti zásobovania
+                    &lt;/Button>
+                    {showSupplySecurity ? &lt;Results cislo={8}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonInternationalHelpColor}
+                            variant={measuresActualState.InternationalHelp === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Zaistením medzinárodnej pomoci a kooperácie sa potenciálne znižuje šírenie nákazy a smrtnosť. Týmto opatrením sa taktiež získava dôvera obyvateľov.", 9, measuresActualState.InternationalHelpPrice + " (herná mena)");
+                            }}>
+                        Medzinárodná pomoc
+                    &lt;/Button>
+                    {showInternationalHelp ? &lt;Results cislo={9}/> : null}
+                &lt;/Grid>
+
+            &lt;/Grid>
+
+            &lt;br/>
+            &lt;Divider/>
+
+            &lt;Grid container>
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button className={classes.buttonSize} color={buttonEmergencyStateColor}
+                            variant={measuresActualState.EmergencyState === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia núdzový stav (kvôli zásobovaniu, obmedzeniu pohybu, ...) čím sa potenciálne znižuje šírenie nákazy a smrtnosť.", 3, measuresActualState.EmergencyStatePrice + " (herná mena)");
+                            }}>
+                        Vyhlásenie núdzového stavu
+                    &lt;/Button>
+                    {showEmergencyState ? &lt;Results cislo={3}/> : null}
+                &lt;/Grid>
+
+                &lt;Grid item xs={12} className={classes.actionButtons}>
+                    &lt;Button disabled={measuresActualState.EmergencyStateActive} className={classes.buttonSize}
+                            color={buttonCurfewColor}
+                            variant={measuresActualState.Curfew === 1 ? "contained" : "outlined"}
+                            onClick={() => {
+                                handleButtonClick("Vlády zasiahnutých krajín dôsledkom pandémie vyhlásia zákaz vychádzania, čím sa potenciálne znižuje šírenie nákazy.", 4, measuresActualState.CurfewPrice + " (herná mena)");
+                            }}>
+                        Zákaz vychádzania
+                    &lt;/Button>
+                    {showCurfew ? &lt;Results cislo={4}/> : null}
+                &lt;/Grid>
+            &lt;/Grid>
+
+            &lt;br/>
+
+        &lt;/DialogContent>
+    );
+}
+
+export default Communication;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

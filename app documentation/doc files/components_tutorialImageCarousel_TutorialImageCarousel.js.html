@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/tutorialImageCarousel/TutorialImageCarousel.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/tutorialImageCarousel/TutorialImageCarousel.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import ImageGallery from 'react-image-gallery';
+import Img1 from '../../images/tutorialImages/1.jpg';
+import Img2 from '../../images/tutorialImages/2.jpg';
+import Img3 from '../../images/tutorialImages/3.jpg';
+import Img4 from '../../images/tutorialImages/4.jpg';
+import Img5 from '../../images/tutorialImages/5.jpg';
+import Img6 from '../../images/tutorialImages/6.jpg';
+import Img7 from '../../images/tutorialImages/7.jpg';
+import Img8 from '../../images/tutorialImages/8.jpg';
+import Img9 from '../../images/tutorialImages/9.jpg';
+import Img10 from '../../images/tutorialImages/10.jpg';
+import Img11 from '../../images/tutorialImages/11.jpg';
+import Img12 from '../../images/tutorialImages/12.jpg';
+import Img13 from '../../images/tutorialImages/13.jpg';
+import Img14 from '../../images/tutorialImages/14.jpg';
+import Img15 from '../../images/tutorialImages/15.jpg';
+import Img16 from '../../images/tutorialImages/16.jpg';
+import Img17 from '../../images/tutorialImages/17.jpg';
+import "react-image-gallery/styles/css/image-gallery.css";
+
+/**
+ * Renders a TutorialImageCarousel component.
+ * Component is used to display game tutorial (image carousel)
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
+function TutorialImageCarousel() {
+
+    const images = [
+        {
+            src: Img1,
+            original: Img1,
+            thumbnail: Img1,
+        },
+        {
+            src: Img2,
+            original: Img2,
+            thumbnail: Img2,
+        },
+        {
+            src: Img3,
+            original: Img3,
+            thumbnail: Img3,
+        },
+        {
+            src: Img4,
+            original: Img4,
+            thumbnail: Img4,
+        },
+        {
+            src: Img5,
+            original: Img5,
+            thumbnail: Img5,
+        },
+        {
+            src: Img6,
+            original: Img6,
+            thumbnail: Img6,
+        },
+        {
+            src: Img7,
+            original: Img7,
+            thumbnail: Img7,
+        },
+        {
+            src: Img8,
+            original: Img8,
+            thumbnail: Img8,
+        },
+        {
+            src: Img9,
+            original: Img9,
+            thumbnail: Img9,
+        },
+        {
+            src: Img10,
+            original: Img10,
+            thumbnail: Img10,
+        },
+        {
+            src: Img11,
+            original: Img11,
+            thumbnail: Img11,
+        },
+        {
+            src: Img12,
+            original: Img12,
+            thumbnail: Img12,
+        },
+        {
+            src: Img13,
+            original: Img13,
+            thumbnail: Img13,
+        },
+        {
+            src: Img14,
+            original: Img14,
+            thumbnail: Img14,
+        },
+        {
+            src: Img15,
+            original: Img15,
+            thumbnail: Img15,
+        },
+        {
+            src: Img16,
+            original: Img16,
+            thumbnail: Img16,
+        },
+        {
+            src: Img17,
+            original: Img17,
+            thumbnail: Img17,
+        },
+    ];
+    return (
+        &lt;div>
+            &lt;ImageGallery showPlayButton={false} showThumbnails={true} items={images}/>
+        &lt;/div>
+    );
+}
+
+export default TutorialImageCarousel;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

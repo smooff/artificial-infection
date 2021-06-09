@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/gameCurrencyRightBar/GameCurrencyModal.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/gameCurrencyRightBar/GameCurrencyModal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useState} from 'react';
+import {Button, Card, CardContent, Snackbar, Typography} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import {makeStyles} from "@material-ui/core/styles";
+import Divider from "@material-ui/core/Divider";
+import {useRecoilState} from "recoil";
+import {MedicalUnitsCurrencyState} from "../../data/currencies/MedicalUnitsCurrencyState";
+import {GameCurrencyState} from "../../data/currencies/GameCurrencyState";
+import {ActivableInhibitorsState} from "../../data/ActivableInhibitorsState";
+import {BetaState} from "../../data/parameters/BetaState";
+import {DeltaState} from "../../data/parameters/DeltaState";
+import MuiAlert from "@material-ui/lab/Alert";
+
+/**
+ * Renders a GameCurrencyModal component.
+ * Component is used to display game currency modal, which contains game currency, medical units, etc.
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
+function GameCurrencyModal() {
+    const useStyles = makeStyles(() => ({
+        itemAlign: {
+            textAlign: "center",
+        }, buttonsAlign: {
+            marginTop: "6px",
+            textAlign: "center",
+        }, headerButton: {
+            fontWeight: "bold"
+        }, textColor: {
+            color: "red"
+        }
+    }));
+    const classes = useStyles();
+
+    //hlavna herna mena
+    const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
+
+    //vedlajsia herna mena
+    const [medicalUnitsCurrency, setMedicalUnitsCurrency] = useRecoilState(MedicalUnitsCurrencyState);
+
+    //inhibitory
+    const [inhibitors, setInhibitors] = useRecoilState(ActivableInhibitorsState);
+
+    //beta parameter
+    const [, setBetaParameter] = useRecoilState(BetaState);
+    //delta parameter
+    const [, setDeltaParameter] = useRecoilState(DeltaState);
+
+
+    const [text, setText] = useState("");
+    const [cena, setCena] = useState();
+
+    const [button1, setButton1] = useState("default");
+    const [button2, setButton2] = useState("default");
+    const [button3, setButton3] = useState("default");
+    const [button4, setButton4] = useState("default");
+    const handleButtonClick = (textMessage, buttonNumber, buttonCena) => {
+        setText(textMessage);
+        setCena(buttonCena);
+        switch (buttonNumber) {
+            case 1:
+                setButton1("primary");
+                setButton2("default");
+                setButton3("default");
+                setButton4("default");
+                break;
+            case 2:
+                setButton1("default");
+                setButton2("primary");
+                setButton3("default");
+                setButton4("default");
+                break;
+            case 3:
+                setButton1("default");
+                setButton2("default");
+                setButton3("primary");
+                setButton4("default");
+                break;
+            case 4:
+                setButton1("default");
+                setButton2("default");
+                setButton3("default");
+                setButton4("primary");
+                break;
+            default:
+                return null;
+        }
+    }
+
+
+    //cena za zdravotnicke jednotky
+    let medicalUnitsPrice = 5;
+
+    //cena za Permanentné zníženie šírenia
+    let infectivityInhibitorPrice = 15;
+    //sila infektivity inhibitora
+    let infectivityInhibitorStrength = 0.001;
+
+    //cena za Permanentné zníženie smrtnosti
+    let mortalityInhibitorPrice = 15;
+    //sila mortality inhibitora
+    let mortalityInhibitorStrength = 0.0001;
+
+    //pocet zdrav. jednotiek za nakup
+    let medicalUnitsCount = 10;
+
+    const purchaseMedicalUnits = (buyPrice, buttonNumber) => {
+        if (buyPrice &lt;= gameCurrency) {
+            switch (buttonNumber) {
+                case 1:
+                    setMedicalUnitsCurrency(prev => (prev + medicalUnitsCount));
+                    break;
+                default:
+                    return null;
+            }
+            setGameCurrency(prev => (prev - buyPrice));
+            setModalMessage("Zakúpil si zdravotnícke jednotky.");
+            handleOpenSuccess();
+        } else {
+            setModalMessage("Nemáš dostatok hlavnej hernej meny na zakúpenie zdravotníckych jednotiek.");
+            handleOpenFailure();
+        }
+    }
+
+    const purchaseInhibitors = (buyPrice, buttonNumber) => {
+        if (buyPrice &lt;= medicalUnitsCurrency) {
+            switch (buttonNumber) {
+                case 2:
+                    setBetaParameter(prev => (prev - infectivityInhibitorStrength));
+                    setModalMessage("Aktivoval si permanentné zníženie šírenia.");
+                    handleOpenSuccess();
+                    setInhibitors((prevStats) => {
+                        return {...prevStats, infectivityInhibitor: prevStats.infectivityInhibitor + 1};
+                    });
+                    break;
+                case 3:
+                    setDeltaParameter(prev => (prev - mortalityInhibitorStrength));
+                    setModalMessage("Aktivoval si permanentné zníženie smrtnosti.");
+                    handleOpenSuccess();
+                    setInhibitors((prevStats) => {
+                        return {...prevStats, mortalityInhibitor: prevStats.mortalityInhibitor + 1};
+                    });
+                    break;
+                default:
+                    return null;
+            }
+            setMedicalUnitsCurrency(prev => (prev - buyPrice));
+        } else {
+            setModalMessage("Nemáš dostatok zdravotníckych jednotiek na zakúpenie daného vylepšenia.");
+            handleOpenFailure();
+        }
+    }
+
+    const [openCurrencySuccess, setOpenCurrencySuccess] = React.useState(false);
+    const handleOpenSuccess = () => {
+        setOpenCurrencySuccess(true);
+    };
+    const handleCloseSuccess = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCurrencySuccess(false);
+    };
+
+    const [openCurrencyFailure, setOpenCurrencyFailure] = React.useState(false);
+    const handleOpenFailure = () => {
+        setOpenCurrencyFailure(true);
+    };
+    const handleCloseFailure = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenCurrencyFailure(false);
+    };
+
+    function Alert(props) {
+        return &lt;MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
+    const [modalMessage, setModalMessage] = useState();
+
+    return (
+        &lt;div>
+            &lt;Snackbar open={openCurrencySuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
+                &lt;Alert onClose={handleCloseSuccess} severity="success">
+                    {modalMessage}
+                &lt;/Alert>
+            &lt;/Snackbar>
+            &lt;Snackbar open={openCurrencyFailure} autoHideDuration={6000} onClose={handleCloseFailure}>
+                &lt;Alert onClose={handleCloseFailure} severity="warning">
+                    {modalMessage}
+                &lt;/Alert>
+            &lt;/Snackbar>
+            &lt;Card>
+                &lt;CardContent>
+                    &lt;Grid container xs={12} className={classes.itemAlign}>
+                        &lt;Grid item xs={12} className={classes.itemAlign}>
+                            {text === "" ? "" :
+                                &lt;div>
+                                    &lt;Typography className={classes.textColor}>Popis&lt;/Typography>
+                                    &lt;Typography>{text}&lt;/Typography>
+                                    &lt;Typography color={"secondary"}>
+                                        {cena > 0 ? cena === 5 ? "Cena: " + cena + " hernej meny / 10 jednotiek" : "Cena: " + cena + " zdrav. jednotiek / jedna aktivácia" : ""}
+                                    &lt;/Typography>
+                                &lt;/div>}
+                        &lt;/Grid>
+                    &lt;/Grid>
+
+                    &lt;br/>
+                    &lt;Divider/>
+
+                    &lt;Grid container spacing={3}>
+
+
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h6"}>
+                                &lt;Button color={button4} className={classes.headerButton} onClick={() => {
+                                    handleButtonClick("Hernú menu získavaš viacerými spôsobmi - napr. šanca na získanie za novo-nakazenú krajinu, plynutím času...", 4, 0)
+                                }}>Aktuálna herná mena&lt;/Button>&lt;/Typography>
+                        &lt;/Grid>
+
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h6"}>
+                                &lt;Button color={button1} className={classes.headerButton} onClick={() => {
+                                    handleButtonClick("Zdravotnícke jednotky sa dajú zakúpiť za hernú menu. Pomocou zdravotníckych jednotiek sa dajú robiť rôzne akcie," +
+                                        " ako napríklad začať vývoj vakcíny, permanentne " +
+                                        "znížiť šírenie nákazy a pod.", 1, medicalUnitsPrice)
+                                }}>Zdravotnícke jednotky&lt;/Button>
+                            &lt;/Typography>
+                        &lt;/Grid>
+
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h6"}>
+                                &lt;Button color={button2} className={classes.headerButton} onClick={() => {
+                                    handleButtonClick("Zakúpením permanentného zníženia šírenia sa počas celej zníži hry infekčnosť nákazy. Táto akcia sa dá viacnásobne zakúpiť za zdravotnícke jednotky a je nevratná.", 2, infectivityInhibitorPrice)
+                                }}>Permanentné zníženie šírenia&lt;/Button>
+                            &lt;/Typography>
+                        &lt;/Grid>
+
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h6"}>
+                                &lt;Button color={button3} className={classes.headerButton} onClick={() => {
+                                    handleButtonClick("Zakúpením permanentného zníženia smrtnosti sa počas celej zníži hry smrtnosť nákazy. Táto akcia sa dá viacnásobne zakúpiť za zdravotnícke jednotky a je nevratná.", 3, mortalityInhibitorPrice)
+                                }}>Permanentné zníženie smrtnosti&lt;/Button>
+                            &lt;/Typography>
+                        &lt;/Grid>
+                    &lt;/Grid>
+
+                    &lt;br/>
+                    &lt;Divider/>
+
+                    &lt;Grid container xs={12} className={classes.itemAlign}>
+                        &lt;Grid item xs={12} className={classes.itemAlign}>
+                            &lt;Typography>Aktuálny stav&lt;/Typography>
+                        &lt;/Grid>
+                    &lt;/Grid>
+                    &lt;br/>
+                    &lt;Grid container>
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h5"}>{gameCurrency}&lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h5"}>{medicalUnitsCurrency}&lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h5"}>{inhibitors.infectivityInhibitor}&lt;/Typography>
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.itemAlign}>
+                            &lt;Typography variant={"h5"}>{inhibitors.mortalityInhibitor}&lt;/Typography>
+                        &lt;/Grid>
+                    &lt;/Grid>
+
+                    &lt;br/>
+                    &lt;Divider/>
+
+                    &lt;Grid container>
+                        &lt;Grid item xs={3} className={classes.buttonsAlign}>
+
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.buttonsAlign}>
+                            &lt;Button onClick={() => {
+                                purchaseMedicalUnits(medicalUnitsPrice, 1)
+                            }}>Zakúpiť&lt;/Button>
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.buttonsAlign}>
+                            &lt;Button onClick={() => {
+                                purchaseInhibitors(infectivityInhibitorPrice, 2)
+                            }}>Zakúpiť&lt;/Button>
+                        &lt;/Grid>
+                        &lt;Grid item xs={3} className={classes.buttonsAlign}>
+                            &lt;Button onClick={() => {
+                                purchaseInhibitors(mortalityInhibitorPrice, 3)
+                            }}>Zakúpiť&lt;/Button>
+                        &lt;/Grid>
+                    &lt;/Grid>
+
+                &lt;/CardContent>
+            &lt;/Card>
+        &lt;/div>
+    );
+}
+
+export default GameCurrencyModal;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,3165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Global</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Global</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="ActivableInhibitorsState"><span class="type-signature">(constant) </span>ActivableInhibitorsState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for inhibitors, which is slows the infection spread and mortality (beta and delta param.).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_ActivableInhibitorsState.js.html">data/ActivableInhibitorsState.js</a>, <a href="data_ActivableInhibitorsState.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="addCurrency"><span class="type-signature">(constant) </span>addCurrency<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    arrow function for adding game currency
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line578">line 578</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="BetaState"><span class="type-signature">(constant) </span>BetaState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for Beta parameter, which is used for infection spread calculation.
+Default value is 0.941 - game starts with beta parameter set to 0.941.
+Lowest possible value is 0.0513 - this value can be this low after activating all game measurements connected with beta parameter.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_parameters_BetaState.js.html">data/parameters/BetaState.js</a>, <a href="data_parameters_BetaState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="ClickableGameCurrencyState"><span class="type-signature">(constant) </span>ClickableGameCurrencyState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for clickable (temporary) game currency.
+Default value is 0 - game starts with 0 clickable game currency
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_currencies_ClickableGameCurrencyState.js.html">data/currencies/ClickableGameCurrencyState.js</a>, <a href="data_currencies_ClickableGameCurrencyState.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="CommunicationMeasuresSelector"><span class="type-signature">(constant) </span>CommunicationMeasuresSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Selectors are used for accessing  certain (also modified) data from global recoil states.
+This selector is used for counting activated measurements in Communication section.
+
+Selectors like this one are also in others states, mainly used for accessing data of the state.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameControls_CommunicationState.js.html">data/gameControls/CommunicationState.js</a>, <a href="data_gameControls_CommunicationState.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="CommunicationState"><span class="type-signature">(constant) </span>CommunicationState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for Communication measurements.
+This object contains multiple variables, for example:
+EducateCommunicate: 0, determines if measurement EducateCommunicate is activated (if yes, values is 1).
+EducateCommunicatePrice: 6, determines price (main game currency) for EducateCommunicate measurement.
+EducateCommunicateBeta: 0.3 * betaPerMeasurementStrength, determines the strength of measurement for changing beta parameter.
+EducateCommunicateDelta: 0.3 * deltaPerMeasurementStrength, determines the strength of measurement for changing delta parameter.
+EmergencyStateActive: true, determines if measurements that are part of tree, can be activated (if they can be accessed).
+
+Similar objects with same core structure are also CureState.js, InfectionPreventionState.js. Other states are also similar, but with few changes.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameControls_CommunicationState.js.html">data/gameControls/CommunicationState.js</a>, <a href="data_gameControls_CommunicationState.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="CurrencyInfectedPopulationBreakpointState"><span class="type-signature">(constant) </span>CurrencyInfectedPopulationBreakpointState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for breakpoints check (after hitting breakpoint clickable currency is added).
+Default value is 50000000, every other 50000000 is added after hitting breakpoint
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_currencies_CurrencyInfectedPopulationBreakpointState.js.html">data/currencies/CurrencyInfectedPopulationBreakpointState.js</a>, <a href="data_currencies_CurrencyInfectedPopulationBreakpointState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deceasedCalculate"><span class="type-signature">(constant) </span>deceasedCalculate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for recalculating deceased
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line994">line 994</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deceasedSelector"><span class="type-signature">(constant) </span>deceasedSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for accessing number of  all deceased in all countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3535">line 3535</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="DeltaState"><span class="type-signature">(constant) </span>DeltaState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for Delta parameter, which is used for new deaths calculation.
+Default value is 0.0959 - game starts with delta parameter set to 0.0959.
+Lowest possible value is 0.0099 - this value can be this low after activating all game measurements connected with delta parameter.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_parameters_DeltaState.js.html">data/parameters/DeltaState.js</a>, <a href="data_parameters_DeltaState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="FirstInfectedCountryState"><span class="type-signature">(constant) </span>FirstInfectedCountryState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for first picked country, which determines if the first country was already infected (at the start of the game).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_FirstInfectedCountryState.js.html">data/FirstInfectedCountryState.js</a>, <a href="data_FirstInfectedCountryState.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameCurrencyState"><span class="type-signature">(constant) </span>GameCurrencyState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for main game currency.
+Default value is 10 - game starts with 10 main game currency.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_currencies_GameCurrencyState.js.html">data/currencies/GameCurrencyState.js</a>, <a href="data_currencies_GameCurrencyState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameFlowState"><span class="type-signature">(constant) </span>GameFlowState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value, which determines if game is running.
+Default value is false - game starts paused.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameTime_GameFlowState.js.html">data/gameTime/GameFlowState.js</a>, <a href="data_gameTime_GameFlowState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameIntervalState"><span class="type-signature">(constant) </span>GameIntervalState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value, which determines how often game interval is called (in milliseconds).
+Default value is 2500 milliseconds - game starts paused, after unpausing the game, game speed (interval) is 2500 milliseconds.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameTime_GameIntervalState.js.html">data/gameTime/GameIntervalState.js</a>, <a href="data_gameTime_GameIntervalState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameOver"><span class="type-signature">(constant) </span>gameOver<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    arrow function for handling game over
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line554">line 554</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameOverState"><span class="type-signature">(constant) </span>GameOverState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for game over, which determines if game has ended.
+Default values lose - 0, win - 0. These values are only set after game over check is triggered.
+Default values loseReason/winReason is set after game has ended, it contains string value with message why game has ended.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_GameOverState.js.html">data/GameOverState.js</a>, <a href="data_GameOverState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameStartState"><span class="type-signature">(constant) </span>GameStartState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for game start, which determines if game has started.
+This value is changed after start button on main page is triggered.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_GameStartState.js.html">data/GameStartState.js</a>, <a href="data_GameStartState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameTimeState"><span class="type-signature">(constant) </span>GameTimeState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for game time, which determines how long the game is running.
+Default value is 0 - game starts with 0 game time, after each iteration game time is increasing by one.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameTime_GameTimeState.js.html">data/gameTime/GameTimeState.js</a>, <a href="data_gameTime_GameTimeState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameTrustHandle"><span class="type-signature">(constant) </span>gameTrustHandle<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for handling game trust
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GameTrustState"><span class="type-signature">(constant) </span>GameTrustState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for game trust, which determines if player wont lose the game - after hitting value 0.
+Default value is 100 - game starts with 100 game trust.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameTrust_GameTrustState.js.html">data/gameTrust/GameTrustState.js</a>, <a href="data_gameTrust_GameTrustState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameVaccineHandle"><span class="type-signature">(constant) </span>gameVaccineHandle<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for handling vaccine events
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line679">line 679</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GammaState"><span class="type-signature">(constant) </span>GammaState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for Gamma parameter, which is used for new recovered calculation.
+Default value is 0 - game starts with gamma parameter set to 0.
+This parameter is set to 0.49 after vaccine development is finished.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_parameters_GammaState.js.html">data/parameters/GammaState.js</a>, <a href="data_parameters_GammaState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GraphDataState"><span class="type-signature">(constant) </span>GraphDataState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for graph data.
+Default value is empty array - data will be added after first infected country.
+After filling the array, data contains global values for infectious, susceptible, recovered, death and certain game time for these values.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_GraphDataState.js.html">data/GraphDataState.js</a>, <a href="data_GraphDataState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infectFirstCountry"><span class="type-signature">(constant) </span>infectFirstCountry<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    arrow function for infecting first country
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line616">line 616</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infectionSpread"><span class="type-signature">(constant) </span>infectionSpread<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for infecting new countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infectiousCalculate"><span class="type-signature">(constant) </span>infectiousCalculate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for recalculating infectious
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line795">line 795</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infectiousCountriesCountSelector"><span class="type-signature">(constant) </span>infectiousCountriesCountSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for counting all infected and non-infected countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3588">line 3588</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infectiousSelector"><span class="type-signature">(constant) </span>infectiousSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for accessing number of  all infectious in all countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3507">line 3507</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="mapColorDataState"><span class="type-signature">(constant) </span>mapColorDataState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for map color, which determines what color scale will be in the map.
+Default value is infectious - game starts with maps showing the infectious compartment, second option is deceased compartment.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapColorDataState.js.html">data/map/MapColorDataState.js</a>, <a href="data_map_MapColorDataState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="mapContainerState"><span class="type-signature">(constant) </span>mapContainerState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for countries.
+Default value is one big object, which consist of 205 smaller object (each has unique key - country iso code).
+Countries list are matching countries provided by react-simple-maps (so countries like Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC) are missing).
+Source for borders/regions/subregions https://raw.githubusercontent.com/mledoze/countries/master/countries.json .
+Region: Asia, Europe, Africa, Americas, Oceania.
+Every country has own name, population, susceptible count (while not infected - equal to population), infectious (while not infected - 0),
+recovered (while not infected - 0), deceased (while not infected - 0), infectivity - determines if country is infected,
+infectiousLooping - array with previous infectious values, border - iso code of bordering countries, region, subregion
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="MedicalUnitsCurrencyState"><span class="type-signature">(constant) </span>MedicalUnitsCurrencyState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for secondary game currency (medical units).
+Default value is 0 - game starts with 0 secondary game currency.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_currencies_MedicalUnitsCurrencyState.js.html">data/currencies/MedicalUnitsCurrencyState.js</a>, <a href="data_currencies_MedicalUnitsCurrencyState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="MessageModalState"><span class="type-signature">(constant) </span>MessageModalState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for general game messages, messages are added to array after hitting specific.
+Game check like infecting new country or starting vaccine development.
+Default value is empty array - game starts with no trust messages.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_messages_MessageModalState.js.html">data/messages/MessageModalState.js</a>, <a href="data_messages_MessageModalState.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="NewMessagesCounter"><span class="type-signature">(constant) </span>NewMessagesCounter<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for unread messages counter.
+Default value is 0 - game starts with no new messages, so counter is also 0.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_messages_NewMessagesCounter.js.html">data/messages/NewMessagesCounter.js</a>, <a href="data_messages_NewMessagesCounter.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="recoveredCalculate"><span class="type-signature">(constant) </span>recoveredCalculate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for recalculating recovered
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line895">line 895</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="recoveredSelector"><span class="type-signature">(constant) </span>recoveredSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for accessing number of  all recovered in all countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3521">line 3521</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="RegionTravelRestrictionState"><span class="type-signature">(constant) </span>RegionTravelRestrictionState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for Region travel measurements.
+These measurements are used for decreasing spread across new countries (infecting new countries).
+Default value is object, that contains objects with key, which determines region affected.
+Inside these multiple objects are prices like  bordersPrice: 6, and variables which determines if the specific measurement is activated, like borders: 0.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameControls_RegionTravelRestrictionState.js.html">data/gameControls/RegionTravelRestrictionState.js</a>, <a href="data_gameControls_RegionTravelRestrictionState.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="separateCountryByInfectivitySelector"><span class="type-signature">(constant) </span>separateCountryByInfectivitySelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for accessing all needed data for countries list
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3549">line 3549</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="StrictMeasuresTimeState"><span class="type-signature">(constant) </span>StrictMeasuresTimeState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for some of the strict measurements.
+ Default is object containing variables, those variables are set to 0.
+ After activating specific measurements, those variables will be set to 1.
+ This state is used for game trust breakpoints check.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_StrictMeasuresTimeState.js.html">data/StrictMeasuresTimeState.js</a>, <a href="data_StrictMeasuresTimeState.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="susceptibleCalculate"><span class="type-signature">(constant) </span>susceptibleCalculate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for recalculating susceptible
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line759">line 759</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="susceptiblesSelector"><span class="type-signature">(constant) </span>susceptiblesSelector<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    selector for accessing number of  all susceptible in all countries
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_map_MapContainerState.js.html">data/map/MapContainerState.js</a>, <a href="data_map_MapContainerState.js.html#line3492">line 3492</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="TrustMessageState"><span class="type-signature">(constant) </span>TrustMessageState<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Represents global state value for game messages from trust, messages are added to array after hitting specific game trust check breakpoint.
+Default value is empty array - game starts with no trust messages.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_gameTrust_TrustMessageState.js.html">data/gameTrust/TrustMessageState.js</a>, <a href="data_gameTrust_TrustMessageState.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="vaccineInitialization"><span class="type-signature">(constant) </span>vaccineInitialization<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    function for initializing vaccine development time
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line640">line 640</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getRandomNumberInRange"><span class="type-signature"></span>getRandomNumberInRange<span class="signature">(min, max)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function for getting random number in range
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>min</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_GameUtils.js.html">utils/GameUtils.js</a>, <a href="utils_GameUtils.js.html#line631">line 631</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getWindowDimensions"><span class="type-signature"></span>getWindowDimensions<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function for getting window dimensions
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages_ResponsiveDesign.js.html">pages/ResponsiveDesign.js</a>, <a href="pages_ResponsiveDesign.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="useWindowDimensions"><span class="type-signature"></span>useWindowDimensions<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function for handling resizing window
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages_ResponsiveDesign.js.html">pages/ResponsiveDesign.js</a>, <a href="pages_ResponsiveDesign.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

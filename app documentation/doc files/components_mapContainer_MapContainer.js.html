@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/mapContainer/MapContainer.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/mapContainer/MapContainer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useRef, useState} from "react";
+import {scaleLinear} from "d3-scale";
+import {ComposableMap, Geographies, Geography, ZoomableGroup} from "react-simple-maps";
+import {
+    deceasedSelector,
+    infectiousCountriesNumberSelector,
+    infectiousSelector,
+    mapContainerState,
+    recoveredSelector,
+    susceptiblesSelector
+} from "../../data/map/MapContainerState";
+import {useRecoilState, useRecoilValue} from "recoil";
+
+import './MapContainer.css';
+import {GameTimeState} from "../../data/gameTime/GameTimeState";
+import {GameFlowState} from "../../data/gameTime/GameFlowState";
+import {GameIntervalState} from "../../data/gameTime/GameIntervalState";
+import {
+    RegionAirportsSelector,
+    RegionBordersSelector,
+    RegionSeaportsSelector,
+    RegionTravelRestrictionMeasuresSelector,
+    RegionTravelRestrictionState
+} from "../../data/gameControls/RegionTravelRestrictionState";
+import {FirstInfectedCountryState} from "../../data/FirstInfectedCountryState";
+import {BetaState} from "../../data/parameters/BetaState";
+import {GammaState} from "../../data/parameters/GammaState";
+import {DeltaState} from "../../data/parameters/DeltaState";
+import {Dialog} from "@material-ui/core";
+import SingleCountryModal from "./SingleCountryModal";
+import {MessageModalState} from "../../data/messages/MessageModalState";
+import {mapColorDataState} from "../../data/map/MapColorDataState";
+import {GraphDataState} from "../../data/GraphDataState";
+import {VaccineMeasuresSelector, VaccineState} from "../../data/gameControls/VaccineState";
+import {CureMeasuresSelector} from "../../data/gameControls/CureState";
+import {GameTrustState} from "../../data/gameTrust/GameTrustState";
+import {CommunicationMeasuresSelector} from "../../data/gameControls/CommunicationState";
+import {InfectionPreventionMeasuresSelector} from "../../data/gameControls/InfectionPreventionState";
+import {TracingTestingMeasuresSelector} from "../../data/gameControls/TracingTestingState";
+import {
+    TravelRestrictionLockDownSelector,
+    TravelRestrictionMeasuresSelector
+} from "../../data/gameControls/TravelRestrictionState";
+import {TrustMessageState} from "../../data/gameTrust/TrustMessageState";
+import {StrictMeasuresTimeState} from "../../data/StrictMeasuresTimeState";
+import {ClickableGameCurrencyState} from "../../data/currencies/ClickableGameCurrencyState";
+import {NewMessagesCounter} from "../../data/messages/NewMessagesCounter";
+import {GameOverState} from "../../data/GameOverState";
+import {CurrencyInfectedPopulationBreakpointState} from "../../data/currencies/CurrencyInfectedPopulationBreakpointState";
+import {useWindowDimensions} from "../../pages/ResponsiveDesign";
+import {
+    addCurrency,
+    deceasedCalculate,
+    gameOver,
+    gameTrustHandle,
+    gameVaccineHandle,
+    infectFirstCountry,
+    infectionSpread,
+    infectiousCalculate,
+    recoveredCalculate,
+    susceptibleCalculate
+} from "../../utils/GameUtils";
+
+
+const geoUrl = require('../../data/map/topologies.json');
+
+/**
+ * Renders a MapContainer component.
+ * Component is used to display map and for handling game functions
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
+const MapContainer = () => {
+
+    //stores info if the modal for single country is opened or not
+    const [openCountryModal, setOpenCountryModal] = React.useState(false);
+    const handleClickOpenCountryModal = () => {
+        setOpenCountryModal(true);
+    };
+    const handleCloseCountryModal = () => {
+        setOpenCountryModal(false);
+    };
+    //stores info about country for modal after clicking on specific country
+    const [singleCountryModal, setSingleCountryModal] = useState();
+
+    //actual window dimensions
+    const {height, width} = useWindowDimensions();
+
+
+   //function for handling game interval
+    function useInterval(callback, delay) {
+        const savedCallback = useRef();
+
+        useEffect(() => {
+            savedCallback.current = callback;
+        }, [callback]);
+
+        useEffect(() => {
+            function tick() {
+                savedCallback.current();
+            }
+
+            if (delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id);
+            }
+        }, [delay]);
+    }
+
+    //game time
+    const [days, setDays] = useRecoilState(GameTimeState);
+
+    //value, which determines if game is running
+    const [gameFlow,] = useRecoilState(GameFlowState);
+
+    //value, which stores time - how often is interval called
+    const [intervalSpeed,] = useRecoilState(GameIntervalState);
+
+    //breakpoint for adding game currency, based on increasing infectious
+    const [infectedBreakpoints, setInfectedBreakpoints] = useRecoilState(CurrencyInfectedPopulationBreakpointState);
+
+    //game parameters
+    const [betaParameter,] = useRecoilState(BetaState);
+    const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
+    const [deltaParameter,] = useRecoilState(DeltaState);
+
+    //all countries data
+    const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
+
+    //data for graph and game over
+    const [, setGraphData] = useRecoilState(GraphDataState);
+    let susceptibleWorldData = useRecoilValue(susceptiblesSelector);
+    let infectiousWorldData = useRecoilValue(infectiousSelector);
+    let recoveredWorldData = useRecoilValue(recoveredSelector);
+    let deceasedWorldData = useRecoilValue(deceasedSelector);
+
+
+    //game messages
+    const [, setMessages] = useRecoilState(MessageModalState);
+
+    //counter for unread game messages
+    const [, setMessageCounter] = useRecoilState(NewMessagesCounter);
+
+    //clickable (temporary) currency
+    const [clickableGameCurrency, setClickAbleGameCurrency] = useRecoilState(ClickableGameCurrencyState);
+
+    //game trust messages
+    const [, setTrustMessages] = useRecoilState(TrustMessageState);
+
+    //map color
+    const [mapColor,] = useRecoilState(mapColorDataState);
+    //function for scaling color of single countries based on numbers
+    const scaling = (infectiousNum, populationNum, deceasedNum) => {
+        if (deceasedNum === populationNum) {
+            return "rgb(0,0,0)";
+        }
+        if (mapColor === 'infectious') {
+            const colorScale = scaleLinear()
+                .domain([0, populationNum * 0.75])
+                .range(["#ffedea", "#FF2A05"]);
+            return colorScale(infectiousNum);
+        } else if (mapColor === 'deceased') {
+            const colorScale = scaleLinear()
+                .domain([0, populationNum * 0.95])
+                .range(["#dcdbdd", "#070707"]);
+            return colorScale(deceasedNum);
+        }
+
+    }
+
+    /**
+     * Arrow function for infecting new countries
+     * @param countryName - iso code of country
+     * @param infectiousOrigin - infectious origin - infecting by borders, airplanes...
+     * RETURNS: modified single country data
+     */
+    const infectingNewCountry = (countryName, infectiousOrigin) => {
+        const data = allCountries[countryName];
+        let {Susceptible: S, Infectious: I} = data;
+
+        switch (infectiousOrigin) {
+            case "initial":
+                S = S - 1;
+                I = 1;
+                break;
+            case "border":
+                S = S - 10;
+                I = 10;
+                break;
+            case "region":
+                S = S - 5;
+                I = 5;
+                break;
+            case "subregion":
+                S = S - 8;
+                I = 8;
+                break;
+            case "airTraffic":
+                S = S - 4;
+                I = 4;
+                break;
+            case "seaTraffic":
+                S = S - 4;
+                I = 4;
+                break;
+            default:
+                return null;
+        }
+        //setting game message state
+        setMessages((prevStats) => ([...prevStats, {
+            iso: countryName,
+            name: data.NAME,
+            primaryMessage: " ● Nakazila sa nová krajina - " + data.NAME + ". Oblasť " + data.subregion + ".",
+            day: days,
+            reason: 'infecting'
+        }]));
+
+        //setting unread message counter
+        setMessageCounter(prev => (prev + 1));
+
+        //randomize chance for getting clickable game currency after infecting new country
+        if (Math.random() > 0.25) {
+            if (clickableGameCurrency &lt; 10) {
+                setClickAbleGameCurrency(prev => (prev + 1));
+            }
+        }
+
+        return {
+            ...data,
+            infectivity: 1,
+            Susceptible: S,
+            Infectious: I,
+        };
+    }
+
+    /**
+     * Arrow function, which handle recalculation for all compartments for single country
+     * @param countryName - iso code of country
+     * RETURNS: modified single country data
+     */
+    const compartmentsRecalculateValues = (countryName) => {
+        const data = allCountries[countryName];
+        const {
+            Susceptible: S,
+            Infectious: I,
+            Recovered: R,
+            Deceased: D,
+            Population: N,
+            infectiousLooping: infArrayState
+        } = data;
+
+        //value of new susceptible for country
+        const [newSusceptibleValue] = susceptibleCalculate(vaccineState.vaccineDevelopmentFinished, S, I, N, gammaParameter, betaParameter);
+
+        //value of new infectious for country
+        //infectiousUnderZero - check for infectious dropping under zero
+        //infectiousPushToRD - check if infectious has to be pushed to recovered/deceased
+        //infectiousBiggerThanPopulation - check if infectious didnt overgrow whole population number
+        //infArrayLocal - check if infectious didnt loop
+        //LoopPushToRD - if they are looping, push them to recovered/deceased
+        const [newInfectiousValue, infectiousUnderZero, infectiousPushToRD, infectiousBiggerThanPopulation, infArrayLocal, LoopPushToRD] = infectiousCalculate(S, I, N, betaParameter,
+            gammaParameter, deltaParameter, infArrayState, vaccineState.vaccineDevelopmentFinished);
+
+        //value of new recovered for country
+        const newRecoveredValue = recoveredCalculate(S, I, R, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation,
+            infectiousPushToRD, vaccineState.vaccineDevelopmentFinished);
+
+        //value of new deceased for country
+        const newDeceasedValue = deceasedCalculate(I, D, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation,
+            infectiousPushToRD, vaccineState.vaccineDevelopmentFinished);
+
+        return {
+            ...data,
+            Susceptible: newSusceptibleValue,
+            Infectious: newInfectiousValue,
+            Recovered: newRecoveredValue,
+            Deceased: newDeceasedValue,
+            infectiousLooping: infArrayLocal
+        };
+    };
+
+    //game over check
+    const [, setGameOverState] = useRecoilState(GameOverState);
+
+    //region restrictions, for decreasing chance of infecting new countries
+    const [regionRestrictions,] = useRecoilState(RegionTravelRestrictionState);
+
+    //value check for first infected country
+    const [pickFirstInfectedCountry, setPickFirstInfectedCountry] = useRecoilState(FirstInfectedCountryState);
+
+    //vaccine state
+    const [vaccineState, setVaccineState] = useRecoilState(VaccineState);
+
+    //TRUST state
+    //number of infectious countries
+    const infectiousCountriesNumber = useRecoilValue(infectiousCountriesNumberSelector);
+    //number of active measurements from Cure
+    const cureMeasuresNumber = useRecoilValue(CureMeasuresSelector);
+    //number of active measurements from Communication
+    const communicationMeasuresNumber = useRecoilValue(CommunicationMeasuresSelector);
+    //number of active measurements from Infection prevention
+    const infectionPreventionMeasuresNumber = useRecoilValue(InfectionPreventionMeasuresSelector);
+    //number of active measurements from Tracing and Testing
+    const tracingTestingMeasuresNumber = useRecoilValue(TracingTestingMeasuresSelector);
+    //number of active measurements from Vaccine
+    const vaccineMeasuresNumber = useRecoilValue(VaccineMeasuresSelector);
+    //number of active measurements from Travel restriction
+    const travelRestrictionMeasuresNumber = useRecoilValue(TravelRestrictionMeasuresSelector);
+    //number of active measurements from regions- travel restrictions
+    const regionTravelRestrictionMeasuresNumber = useRecoilValue(RegionTravelRestrictionMeasuresSelector);
+    //sum number of active measurements from Travel restrictions and Region travel restrictions
+    const allTravelRestrictionMeasuresNumber = travelRestrictionMeasuresNumber + regionTravelRestrictionMeasuresNumber;
+
+    //number of global deceased
+    const deceasedWorlWideNumber = useRecoilValue(deceasedSelector);
+    //value, which determines if lockdown is activated
+    const lockDownMeasureState = useRecoilValue(TravelRestrictionLockDownSelector);
+    //value, which determines how long was lockdown activated etc.
+    const [strictMeasuresTime, setStrictMeasuresTime] = useRecoilState(StrictMeasuresTimeState);
+    //values, which determines if borders/seaports/airports are closed
+    const bordersMeasureState = useRecoilValue(RegionBordersSelector);
+    const airportsMeasureState = useRecoilValue(RegionAirportsSelector);
+    const seaportsMeasureState = useRecoilValue(RegionSeaportsSelector);
+
+    //trust value
+    const [trustValue, setTrustValue] = useRecoilState(GameTrustState);
+
+
+    useInterval(() => {
+
+        //check if game is running
+        if (gameFlow === true) {
+
+            //game time incrementation (adding days)
+            setDays(prevDays => prevDays + 1);
+
+            //object for countries that are going to be recalculated - used for one-time setting countries state
+            let countries = {};
+            //countries from countries state
+            const countryCodes = Object.keys(allCountries);
+
+            /**
+             * random infecting FIRST country
+             */
+            infectFirstCountry(pickFirstInfectedCountry, countryCodes, allCountries, countries, infectingNewCountry, setPickFirstInfectedCountry);
+
+            /**
+             * function that handle game trust
+             */
+            gameTrustHandle(infectiousCountriesNumber, cureMeasuresNumber, communicationMeasuresNumber,
+                infectionPreventionMeasuresNumber, tracingTestingMeasuresNumber, allTravelRestrictionMeasuresNumber,
+                vaccineMeasuresNumber, deceasedWorlWideNumber, days, lockDownMeasureState, strictMeasuresTime,
+                setStrictMeasuresTime, bordersMeasureState, airportsMeasureState, seaportsMeasureState,
+                trustValue, setGameOverState, setTrustValue, setTrustMessages);
+
+            /**
+             * function that handle vaccine
+             */
+            gameVaccineHandle(vaccineState, days, setGammaParameter, setMessages, setVaccineState);
+
+            /**
+             * loop for all countries - infecting new countries
+             */
+            Object.keys(allCountries).forEach(currentCountry => {
+                infectionSpread(currentCountry, allCountries, regionRestrictions, countries, infectingNewCountry, countryCodes, compartmentsRecalculateValues);
+            })
+
+            /**
+             * currency increment handle
+             */
+            addCurrency(infectiousWorldData, infectedBreakpoints, clickableGameCurrency, days, setClickAbleGameCurrency, setInfectedBreakpoints);
+
+            //setter for graph data
+            setGraphData((prevStats) => ([...prevStats, {
+                inf: infectiousWorldData,
+                sus: susceptibleWorldData,
+                rec: recoveredWorldData,
+                dec: deceasedWorldData,
+                day: days
+            }]));
+
+            //setter for updating countries
+            setAllCountries((prevAllCountriesState) => {
+                return {
+                    ...prevAllCountriesState, ...countries
+                }
+            });
+
+            /**
+             * game over handle
+             */
+            gameOver(recoveredWorldData, susceptibleWorldData, infectiousWorldData, days, setGameOverState);
+        }
+
+    }, intervalSpeed);
+//-------------------------------------------------------------------->
+
+    const mapHeight = height * 0.75;
+    const mapWidth = width * 0.75;
+
+    //responsive map
+    let mapScale = ((width / 80) * 11.2);
+
+    return (
+        &lt;div>
+            &lt;Dialog fullWidth={true} maxWidth={"xs"} onClose={handleCloseCountryModal} open={openCountryModal}>
+
+                &lt;SingleCountryModal singleCountryData={singleCountryModal}/>
+            &lt;/Dialog>
+
+            &lt;ComposableMap
+                projectionConfig={{
+                    rotate: [-10, 0, 0],
+                    scale: mapScale
+                }}
+                width={mapWidth}
+                height={mapHeight}
+                style={{
+                    backgroundImage: "radial-gradient(skyBlue, cornflowerBlue, royalBlue )"
+                }}
+
+            >
+                &lt;ZoomableGroup zoom={1}
+                               translateExtent={[
+                                   [0, 0],
+                                   [mapWidth, mapHeight]
+                               ]}
+                >
+
+                    {(
+                        &lt;Geographies geography={geoUrl}>
+                            {({geographies}) =>
+                                geographies.map((geo) => {
+                                    const d = allCountries[geo.properties.ISO_A3];
+                                    return (
+                                        &lt;Geography
+                                            key={geo.rsmKey}
+                                            geography={geo}
+                                            fill={mapColor === 'infectious' ? d?.Infectious ? scaling(d?.Infectious, d?.Population, d?.Deceased) : "#F5F4F6" :
+                                                mapColor === 'deceased' ? d?.Deceased ? scaling(d?.Infectious, d?.Population, d?.Deceased) : "#F5F4F6" : "#F5F4F6"}
+
+                                            onClick={() => {
+                                                setSingleCountryModal(geo.properties.ISO_A3);
+                                                handleClickOpenCountryModal();
+                                            }}
+                                            style={{
+                                                default: {
+                                                    stroke: "grey",
+                                                    strokeOpacity: 0.2
+                                                },
+                                                hover: {
+                                                    fill: "#F53",
+                                                    outline: "none",
+                                                    stroke: "black",
+                                                    strokeOpacity: 1
+                                                },
+                                                pressed: {
+                                                    fill: "#E42",
+                                                    outline: "none"
+                                                }
+                                            }}
+                                        />
+                                    );
+                                })
+                            }
+                        &lt;/Geographies>
+                    )}
+                &lt;/ZoomableGroup>
+
+            &lt;/ComposableMap>
+        &lt;/div>
+
+    );
+};
+
+export default MapContainer;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

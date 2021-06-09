@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/mainPage/MainPage.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/mainPage/MainPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useCallback, useEffect, useState} from 'react';
+import Grid from "@material-ui/core/Grid";
+
+import {makeStyles} from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import MapContainer from "../../components/mapContainer/MapContainer";
+
+import {Button, Dialog, DialogTitle, Tooltip} from "@material-ui/core";
+
+import {useRecoilState} from "recoil";
+import {
+    deceasedSelector,
+    infectiousCountriesCountSelector,
+    infectiousSelector,
+    recoveredSelector,
+    separateCountryByInfectivitySelector,
+    susceptiblesSelector
+} from "../../data/map/MapContainerState";
+import BottomInfoBar from "../../components/bottomInfoBar/BottomInfoBar";
+import DateRightBar from "../../components/dateRightBar/DateRightBar";
+import {
+    AirplanemodeInactive,
+    DeveloperBoardTwoTone,
+    EmailTwoTone,
+    ExitToAppTwoTone,
+    FastForward,
+    ForumTwoTone,
+    ListAltTwoTone,
+    LocalHospitalTwoTone,
+    Pause,
+    PlayArrow,
+    PollTwoTone,
+    SecurityTwoTone
+} from "@material-ui/icons";
+import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalendarTwoTone';
+import TravelRestriction from "../../components/gameControls/TravelRestriction";
+import CountriesListRightBar from "../../components/countriesListRightBar/CountriesListRightBar";
+import {GameTimeState} from "../../data/gameTime/GameTimeState";
+import {GameFlowState} from "../../data/gameTime/GameFlowState";
+import {GameIntervalState} from "../../data/gameTime/GameIntervalState";
+import TracingTesting from "../../components/gameControls/TracingTesting";
+import InfectionPrevention from "../../components/gameControls/InfectionPrevention";
+import Cure from "../../components/gameControls/Cure";
+import Communication from "../../components/gameControls/Communication";
+import Vaccine from "../../components/gameControls/Vaccine";
+import GraphContainer from "../../components/graphContainer/GraphContainer";
+import MessageModal from "../../components/messageModal/MessageModal";
+import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import {mapColorDataState} from "../../data/map/MapColorDataState";
+import GameTrust from "../../components/gameTrust/GameTrust";
+import {GameTrustState} from "../../data/gameTrust/GameTrustState";
+import {TrustMessageState} from "../../data/gameTrust/TrustMessageState";
+import GameCurrencyRightBar from "../../components/gameCurrencyRightBar/GameCurrencyRightBar";
+import MessageWrapper from "../../components/messageModal/MessageWrapper";
+import {MessageModalState} from "../../data/messages/MessageModalState";
+import PagesNavigationModal from "../../components/pagesNavigation/PagesNavigationModal";
+import {GameOverState} from "../../data/GameOverState";
+import GameOverModal from "../../components/gameOverModal/GameOverModal";
+import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
+import Typography from "@material-ui/core/Typography";
+import {GameStartState} from "../../data/GameStartState";
+
+/**
+ * Renders a MainPage component.
+ * Component is used as main page (page for playing).
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
+function MainPage() {
+
+    //width of drawer component on right side of the screen
+    let drawerWidth = 240;
+
+    const {height, width} = useWindowDimensions();
+
+    //breakpoint for changing drawer width
+    const mobileDrawerBreakpoint = 820;
+    if (width &lt; mobileDrawerBreakpoint) {
+        drawerWidth = 200;
+    }
+
+    /**
+     * styling of specific components
+     */
+    const useStyles = makeStyles(() => ({
+        downInfoBar: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginRight: drawerWidth,
+            backgroundColor: 'lightgrey',
+        },
+        appBar: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginRight: drawerWidth,
+        },
+        drawer: {
+            width: drawerWidth,
+            flexShrink: 0,
+        },
+        drawerPaper: {
+            width: drawerWidth,
+        },
+        gameSpeedButtons: {
+            margin: "2px"
+        },
+        gameSpeedButtonsMobile: {
+            margin: '1px',
+        },
+        content: {
+            backgroundColor: 'lightgrey',
+            position: 'absolute',
+            width: '100% !important',
+            height: '100% !important',
+        },
+        drawerIcons: {
+            marginRight: "20px"
+        },
+        gameSpeedButtonsWrapperMobile: {
+            padding: "0px"
+        },
+        gameSpeedButtonsWrapper: {},
+        toggleButtonGroup: {
+            display: 'flex'
+        },
+        toggleButton: {
+            flex: 1
+        },
+        aboutInfo: {
+            marginLeft: "10px",
+        }
+    }));
+
+    const classes = useStyles();
+
+    //setter for setting game flow (running or paused)
+    const [, setGameFlow] = useRecoilState(GameFlowState);
+    //setter for setting time for interval
+    const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
+
+    //color of buttons, which handle game flow
+    const [pauseColor, setPauseColor] = useState("primary");
+    const [unpauseColor, setUnpauseColor] = useState("default");
+    const [forwardColor, setForwardColor] = useState("default");
+    const [pauseOutline, setPauseOutline] = useState("contained");
+    const [unpauseOutline, setUnpauseOutline] = useState("outlined");
+    const [forwardOutline, setForwardOutline] = useState("outlined");
+
+    /**
+     * arrow function for pausing game
+     */
+    const gamePause = useCallback(() => {
+        setGameFlow(false);
+
+        setPauseColor("primary");
+        setUnpauseColor("default");
+        setForwardColor("default");
+
+        setPauseOutline("contained");
+        setUnpauseOutline("outlined");
+        setForwardOutline("outlined");
+    }, [setGameFlow])
+    /**
+     * arrow function for unpausing game
+     */
+    const gameUnpause = () => {
+        setGameFlow(true);
+
+        setPauseColor("default");
+        setUnpauseColor("primary");
+        setForwardColor("default");
+
+        setPauseOutline("outlined");
+        setUnpauseOutline("contained");
+        setForwardOutline("outlined");
+
+        setIntervalSpeed(2500);
+    }
+
+    /**
+     * arrow function for speeding the game
+     */
+    const gameForward = () => {
+        setGameFlow(true);
+
+        setPauseColor("default");
+        setUnpauseColor("default");
+        setForwardColor("primary");
+
+        setPauseOutline("outlined");
+        setUnpauseOutline("outlined");
+        setForwardOutline("contained");
+
+        setIntervalSpeed(1000);
+    }
+
+    //modal for countries list
+    const [openCountriesList, setOpenCountriesList] = React.useState(false);
+    const handleClickOpenCountriesList = () => {
+        gamePause();
+        setOpenCountriesList(true);
+    };
+    const handleClickCloseCountriesList = () => {
+        gameUnpause();
+        setOpenCountriesList(false);
+    };
+
+    //measurements modal 1
+    const [openTravelRestriction, setOpenTravelRestriction] = React.useState(false);
+    const handleClickOpenTravelRestriction = () => {
+        setOpenTravelRestriction(true);
+    };
+    const handleCloseTravelRestriction = () => {
+        setOpenTravelRestriction(false);
+    };
+
+    //measurements modal 2
+    const [openTracingTesting, setOpenTracingTesting] = React.useState(false);
+    const handleClickOpenTracingTesting = () => {
+        setOpenTracingTesting(true);
+    };
+    const handleCloseTracingTesting = () => {
+        setOpenTracingTesting(false);
+    };
+
+    //measurements modal 3
+    const [openInfectionPrevention, setOpenInfectionPrevention] = React.useState(false);
+    const handleClickOpenInfectionPrevention = () => {
+        setOpenInfectionPrevention(true);
+    };
+    const handleCloseInfectionPrevention = () => {
+        setOpenInfectionPrevention(false);
+    };
+
+    //measurements modal 4
+    const [openCure, setOpenCure] = React.useState(false);
+    const handleClickOpenCure = () => {
+        setOpenCure(true);
+    };
+    const handleCloseCure = () => {
+        setOpenCure(false);
+    };
+
+    //measurements modal 5
+    const [openCommunication, setOpenCommunication] = React.useState(false);
+    const handleClickOpenCommunication = () => {
+        setOpenCommunication(true);
+    };
+    const handleCloseCommunication = () => {
+        setOpenCommunication(false);
+    };
+
+    //measurements modal6
+    const [openVaccine, setOpenVaccine] = React.useState(false);
+    const handleClickOpenVaccine = () => {
+        setOpenVaccine(true);
+    };
+    const handleCloseVaccine = () => {
+        setOpenVaccine(false);
+    };
+
+    //modal7 - graph
+    const [openGraph, setOpenGraph] = React.useState(false);
+    const handleClickOpenGraph = () => {
+        setOpenGraph(true);
+    };
+    const handleCloseGraph = () => {
+        setOpenGraph(false);
+    };
+
+
+    // modal8 - game trust
+    const [openTrust, setOpenTrust] = React.useState(false);
+    const handleClickOpenTrust = () => {
+        setOpenTrust(true);
+    };
+    const handleCloseTrust = () => {
+        setOpenTrust(false);
+    };
+
+    //modal9 - game messages
+    const [openMessages, setOpenMessages] = React.useState(false);
+    const handleClickOpenMessages = () => {
+        setOpenMessages(true);
+    };
+    const handleCloseMessages = () => {
+        setOpenMessages(false);
+    };
+
+    //modal10 - navigation to welcome page
+    const [openPageNavigation, setOpenPageNavigation] = React.useState(false);
+    const handleClickOpenPageNavigation = () => {
+        setOpenPageNavigation(true);
+    };
+    const handleClickClosePageNavigation = () => {
+        setOpenPageNavigation(false);
+    };
+
+    //game started check
+    const [openGameStartModal, setOpenGameStartModal] = useRecoilState(GameStartState);
+    const handleCloseGameStartModal = () => {
+        setOpenGameStartModal(false);
+        gameUnpause();
+    };
+
+    //game over check
+    const [gameOver,] = useRecoilState(GameOverState);
+    const [openGameOver, setOpenGameOver] = React.useState(false);
+
+    useEffect(() => {
+        return () => {
+            setOpenGameOver(true);
+            gamePause();
+        };
+    }, [gameOver, gamePause]);
+
+    //map data - color
+    const [mapColor, setMapColor] = useRecoilState(mapColorDataState);
+    const handleMapColor = (event, newColor) => {
+        setMapColor(newColor);
+    };
+
+
+    return (
+        &lt;div>
+            &lt;CssBaseline/>
+            &lt;main className={classes.content}>
+                &lt;Grid container direction="row" justify="center" alignItems="center">
+
+                    {/*map wrapper*/}
+                    &lt;Grid item xs={12} className={classes.appBar}>
+                        &lt;MapContainer/>
+                    &lt;/Grid>
+
+                    &lt;Grid container direction="row" justify="space-around" alignItems="center" spacing={1}
+                          className={classes.downInfoBar}>
+                        {/*components with compartment stats at the bottom*/}
+                        &lt;Grid item xs={6} md={3}>
+                            &lt;BottomInfoBar name="Náchylní" dataSelector={susceptiblesSelector}/>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6} md={3}>
+                            &lt;BottomInfoBar name="Infekční" dataSelector={infectiousSelector}/>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6} md={3}>
+                            &lt;BottomInfoBar name="Zotavení" dataSelector={recoveredSelector}/>
+                        &lt;/Grid>
+                        &lt;Grid item xs={6} md={3}>
+                            &lt;BottomInfoBar name="Zosnulí" dataSelector={deceasedSelector}/>
+                        &lt;/Grid>
+                    &lt;/Grid>
+
+                &lt;/Grid>
+            &lt;/main>
+
+            &lt;Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}
+                    anchor="right">
+                {/*buttons for map color change*/}
+                &lt;ToggleButtonGroup value={mapColor} exclusive onChange={handleMapColor}
+                                   className={classes.toggleButtonGroup}>
+                    &lt;ToggleButton value="infectious" className={classes.toggleButton}>
+                        &lt;Tooltip title="Mapa infekčných">
+                            &lt;Typography> Infekční&lt;/Typography>
+                        &lt;/Tooltip>
+                    &lt;/ToggleButton>
+
+                    &lt;ToggleButton value="deceased" className={classes.toggleButton}>
+                        &lt;Tooltip title="Mapa zosnulých">
+                            &lt;Typography> Zosnulí&lt;/Typography>
+                        &lt;/Tooltip>
+                    &lt;/ToggleButton>
+                &lt;/ToggleButtonGroup>
+
+                &lt;Divider/>
+
+                &lt;List>
+                    {/*game time wrapper*/}
+                    &lt;ListItem button>
+                        &lt;Tooltip title="Herný dátum">
+                            &lt;ListItemText>
+                                &lt;DateRightBar dateState={GameTimeState}/>
+                            &lt;/ListItemText>
+                        &lt;/Tooltip>
+                    &lt;/ListItem>
+                    {/*game flow buttons*/}
+                    &lt;ListItem button
+                              className={width &lt; mobileDrawerBreakpoint ? classes.gameSpeedButtonsWrapperMobile : classes.gameSpeedButtonsWrapper}>
+                        &lt;Tooltip title="Stopnutie hry">
+                            &lt;Button onClick={gamePause} color={pauseColor} variant={pauseOutline}
+                                    className={width &lt; mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                &lt;Pause/>
+                            &lt;/Button>
+                        &lt;/Tooltip>
+                        &lt;Tooltip title="Pokračovať v hre">
+                            &lt;Button onClick={gameUnpause} color={unpauseColor} variant={unpauseOutline}
+                                    className={width &lt; mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                &lt;PlayArrow/>
+                            &lt;/Button>
+                        &lt;/Tooltip>
+                        &lt;Tooltip title="Zrýchliť hru">
+                            &lt;Button onClick={gameForward} color={forwardColor} variant={forwardOutline}
+                                    className={width &lt; mobileDrawerBreakpoint ? classes.gameSpeedButtonsMobile : classes.gameSpeedButtons}>
+                                &lt;FastForward/>
+                            &lt;/Button>
+                        &lt;/Tooltip>
+                    &lt;/ListItem>
+
+                    &lt;Divider/>
+
+                    {/*game trust wrapper*/}
+                    &lt;ListItem button>
+                        &lt;ListItemText onClick={handleClickOpenTrust}>
+                            &lt;GameTrust trustState={GameTrustState}/>
+                        &lt;/ListItemText>
+                    &lt;/ListItem>
+                    {/*game currency wrapper*/}
+                    &lt;ListItem button>
+                        &lt;ListItemText>
+                            &lt;GameCurrencyRightBar/>
+                        &lt;/ListItemText>
+                    &lt;/ListItem>
+                &lt;/List>
+
+                &lt;Divider/>
+
+                {/*game measurements wrapper*/}
+                &lt;List>
+                    &lt;ListItem button onClick={handleClickOpenTravelRestriction}>
+                        &lt;AirplanemodeInactive className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Obmedzenia cestovania"/>
+                    &lt;/ListItem>
+                    &lt;ListItem button onClick={handleClickOpenTracingTesting}>
+                        &lt;PermContactCalendarTwoToneIcon className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Trasovanie kontaktov a testovanie"/>
+                    &lt;/ListItem>
+                    &lt;ListItem button onClick={handleClickOpenInfectionPrevention}>
+                        &lt;SecurityTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Prevencia nakazenia"/>
+                    &lt;/ListItem>
+                    &lt;ListItem button onClick={handleClickOpenCure}>
+                        &lt;LocalHospitalTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Liečba"/>
+                    &lt;/ListItem>
+                    &lt;ListItem button onClick={handleClickOpenCommunication}>
+                        &lt;ForumTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Komunikácia a spolupráca"/>
+                    &lt;/ListItem>
+                    &lt;ListItem button onClick={handleClickOpenVaccine}>
+                        &lt;DeveloperBoardTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Vakcína"/>
+                    &lt;/ListItem>
+                &lt;/List>
+
+                &lt;Divider/>
+
+
+                &lt;List>
+                    {/*coutnries table wrapper*/}
+                    &lt;ListItem button onClick={handleClickOpenCountriesList}>
+                        &lt;ListAltTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Prehľad všetkých krajín"/>
+                    &lt;/ListItem>
+                    {/*graph wrapper*/}
+                    &lt;ListItem button onClick={handleClickOpenGraph}>
+                        &lt;PollTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Globálny graf"/>
+                    &lt;/ListItem>
+                    {/*gamme messages wrapper*/}
+                    &lt;ListItem button onClick={handleClickOpenMessages}>
+                        &lt;EmailTwoTone className={classes.drawerIcons}/>
+                        &lt;MessageWrapper/>
+                    &lt;/ListItem>
+                &lt;/List>
+
+                &lt;Divider/>
+
+                &lt;List>
+                    {/*navigation wrapper*/}
+                    &lt;ListItem button onClick={handleClickOpenPageNavigation}>
+                        &lt;ExitToAppTwoTone className={classes.drawerIcons}/>
+                        &lt;ListItemText primary="Návrat na úvodnú stránku"/>
+                    &lt;/ListItem>
+                &lt;/List>
+
+            &lt;/Drawer>
+
+            {/*SET OF DIALOGS (MODALS) THAT OPENS UP AFTER TRIGGERING SPECIFIC BUTTON*/}
+
+            &lt;Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList} open={openCountriesList}>
+                &lt;DialogTitle onClose={handleClickCloseCountriesList}>
+                    Zoznam krajín
+                &lt;/DialogTitle>
+                &lt;CountriesListRightBar dataHeight={height} dataSelector={separateCountryByInfectivitySelector}
+                                       dataSelectorCount={infectiousCountriesCountSelector}/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseTravelRestriction} open={openTravelRestriction}>
+                &lt;DialogTitle onClose={handleCloseTravelRestriction}>
+                    Obmedzenia cestovania
+                &lt;/DialogTitle>
+                &lt;TravelRestriction/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseTracingTesting} open={openTracingTesting}>
+                &lt;DialogTitle onClose={handleCloseTracingTesting}>
+                    Trasovanie kontaktov a testovanie
+                &lt;/DialogTitle>
+                &lt;TracingTesting/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseInfectionPrevention} open={openInfectionPrevention}>
+                &lt;DialogTitle onClose={handleCloseInfectionPrevention}>
+                    Prevencia nakazenia
+                &lt;/DialogTitle>
+                &lt;InfectionPrevention/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseCure} open={openCure}>
+                &lt;DialogTitle onClose={handleCloseCure}>
+                    Liečba
+                &lt;/DialogTitle>
+                &lt;Cure/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseCommunication} open={openCommunication}>
+                &lt;DialogTitle onClose={handleCloseCommunication}>
+                    Komunikácia a spolupráca
+                &lt;/DialogTitle>
+                &lt;Communication/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleCloseVaccine} open={openVaccine}>
+                &lt;DialogTitle onClose={handleCloseVaccine}>
+                    Vakcína
+                &lt;/DialogTitle>
+                &lt;Vaccine/>
+            &lt;/Dialog>
+
+            &lt;Dialog fullWidth={true} maxWidth={"md"} onClose={handleCloseGraph} open={openGraph}>
+                &lt;GraphContainer dataWidth={width} dataHeight={height}/>
+            &lt;/Dialog>
+
+            &lt;Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseTrust} open={openTrust}>
+                &lt;DialogTitle onClose={handleCloseTrust}>
+                    Dôvera
+                &lt;/DialogTitle>
+                &lt;MessageModal dataSelector={TrustMessageState}/>
+            &lt;/Dialog>
+
+            &lt;Dialog fullWidth={true} maxWidth={"sm"} scroll={"paper"} onClose={handleCloseMessages} open={openMessages}>
+                &lt;DialogTitle onClose={handleCloseMessages}>
+                    Správy
+                &lt;/DialogTitle>
+                &lt;MessageModal dataSelector={MessageModalState}/>
+            &lt;/Dialog>
+
+            &lt;Dialog onClose={handleClickClosePageNavigation} open={openPageNavigation}>
+                &lt;PagesNavigationModal/>
+            &lt;/Dialog>
+
+            &lt;Dialog fullWidth={true} maxWidth={"xs"} scroll={"paper"} open={openGameOver}>
+                &lt;GameOverModal data={gameOver} dataWidth={width} dataHeight={height} pointsRecovered={recoveredSelector}
+                               pointsInfected={infectiousSelector} pointsSusceptibles={susceptiblesSelector}/>
+            &lt;/Dialog>
+
+            {/*check if (mobile) device has right orientation - horizontal*/}
+            &lt;ResponsiveDesign/>
+
+            &lt;Dialog fullWidth={true} maxWidth={"xs"} open={openGameStartModal}>
+                &lt;Grid className={classes.aboutInfo}>
+                    &lt;Typography variant={"h6"}>
+                        Cieľ:
+                    &lt;/Typography>
+                    &lt;Typography>
+                        Cieľom hry je vyliečiť aspoň 1-milión ľudí (Zotavení) pomocou vakcíny.
+                        &lt;br/>
+                        &lt;br/>
+                    &lt;/Typography>
+                    &lt;Typography variant={"h6"}>
+                        Tipy:
+                    &lt;/Typography>
+                    &lt;Typography>
+                        1. Hernú menu získavaš viacerými spôsobmi - napr. šanca na získanie za novo-nakazenú krajinu,
+                        plynutím času...
+                        &lt;br/>
+                        2. Zdravotnícke jednotky je možné zakúpiť po kliknutí na symbol hernej meny (dolár).
+                        &lt;br/>
+                        3. Skóre na konci hry sa počíta z počtu zotavených ľudí.
+                        &lt;br/>
+                    &lt;/Typography>
+                    &lt;br/>
+                &lt;/Grid>
+                &lt;Button color={"primary"} variant={"contained"} onClick={handleCloseGameStartModal}>
+                    &lt;PlayArrow/>
+                &lt;/Button>
+
+            &lt;/Dialog>
+        &lt;/div>
+    );
+}
+
+export default MainPage;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>

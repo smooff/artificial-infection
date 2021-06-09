@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: data/gameControls/CommunicationState.js</title>
+
+    <script src="../out/scripts/prettify/prettify.js"> </script>
+    <script src="../out/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../out/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../out/styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: data/gameControls/CommunicationState.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {atom, selector} from "recoil";
+import {betaPerMeasurementStrength, deltaPerMeasurementStrength} from "../parameters/parametersCalculation";
+
+/**
+ * Represents global state value for Communication measurements.
+ * This object contains multiple variables, for example:
+ * EducateCommunicate: 0, determines if measurement EducateCommunicate is activated (if yes, values is 1).
+ * EducateCommunicatePrice: 6, determines price (main game currency) for EducateCommunicate measurement.
+ * EducateCommunicateBeta: 0.3 * betaPerMeasurementStrength, determines the strength of measurement for changing beta parameter.
+ * EducateCommunicateDelta: 0.3 * deltaPerMeasurementStrength, determines the strength of measurement for changing delta parameter.
+ * EmergencyStateActive: true, determines if measurements that are part of tree, can be activated (if they can be accessed).
+ *
+ * Similar objects with same core structure are also CureState.js, InfectionPreventionState.js. Other states are also similar, but with few changes.
+ */
+export const CommunicationState = atom({
+    key: 'CommunicationState',
+    default: {
+        EmergencyStateActive: true,
+        EducateCommunicateActive: true,
+
+        EducateCommunicate: 0,
+        EducateCommunicatePrice: 6,
+        EducateCommunicateBeta: 0.3 * betaPerMeasurementStrength,
+        EducateCommunicateDelta: 0.3 * deltaPerMeasurementStrength,
+
+        GovernmentHelpsVulnerable: 0,
+        GovernmentHelpsVulnerablePrice: 6,
+        GovernmentHelpsVulnerableBeta: 0.21 * betaPerMeasurementStrength,
+        GovernmentHelpsVulnerableDelta: 0.21 * deltaPerMeasurementStrength,
+
+        EmergencyState: 0,
+        EmergencyStatePrice: 5,
+        EmergencyStateBeta: 0.15 * betaPerMeasurementStrength,
+
+        Curfew: 0,
+        CurfewPrice: 6,
+        CurfewBeta: 0.15 * betaPerMeasurementStrength,
+
+        TravelWarning: 0,
+        TravelWarningPrice: 5,
+        TravelWarningBeta: 0.15 * betaPerMeasurementStrength,
+
+        ExpertCommunication: 0,
+        ExpertCommunicationPrice: 5,
+        ExpertCommunicationBeta: 0.11 * betaPerMeasurementStrength,
+        ExpertCommunicationDelta: 0.11 * deltaPerMeasurementStrength,
+
+        CrisisManagement: 0,
+        CrisisManagementPrice: 5,
+        CrisisManagementBeta: 0.2 * betaPerMeasurementStrength,
+        CrisisManagementDelta: 0.2 * deltaPerMeasurementStrength,
+
+        SupplySecurity: 0,
+        SupplySecurityPrice: 4,
+        SupplySecurityBeta: 0.15 * betaPerMeasurementStrength,
+        SupplySecurityDelta: 0.15 * deltaPerMeasurementStrength,
+
+        InternationalHelp: 0,
+        InternationalHelpPrice: 4,
+        InternationalHelpBeta: 0.25 * betaPerMeasurementStrength,
+        InternationalHelpDelta: 0.25 * deltaPerMeasurementStrength,
+
+        InformationCampaign: 0,
+        InformationCampaignPrice: 6,
+        InformationCampaignBeta: 0.15 * betaPerMeasurementStrength,
+    },
+});
+
+/**
+ * Selectors are used for accessing  certain (also modified) data from global recoil states.
+ * This selector is used for counting activated measurements in Communication section.
+ *
+ * Selectors like this one are also in others states, mainly used for accessing data of the state.
+ */
+export const CommunicationMeasuresSelector = selector({
+    key: 'CommunicationMeasuresSelector',
+    get: ({get}) => {
+        const bigState = get(CommunicationState);
+        let count = 0;
+        Object.keys(bigState).forEach(measurement => {
+            if (measurement === "EducateCommunicate" || measurement === "GovernmentHelpsVulnerable" || measurement === "EmergencyState" ||
+                measurement === "Curfew" || measurement === "TravelWarning" || measurement === "ExpertCommunication" || measurement === "CrisisManagement"
+                || measurement === "SupplySecurity" || measurement === "InternationalHelp" || measurement === "InformationCampaign") {
+                if (bigState[measurement] === 1) {
+                    count++;
+                }
+            }
+        });
+        return count;
+    },
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BottomInfoBar.html">BottomInfoBar</a></li><li><a href="Communication.html">Communication</a></li><li><a href="Communication-Alert.html">Alert</a></li><li><a href="CountriesListRightBar.html">CountriesListRightBar</a></li><li><a href="DateRightBar.html">DateRightBar</a></li><li><a href="GameCurrencyModal.html">GameCurrencyModal</a></li><li><a href="GameCurrencyRightBar.html">GameCurrencyRightBar</a></li><li><a href="GameOverModal.html">GameOverModal</a></li><li><a href="GameTrust.html">GameTrust</a></li><li><a href="GraphContainer.html">GraphContainer</a></li><li><a href="MainPage.html">MainPage</a></li><li><a href="MapContainer.html">MapContainer</a></li><li><a href="MessageModal.html">MessageModal</a></li><li><a href="MessageWrapper.html">MessageWrapper</a></li><li><a href="PagesNavigationModal.html">PagesNavigationModal</a></li><li><a href="PriceInfoSingleMeasurement.html">PriceInfoSingleMeasurement</a></li><li><a href="ResponsiveDesign.html">ResponsiveDesign</a></li><li><a href="SingleCountryModal.html">SingleCountryModal</a></li><li><a href="TutorialImageCarousel.html">TutorialImageCarousel</a></li><li><a href="WelcomePage.html">WelcomePage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ActivableInhibitorsState">ActivableInhibitorsState</a></li><li><a href="global.html#addCurrency">addCurrency</a></li><li><a href="global.html#BetaState">BetaState</a></li><li><a href="global.html#ClickableGameCurrencyState">ClickableGameCurrencyState</a></li><li><a href="global.html#CommunicationMeasuresSelector">CommunicationMeasuresSelector</a></li><li><a href="global.html#CommunicationState">CommunicationState</a></li><li><a href="global.html#CurrencyInfectedPopulationBreakpointState">CurrencyInfectedPopulationBreakpointState</a></li><li><a href="global.html#deceasedCalculate">deceasedCalculate</a></li><li><a href="global.html#deceasedSelector">deceasedSelector</a></li><li><a href="global.html#DeltaState">DeltaState</a></li><li><a href="global.html#FirstInfectedCountryState">FirstInfectedCountryState</a></li><li><a href="global.html#GameCurrencyState">GameCurrencyState</a></li><li><a href="global.html#GameFlowState">GameFlowState</a></li><li><a href="global.html#GameIntervalState">GameIntervalState</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#GameOverState">GameOverState</a></li><li><a href="global.html#GameStartState">GameStartState</a></li><li><a href="global.html#GameTimeState">GameTimeState</a></li><li><a href="global.html#gameTrustHandle">gameTrustHandle</a></li><li><a href="global.html#GameTrustState">GameTrustState</a></li><li><a href="global.html#gameVaccineHandle">gameVaccineHandle</a></li><li><a href="global.html#GammaState">GammaState</a></li><li><a href="global.html#getRandomNumberInRange">getRandomNumberInRange</a></li><li><a href="global.html#getWindowDimensions">getWindowDimensions</a></li><li><a href="global.html#GraphDataState">GraphDataState</a></li><li><a href="global.html#infectFirstCountry">infectFirstCountry</a></li><li><a href="global.html#infectionSpread">infectionSpread</a></li><li><a href="global.html#infectiousCalculate">infectiousCalculate</a></li><li><a href="global.html#infectiousCountriesCountSelector">infectiousCountriesCountSelector</a></li><li><a href="global.html#infectiousSelector">infectiousSelector</a></li><li><a href="global.html#mapColorDataState">mapColorDataState</a></li><li><a href="global.html#mapContainerState">mapContainerState</a></li><li><a href="global.html#MedicalUnitsCurrencyState">MedicalUnitsCurrencyState</a></li><li><a href="global.html#MessageModalState">MessageModalState</a></li><li><a href="global.html#NewMessagesCounter">NewMessagesCounter</a></li><li><a href="global.html#recoveredCalculate">recoveredCalculate</a></li><li><a href="global.html#recoveredSelector">recoveredSelector</a></li><li><a href="global.html#RegionTravelRestrictionState">RegionTravelRestrictionState</a></li><li><a href="global.html#separateCountryByInfectivitySelector">separateCountryByInfectivitySelector</a></li><li><a href="global.html#StrictMeasuresTimeState">StrictMeasuresTimeState</a></li><li><a href="global.html#susceptibleCalculate">susceptibleCalculate</a></li><li><a href="global.html#susceptiblesSelector">susceptiblesSelector</a></li><li><a href="global.html#TrustMessageState">TrustMessageState</a></li><li><a href="global.html#useWindowDimensions">useWindowDimensions</a></li><li><a href="global.html#vaccineInitialization">vaccineInitialization</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 09 2021 22:31:06 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../out/scripts/linenumber.js"> </script>
+</body>
+</html>
