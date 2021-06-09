@@ -65,8 +65,8 @@ import {
 const geoUrl = require('../../data/map/topologies.json');
 
 /**
- * Renders a <MapContainer /> component
- * component is used to display map and for handling game functions
+ * Renders a MapContainer component.
+ * Component is used to display map and for handling game functions
  * @returns {JSX.Element}
  * @constructor
  * @component
@@ -170,10 +170,10 @@ const MapContainer = () => {
     }
 
     /**
-     * arrow function for infecting new countries
+     * Arrow function for infecting new countries
      * @param countryName - iso code of country
      * @param infectiousOrigin - infectious origin - infecting by borders, airplanes...
-     * @returns {null|(*&{Infectious: number, Susceptible: number, infectivity: number})}
+     * RETURNS: modified single country data
      */
     const infectingNewCountry = (countryName, infectiousOrigin) => {
         const data = allCountries[countryName];
@@ -235,9 +235,9 @@ const MapContainer = () => {
     }
 
     /**
-     * arrow function, which handle recalculation for all compartments for single country
+     * Arrow function, which handle recalculation for all compartments for single country
      * @param countryName - iso code of country
-     * @returns {*&{Recovered: (*|number), Infectious: *, Deceased: (*|number), Susceptible: (number|*), infectiousLooping: *}}
+     * RETURNS: modified single country data
      */
     const compartmentsRecalculateValues = (countryName) => {
         const data = allCountries[countryName];

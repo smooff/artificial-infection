@@ -8,8 +8,8 @@ import {useRecoilState} from "recoil";
 import {mapContainerState} from "../../data/map/MapContainerState";
 
 /**
- * Renders a <SingleCountryModal /> component
- * component is used to display game messages
+ * Renders a SingleCountryModal component.
+ * Component is used to display game messages
  * @param props
  * @param props.singleCountryData - contains data (name, population, ...) for single country
  * @returns {JSX.Element}

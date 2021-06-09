@@ -754,7 +754,7 @@ export const gameVaccineHandle = (vaccineState, days, setGammaParameter, setMess
  * @param N - population (single country)
  * @param gammaParameter - gamma parameter
  * @param betaParameter - beta parameter
- * @returns {[number]}
+ * RETURNS : new infectious number
  */
 export const susceptibleCalculate = (vaccineDevelopmentFinished, S, I, N, gammaParameter, betaParameter) => {
     let newSusceptible;
@@ -785,12 +785,12 @@ export const susceptibleCalculate = (vaccineDevelopmentFinished, S, I, N, gammaP
  * @param deltaParameter - delta parameter
  * @param infArrayState - array, which contains 3 previous values of infectious (single country)
  * @param vaccineDevelopmentFinished - value, which determines if vaccine dev. is finished
- * @returns {(number|number|unknown[])[]|(number|*|number[])[]} - newInfectious - new infectious,
- *                                                                infectiousUnderZero - previous state of inf. before dropping under 0,
- *                                                                infectiousPushToRD - if this number is 0, force "transfer" based on low number of inf.
- *                                                                infectiousBiggerThanPopulation - check if inf. is bigger than population,
- *                                                                infArrayLocal - previous infectious state,
- *                                                                LoopPushToRD - forcing "transfer" to rec./dec. based on looping inf.
+ * RETURNS : newInfectious - new infectious,
+ *           infectiousUnderZero - previous state of inf. before dropping under 0,
+ *           infectiousPushToRD - if this number is 0, force "transfer" based on low number of inf.
+ *           infectiousBiggerThanPopulation - check if inf. is bigger than population,
+ *           infArrayLocal - previous infectious state,
+ *           LoopPushToRD - forcing "transfer" to rec./dec. based on looping inf.
  */
 export const infectiousCalculate = (S, I, N, betaParameter, gammaParameter, deltaParameter, infArrayState, vaccineDevelopmentFinished) => {
     //if development is finished "transfer" infectious to recovered

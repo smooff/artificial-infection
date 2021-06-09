@@ -3,8 +3,8 @@ import {Box, Grid, LinearProgress, Typography} from "@material-ui/core";
 import {useRecoilValue} from "recoil";
 
 /**
- * Renders a <GameTrust /> component
- * component is used to display game trust
+ * Renders a GameTrust component.
+ * Component is used to display game trust
  * @param props
  * @param props.trustState - contains game trust value
  * @returns {JSX.Element}

@@ -5,8 +5,8 @@ import {useRecoilValue} from "recoil";
 import {NewMessagesCounter} from "../../data/messages/NewMessagesCounter";
 
 /**
- *Renders a <MessageWrapper /> component
- * component is used to display badge with new messages count, also it is used as button wrapper for message modal
+ * Renders a MessageWrapper component.
+ * Component is used to display badge with new messages count, also it is used as button wrapper for message modal
  * @returns {JSX.Element}
  * @constructor
  * @component

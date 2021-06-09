@@ -8,8 +8,8 @@ import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
 import TutorialImageCarousel from "../../components/tutorialImageCarousel/TutorialImageCarousel";
 
 /**
- * Renders a <WelcomePage /> component
- * component is used as welcome page
+ * Renders a WelcomePage component.
+ * Component is used as welcome page.
  * @returns {JSX.Element}
  * @constructor
  * @component

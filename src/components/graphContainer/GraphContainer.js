@@ -5,8 +5,8 @@ import {GraphDataState} from "../../data/GraphDataState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 /**
- * Renders a <GraphContainer /> component
- * component is used to display global graph, which shows 4 compartments
+ * Renders a GraphContainer component.
+ * Component is used to display global graph, which shows 4 compartments
  * @param props
  * @param props.dataWidth - contains actual window width
  * @param props.dataHeight - contains actual window height

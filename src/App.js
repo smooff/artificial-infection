@@ -7,8 +7,8 @@ import MainPage from "./pages/mainPage/MainPage";
 import {RecoilRoot} from "recoil";
 
 /**
- * Renders a <App /> component
- * component is used to wrap whole application
+ * Renders an App component.
+ * Component is used to wrap whole application
  * @returns {JSX.Element}
  * @constructor
  * @component

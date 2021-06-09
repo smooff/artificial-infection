@@ -34,8 +34,8 @@ export function useWindowDimensions() {
 }
 
 /**
- * Renders a <ResponsiveDesign /> component
- * component is used to display warning, if device has wrong screen orientation
+ * Renders a ResponsiveDesign component.
+ * Component is used to display warning, if device has wrong screen orientation.
  * @returns {JSX.Element}
  * @constructor
  * @component

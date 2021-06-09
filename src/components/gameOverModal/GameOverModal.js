@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import GraphContainer from "../graphContainer/GraphContainer";
 import ListItemText from "@material-ui/core/ListItemText";
 import {EmailTwoTone, ExitToAppTwoTone, ListAltTwoTone, PollTwoTone} from "@material-ui/icons";
-import CountriesListRightBar from "../countriesListRightBar/countriesListRightBar";
+import CountriesListRightBar from "../countriesListRightBar/CountriesListRightBar";
 import {
     infectiousCountriesCountSelector,
     separateCountryByInfectivitySelector
@@ -19,8 +19,8 @@ import PagesNavigationModal from "../pagesNavigation/PagesNavigationModal";
 import {useRecoilValue} from "recoil";
 
 /**
- * Renders a <GameOverModal /> component
- * component is used to display modal with score, navigation, etc. after game ends
+ * Renders a GameOverModal component.
+ * Component is used to display modal with score, navigation, etc. after game ends
  * @param props
  * @param props.data - contains game over ending type (win/lose)
  * @param props.dataWidth - contains actual window width

@@ -6,8 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 
 /**
- * Renders a <PagesNavigationModal /> component
- * component is used to display navigation between pages
+ * Renders a PagesNavigationModal component.
+ * Component is used to display navigation between pages
  * @returns {JSX.Element}
  * @constructor
  * @component

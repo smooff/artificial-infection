@@ -2,15 +2,15 @@ import {atom, selector} from "recoil";
 import {betaPerMeasurementStrength, deltaPerMeasurementStrength} from "../parameters/parametersCalculation";
 
 /**
- * represents global state value for Communication measurements
- * this object contains multiple variables, for example:
- * EducateCommunicate: 0, determines if measurement EducateCommunicate is activated (if yes, values is 1)
- * EducateCommunicatePrice: 6, determines price (main game currency) for EducateCommunicate measurement
- * EducateCommunicateBeta: 0.3 * betaPerMeasurementStrength, determines the strength of measurement for changing beta parameter
- * EducateCommunicateDelta: 0.3 * deltaPerMeasurementStrength, determines the strength of measurement for changing delta parameter
- * EmergencyStateActive: true, determines if measurements that are part of tree, can be activated (if they can be accessed)
+ * Represents global state value for Communication measurements.
+ * This object contains multiple variables, for example:
+ * EducateCommunicate: 0, determines if measurement EducateCommunicate is activated (if yes, values is 1).
+ * EducateCommunicatePrice: 6, determines price (main game currency) for EducateCommunicate measurement.
+ * EducateCommunicateBeta: 0.3 * betaPerMeasurementStrength, determines the strength of measurement for changing beta parameter.
+ * EducateCommunicateDelta: 0.3 * deltaPerMeasurementStrength, determines the strength of measurement for changing delta parameter.
+ * EmergencyStateActive: true, determines if measurements that are part of tree, can be activated (if they can be accessed).
  *
- * similar objects with same core structure are also CureState.js, InfectionPreventionState.js. Other states are also similar, but with few changes
+ * Similar objects with same core structure are also CureState.js, InfectionPreventionState.js. Other states are also similar, but with few changes.
  */
 export const CommunicationState = atom({
     key: 'CommunicationState',
@@ -67,10 +67,10 @@ export const CommunicationState = atom({
 });
 
 /**
- * selectors are used for accessing  certain (also modified) data from global recoil states
- * this selector is used for counting activated measurements in Communication section
+ * Selectors are used for accessing  certain (also modified) data from global recoil states.
+ * This selector is used for counting activated measurements in Communication section.
  *
- * selectors like this one are also in others states, mainly used for accessing data of the state
+ * Selectors like this one are also in others states, mainly used for accessing data of the state.
  */
 export const CommunicationMeasuresSelector = selector({
     key: 'CommunicationMeasuresSelector',

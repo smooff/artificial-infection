@@ -15,8 +15,8 @@ import {useRecoilValue} from "recoil";
 import {Text} from "recharts";
 
 /**
- * Renders a <CountriesListRightBar /> component
- * component is used to display countries table within modal
+ * Renders a CountriesListRightBar component.
+ * Component is used to display countries table within modal
  * @param props
  * @param props.dataSelector - contains data (name, susceptibles, recovered, ...) for all countries
  * @param props.dataSelectorCount - contains infective/noninfective countries global count

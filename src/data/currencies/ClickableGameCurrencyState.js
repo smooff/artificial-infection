@@ -2,8 +2,8 @@ import {atom} from "recoil";
 
 
 /**
- * represents global state value for clickable (temporary) game currency
- * default value is 0 - game starts with 0 clickable game currency
+ * Represents global state value for clickable (temporary) game currency.
+ * Default value is 0 - game starts with 0 clickable game currency
  */
 //user transform this currency into main currency (GameCurrencyState.js)
 export const ClickableGameCurrencyState = atom({

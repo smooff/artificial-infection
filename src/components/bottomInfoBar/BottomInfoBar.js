@@ -5,8 +5,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useRecoilValue} from "recoil";
 
 /**
- * Renders a <BottomInfoBar /> component
- * component is used to display global compartment statistics
+ * Renders a BottomInfoBar component.
+ * Component is used to display global compartment statistics
  * @param props
  * @param props.name - specifies compartment type
  * @param props.dataSelector - data for specified compartment type

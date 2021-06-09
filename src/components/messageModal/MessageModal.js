@@ -8,8 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import {NewMessagesCounter} from "../../data/messages/NewMessagesCounter";
 
 /**
- * Renders a <MessageModal /> component
- * component is used to display game messages
+ * Renders a MessageModal component.
+ * Component is used to display game messages
  * @param props
  * @param props.dataSelector - contains messages
  * @returns {JSX.Element}

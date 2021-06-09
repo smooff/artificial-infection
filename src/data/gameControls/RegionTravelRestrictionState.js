@@ -1,10 +1,10 @@
 import {atom, selector} from "recoil";
 
 /**
- * represents global state value for Region travel measurements
- * these measurements are used for decreasing spread across new countries (infecting new countries)
- * default value is object, that contains objects with key, which determines region affected
- * inside these multiple objects are prices like  bordersPrice: 6, and variables which determines if the specific measurement is activated, like borders: 0,
+ * Represents global state value for Region travel measurements.
+ * These measurements are used for decreasing spread across new countries (infecting new countries).
+ * Default value is object, that contains objects with key, which determines region affected.
+ * Inside these multiple objects are prices like  bordersPrice: 6, and variables which determines if the specific measurement is activated, like borders: 0.
  */
 export const RegionTravelRestrictionState = atom({
     key: 'RegionTravelRestrictionState',

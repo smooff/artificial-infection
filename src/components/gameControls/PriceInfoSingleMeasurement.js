@@ -3,8 +3,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 /**
- * Renders a <PriceInfoSingleMeasurement /> component
- * component is used to display text and price in modal with measurements, after clicking specific measurement
+ * Renders a PriceInfoSingleMeasurement component.
+ * Component is used to display text and price in modal with measurements, after clicking specific measurement
  * @param props
  * @param props.price - price of specific measurement
  * @param props.text - text about specific measurement

@@ -1,12 +1,12 @@
 import {atom, selector} from "recoil";
 
 /**
- * represents global state value for countries
- * default value is one big object, which consist of 205 smaller object (each has unique key - country iso code)
- * countries list are matching countries provided by react-simple-maps (so countries like Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC) are missing)
- * source for borders/regions/subregions https://raw.githubusercontent.com/mledoze/countries/master/countries.json
- * region: Asia, Europe, Africa, Americas, Oceania
- * every country has own name, population, susceptible count (while not infected - equal to population), infectious (while not infected - 0),
+ * Represents global state value for countries.
+ * Default value is one big object, which consist of 205 smaller object (each has unique key - country iso code).
+ * Countries list are matching countries provided by react-simple-maps (so countries like Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC) are missing).
+ * Source for borders/regions/subregions https://raw.githubusercontent.com/mledoze/countries/master/countries.json .
+ * Region: Asia, Europe, Africa, Americas, Oceania.
+ * Every country has own name, population, susceptible count (while not infected - equal to population), infectious (while not infected - 0),
  * recovered (while not infected - 0), deceased (while not infected - 0), infectivity - determines if country is infected,
  * infectiousLooping - array with previous infectious values, border - iso code of bordering countries, region, subregion
  */

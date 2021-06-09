@@ -14,9 +14,9 @@ import {GameTrustState} from "../../data/gameTrust/GameTrustState";
 import PriceInfoSingleMeasurement from "./PriceInfoSingleMeasurement";
 
 /**
- * Renders a <Communication /> component
- * component is used to display measurements (type Communication) inside a modal
- * all other measurements modal has similar structure (Cure.js,InfectionPrevention.js,RegionTravelRestriction.js,TracingTesting.js,TravelRestriction.js,Vaccine.js)
+ * Renders a Communication component.
+ * Component is used to display measurements (type Communication) inside a modal.
+ * All other measurements modal has similar structure (Cure.js,InfectionPrevention.js,RegionTravelRestriction.js,TracingTesting.js,TravelRestriction.js,Vaccine.js)
  * @returns {JSX.Element}
  * @constructor
  * @component
@@ -118,8 +118,8 @@ function Communication() {
     const [modalMessage, setModalMessage] = useState();
 
     /**
-     * Renders a <MuiAlert /> component
-     * component is used to display message if the measurement was activated or not
+     * Renders a MuiAlert component.
+     * Component is used to display message if the measurement was activated or not
      * @returns {JSX.Element}
      * @constructor
      */
@@ -156,7 +156,7 @@ function Communication() {
     const [showInformationCampaign, setShowInformationCampaign] = React.useState(false);
 
     /**
-     * arrow function that handles click on specific measurement button
+     * Arrow function that handles click on specific measurement button.
      * @param textMessage - text of specific measurement
      * @param buttonNumber - all buttons have own numbers - for coloring
      * @param buttonPrice - price of specific measurement
@@ -401,7 +401,7 @@ function Communication() {
         }
     }
     /**
-     * arrow function that determines which button is activated, and based on that it renders sub-buttons for activation/deactivation
+     * Arrow function that determines which button is activated, and based on that it renders sub-buttons for activation/deactivation
      * @param param - button number (id), which determines which button was clicked
      * @returns {JSX.Element|null}
      */

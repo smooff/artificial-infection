@@ -39,7 +39,7 @@ import {
 } from "@material-ui/icons";
 import PermContactCalendarTwoToneIcon from '@material-ui/icons/PermContactCalendarTwoTone';
 import TravelRestriction from "../../components/gameControls/TravelRestriction";
-import CountriesListRightBar from "../../components/countriesListRightBar/countriesListRightBar";
+import CountriesListRightBar from "../../components/countriesListRightBar/CountriesListRightBar";
 import {GameTimeState} from "../../data/gameTime/GameTimeState";
 import {GameFlowState} from "../../data/gameTime/GameFlowState";
 import {GameIntervalState} from "../../data/gameTime/GameIntervalState";
@@ -66,8 +66,8 @@ import Typography from "@material-ui/core/Typography";
 import {GameStartState} from "../../data/GameStartState";
 
 /**
- * Renders a <MainPage /> component
- * component is used as main page (page for playing)
+ * Renders a MainPage component.
+ * Component is used as main page (page for playing).
  * @returns {JSX.Element}
  * @constructor
  * @component
