@@ -18,7 +18,20 @@ import MessageWrapper from "../messageModal/MessageWrapper";
 import PagesNavigationModal from "../pagesNavigation/PagesNavigationModal";
 import {useRecoilValue} from "recoil";
 
-
+/**
+ * Renders a <GameOverModal /> component
+ * component is used to display modal with score, navigation, etc. after game ends
+ * @param props
+ * @param props.data - contains game over ending type (win/lose)
+ * @param props.dataWidth - contains actual window width
+ * @param props.dataHeight - contains actual window height
+ * @param props.pointsRecovered - contains global number of recovered
+ * @param props.pointsInfected - contains global number of infected
+ * @param props.pointsSusceptibles - contains global number of susceptible
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function GameOverModal({data, dataWidth, dataHeight, pointsRecovered, pointsInfected, pointsSusceptibles}) {
     const useStyles = makeStyles(() => ({
         itemAligns: {

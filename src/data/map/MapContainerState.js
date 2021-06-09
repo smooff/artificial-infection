@@ -1,14 +1,18 @@
 import {atom, selector} from "recoil";
 
-
+/**
+ * represents global state value for countries
+ * default value is one big object, which consist of 205 smaller object (each has unique key - country iso code)
+ * countries list are matching countries provided by react-simple-maps (so countries like Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC) are missing)
+ * source for borders/regions/subregions https://raw.githubusercontent.com/mledoze/countries/master/countries.json
+ * region: Asia, Europe, Africa, Americas, Oceania
+ * every country has own name, population, susceptible count (while not infected - equal to population), infectious (while not infected - 0),
+ * recovered (while not infected - 0), deceased (while not infected - 0), infectivity - determines if country is infected,
+ * infectiousLooping - array with previous infectious values, border - iso code of bordering countries, region, subregion
+ */
 export const mapContainerState = atom({
     key: 'mapContainer',
     default: {
-        //205 krajin
-        //chybaju tu - Honk Kong (HKG), Gibraltar (GIB), Vatikan(VAT), Makao (MAC)
-        //info - hranice/region/subregion https://raw.githubusercontent.com/mledoze/countries/master/countries.json
-        //regiony: Asia, Europe, Africa, Americas, Oceania
-
         AFG: {
             NAME: 'Afghanistan',
             Population: 38928346,
@@ -3482,7 +3486,9 @@ export const mapContainerState = atom({
         }
     },
 });
-
+/**
+ * selector for accessing number of  all susceptible in all countries
+ */
 export const susceptiblesSelector = selector({
     key: 'susceptiblesSelector',
     get: ({get}) => {
@@ -3495,6 +3501,9 @@ export const susceptiblesSelector = selector({
     },
 });
 
+/**
+ * selector for accessing number of  all infectious in all countries
+ */
 export const infectiousSelector = selector({
     key: 'infectiousSelector',
     get: ({get}) => {
@@ -3506,7 +3515,9 @@ export const infectiousSelector = selector({
         return inf;
     },
 });
-
+/**
+ * selector for accessing number of  all recovered in all countries
+ */
 export const recoveredSelector = selector({
     key: 'recoveredSelector',
     get: ({get}) => {
@@ -3518,7 +3529,9 @@ export const recoveredSelector = selector({
         return rec;
     },
 });
-
+/**
+ * selector for accessing number of  all deceased in all countries
+ */
 export const deceasedSelector = selector({
     key: 'deceasedSelector',
     get: ({get}) => {
@@ -3530,7 +3543,9 @@ export const deceasedSelector = selector({
         return dec;
     },
 });
-
+/**
+ * selector for accessing all needed data for countries list
+ */
 export const separateCountryByInfectivitySelector = selector({
     key: 'separateCountryByInfectivitySelector',
     get: ({get}) => {
@@ -3567,6 +3582,9 @@ export const separateCountryByInfectivitySelector = selector({
     },
 });
 
+/**
+ * selector for counting all infected and non-infected countries
+ */
 export const infectiousCountriesCountSelector = selector({
     key: 'infectiousCountriesCountSelector',
     get: ({get}) => {
@@ -3584,7 +3602,7 @@ export const infectiousCountriesCountSelector = selector({
     },
 });
 
-//vracia pocet infekcnych krajin (pre prepocet dovery)
+//return just number of infectious from all countries (otherwise same as above)
 export const infectiousCountriesNumberSelector = selector({
     key: 'infectiousCountriesNumberSelector',
     get: ({get}) => {

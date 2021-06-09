@@ -64,9 +64,16 @@ import {
 
 const geoUrl = require('../../data/map/topologies.json');
 
+/**
+ * Renders a <MapContainer /> component
+ * component is used to display map and for handling game functions
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 const MapContainer = () => {
 
-    //modal po kliknuti na jednu krajinu
+    //stores info if the modal for single country is opened or not
     const [openCountryModal, setOpenCountryModal] = React.useState(false);
     const handleClickOpenCountryModal = () => {
         setOpenCountryModal(true);
@@ -74,12 +81,14 @@ const MapContainer = () => {
     const handleCloseCountryModal = () => {
         setOpenCountryModal(false);
     };
+    //stores info about country for modal after clicking on specific country
     const [singleCountryModal, setSingleCountryModal] = useState();
 
+    //actual window dimensions
     const {height, width} = useWindowDimensions();
 
 
-//----------------------------------------------
+   //function for handling game interval
     function useInterval(callback, delay) {
         const savedCallback = useRef();
 
@@ -99,27 +108,27 @@ const MapContainer = () => {
         }, [delay]);
     }
 
-    //HERNY CAS - jednotkou h.casu je den
+    //game time
     const [days, setDays] = useRecoilState(GameTimeState);
 
+    //value, which determines if game is running
     const [gameFlow,] = useRecoilState(GameFlowState);
 
+    //value, which stores time - how often is interval called
     const [intervalSpeed,] = useRecoilState(GameIntervalState);
 
-//---------------------------
-
-    //breakypointy pre pridavanie hernej meny na zaklade narastu infikovanych
+    //breakpoint for adding game currency, based on increasing infectious
     const [infectedBreakpoints, setInfectedBreakpoints] = useRecoilState(CurrencyInfectedPopulationBreakpointState);
 
-    //parametre
+    //game parameters
     const [betaParameter,] = useRecoilState(BetaState);
     const [gammaParameter, setGammaParameter] = useRecoilState(GammaState);
     const [deltaParameter,] = useRecoilState(DeltaState);
 
-    //data vsetkych krajin
+    //all countries data
     const [allCountries, setAllCountries] = useRecoilState(mapContainerState);
 
-    //data pre graf a pre game over
+    //data for graph and game over
     const [, setGraphData] = useRecoilState(GraphDataState);
     let susceptibleWorldData = useRecoilValue(susceptiblesSelector);
     let infectiousWorldData = useRecoilValue(infectiousSelector);
@@ -127,20 +136,21 @@ const MapContainer = () => {
     let deceasedWorldData = useRecoilValue(deceasedSelector);
 
 
-    //spravy z hry
+    //game messages
     const [, setMessages] = useRecoilState(MessageModalState);
 
-    //counter pre spravy z hry
+    //counter for unread game messages
     const [, setMessageCounter] = useRecoilState(NewMessagesCounter);
 
-    //klikatelna herna mena
+    //clickable (temporary) currency
     const [clickableGameCurrency, setClickAbleGameCurrency] = useRecoilState(ClickableGameCurrencyState);
 
-    //spravy z dovery
+    //game trust messages
     const [, setTrustMessages] = useRecoilState(TrustMessageState);
 
-    //farba mapy
+    //map color
     const [mapColor,] = useRecoilState(mapColorDataState);
+    //function for scaling color of single countries based on numbers
     const scaling = (infectiousNum, populationNum, deceasedNum) => {
         if (deceasedNum === populationNum) {
             return "rgb(0,0,0)";
@@ -159,7 +169,12 @@ const MapContainer = () => {
 
     }
 
-    //funkcia na infikovanie novej krajiny
+    /**
+     * arrow function for infecting new countries
+     * @param countryName - iso code of country
+     * @param infectiousOrigin - infectious origin - infecting by borders, airplanes...
+     * @returns {null|(*&{Infectious: number, Susceptible: number, infectivity: number})}
+     */
     const infectingNewCountry = (countryName, infectiousOrigin) => {
         const data = allCountries[countryName];
         let {Susceptible: S, Infectious: I} = data;
@@ -192,7 +207,7 @@ const MapContainer = () => {
             default:
                 return null;
         }
-
+        //setting game message state
         setMessages((prevStats) => ([...prevStats, {
             iso: countryName,
             name: data.NAME,
@@ -201,8 +216,10 @@ const MapContainer = () => {
             reason: 'infecting'
         }]));
 
+        //setting unread message counter
         setMessageCounter(prev => (prev + 1));
 
+        //randomize chance for getting clickable game currency after infecting new country
         if (Math.random() > 0.25) {
             if (clickableGameCurrency < 10) {
                 setClickAbleGameCurrency(prev => (prev + 1));
@@ -217,7 +234,11 @@ const MapContainer = () => {
         };
     }
 
-
+    /**
+     * arrow function, which handle recalculation for all compartments for single country
+     * @param countryName - iso code of country
+     * @returns {*&{Recovered: (*|number), Infectious: *, Deceased: (*|number), Susceptible: (number|*), infectiousLooping: *}}
+     */
     const compartmentsRecalculateValues = (countryName) => {
         const data = allCountries[countryName];
         const {
@@ -229,14 +250,23 @@ const MapContainer = () => {
             infectiousLooping: infArrayState
         } = data;
 
+        //value of new susceptible for country
         const [newSusceptibleValue] = susceptibleCalculate(vaccineState.vaccineDevelopmentFinished, S, I, N, gammaParameter, betaParameter);
 
+        //value of new infectious for country
+        //infectiousUnderZero - check for infectious dropping under zero
+        //infectiousPushToRD - check if infectious has to be pushed to recovered/deceased
+        //infectiousBiggerThanPopulation - check if infectious didnt overgrow whole population number
+        //infArrayLocal - check if infectious didnt loop
+        //LoopPushToRD - if they are looping, push them to recovered/deceased
         const [newInfectiousValue, infectiousUnderZero, infectiousPushToRD, infectiousBiggerThanPopulation, infArrayLocal, LoopPushToRD] = infectiousCalculate(S, I, N, betaParameter,
             gammaParameter, deltaParameter, infArrayState, vaccineState.vaccineDevelopmentFinished);
 
+        //value of new recovered for country
         const newRecoveredValue = recoveredCalculate(S, I, R, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation,
             infectiousPushToRD, vaccineState.vaccineDevelopmentFinished);
 
+        //value of new deceased for country
         const newDeceasedValue = deceasedCalculate(I, D, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation,
             infectiousPushToRD, vaccineState.vaccineDevelopmentFinished);
 
@@ -253,78 +283,95 @@ const MapContainer = () => {
     //game over check
     const [, setGameOverState] = useRecoilState(GameOverState);
 
-    //opatrenia pre nakazenie novych krajin
+    //region restrictions, for decreasing chance of infecting new countries
     const [regionRestrictions,] = useRecoilState(RegionTravelRestrictionState);
 
-    //check pre vyber prvej krajiny
+    //value check for first infected country
     const [pickFirstInfectedCountry, setPickFirstInfectedCountry] = useRecoilState(FirstInfectedCountryState);
 
-    //VAKCINA
+    //vaccine state
     const [vaccineState, setVaccineState] = useRecoilState(VaccineState);
 
-    //DOVERA
-    //pocet infkecnych krajin pre doveru
+    //TRUST state
+    //number of infectious countries
     const infectiousCountriesNumber = useRecoilValue(infectiousCountriesNumberSelector);
-    //pocet aktivnych opatreni z liecby
+    //number of active measurements from Cure
     const cureMeasuresNumber = useRecoilValue(CureMeasuresSelector);
-    //pocet aktivnych opatreni z komunikacie
+    //number of active measurements from Communication
     const communicationMeasuresNumber = useRecoilValue(CommunicationMeasuresSelector);
-    //pocet aktivnych opatreni z prevencie nakazenia
+    //number of active measurements from Infection prevention
     const infectionPreventionMeasuresNumber = useRecoilValue(InfectionPreventionMeasuresSelector);
-    //pocet aktivnych opatreni z trasovania/testovania
+    //number of active measurements from Tracing and Testing
     const tracingTestingMeasuresNumber = useRecoilValue(TracingTestingMeasuresSelector);
-    //pocet aktivnych opatreni z vakciny
+    //number of active measurements from Vaccine
     const vaccineMeasuresNumber = useRecoilValue(VaccineMeasuresSelector);
-    //pocet aktivnych opatreni z obmedzenia cestovania
+    //number of active measurements from Travel restriction
     const travelRestrictionMeasuresNumber = useRecoilValue(TravelRestrictionMeasuresSelector);
-    //pocet aktivnych opatreni z region - obmedzenia cestovania
+    //number of active measurements from regions- travel restrictions
     const regionTravelRestrictionMeasuresNumber = useRecoilValue(RegionTravelRestrictionMeasuresSelector);
-    //sucet aktivnych opatreni z region travel restriction a travel restriction
+    //sum number of active measurements from Travel restrictions and Region travel restrictions
     const allTravelRestrictionMeasuresNumber = travelRestrictionMeasuresNumber + regionTravelRestrictionMeasuresNumber;
 
-    //pocet celosvetovych zosnulych
+    //number of global deceased
     const deceasedWorlWideNumber = useRecoilValue(deceasedSelector);
-    //info o aktivovanom lockdowne
+    //value, which determines if lockdown is activated
     const lockDownMeasureState = useRecoilValue(TravelRestrictionLockDownSelector);
-    //info o dnoch, kolko uz je aktivny lockdown, ...
+    //value, which determines how long was lockdown activated etc.
     const [strictMeasuresTime, setStrictMeasuresTime] = useRecoilState(StrictMeasuresTimeState);
-    //info o aktivnych uzatvoreniach hranic, letisk, pristavov
+    //values, which determines if borders/seaports/airports are closed
     const bordersMeasureState = useRecoilValue(RegionBordersSelector);
     const airportsMeasureState = useRecoilValue(RegionAirportsSelector);
     const seaportsMeasureState = useRecoilValue(RegionSeaportsSelector);
 
-    //dovera
+    //trust value
     const [trustValue, setTrustValue] = useRecoilState(GameTrustState);
 
 
     useInterval(() => {
 
+        //check if game is running
         if (gameFlow === true) {
 
-            //inkrement dni (herneho casu)
+            //game time incrementation (adding days)
             setDays(prevDays => prevDays + 1);
 
+            //object for countries that are going to be recalculated - used for one-time setting countries state
             let countries = {};
+            //countries from countries state
             const countryCodes = Object.keys(allCountries);
 
-            //nahodne nakazenie prvej krajiny
+            /**
+             * random infecting FIRST country
+             */
             infectFirstCountry(pickFirstInfectedCountry, countryCodes, allCountries, countries, infectingNewCountry, setPickFirstInfectedCountry);
 
-            //funkcia na prepocet dovery
+            /**
+             * function that handle game trust
+             */
             gameTrustHandle(infectiousCountriesNumber, cureMeasuresNumber, communicationMeasuresNumber,
                 infectionPreventionMeasuresNumber, tracingTestingMeasuresNumber, allTravelRestrictionMeasuresNumber,
                 vaccineMeasuresNumber, deceasedWorlWideNumber, days, lockDownMeasureState, strictMeasuresTime,
                 setStrictMeasuresTime, bordersMeasureState, airportsMeasureState, seaportsMeasureState,
                 trustValue, setGameOverState, setTrustValue, setTrustMessages);
 
+            /**
+             * function that handle vaccine
+             */
             gameVaccineHandle(vaccineState, days, setGammaParameter, setMessages, setVaccineState);
 
+            /**
+             * loop for all countries - infecting new countries
+             */
             Object.keys(allCountries).forEach(currentCountry => {
                 infectionSpread(currentCountry, allCountries, regionRestrictions, countries, infectingNewCountry, countryCodes, compartmentsRecalculateValues);
             })
 
+            /**
+             * currency increment handle
+             */
             addCurrency(infectiousWorldData, infectedBreakpoints, clickableGameCurrency, days, setClickAbleGameCurrency, setInfectedBreakpoints);
 
+            //setter for graph data
             setGraphData((prevStats) => ([...prevStats, {
                 inf: infectiousWorldData,
                 sus: susceptibleWorldData,
@@ -333,12 +380,16 @@ const MapContainer = () => {
                 day: days
             }]));
 
+            //setter for updating countries
             setAllCountries((prevAllCountriesState) => {
                 return {
                     ...prevAllCountriesState, ...countries
                 }
             });
 
+            /**
+             * game over handle
+             */
             gameOver(recoveredWorldData, susceptibleWorldData, infectiousWorldData, days, setGameOverState);
         }
 
@@ -348,7 +399,7 @@ const MapContainer = () => {
     const mapHeight = height * 0.75;
     const mapWidth = width * 0.75;
 
-    //responzivna mapa
+    //responsive map
     let mapScale = ((width / 80) * 11.2);
 
     return (

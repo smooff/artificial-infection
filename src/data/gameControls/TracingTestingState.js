@@ -45,7 +45,8 @@ export const TracingTestingState = atom({
     },
 });
 
-//selector pre prepocet dovery
+//selector which returns number of active measurements  in TracingTestingState.js
+//used for trust breakpoint checks
 export const TracingTestingMeasuresSelector = selector({
     key: 'TracingTestingMeasuresSelector',
     get: ({get}) => {

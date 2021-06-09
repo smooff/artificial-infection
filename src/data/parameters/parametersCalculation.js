@@ -1,4 +1,5 @@
-//prepocitanie sily parametrov pre jednotlive opatrenia
+
+//used for recalculation parameter strength for each measurement
 
 const betaMax = 0.941;
 const betaMin = 0.0504;

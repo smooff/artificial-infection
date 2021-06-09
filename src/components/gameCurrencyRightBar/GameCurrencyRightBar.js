@@ -9,6 +9,13 @@ import Grid from "@material-ui/core/Grid";
 import GameCurrencyModal from "./GameCurrencyModal";
 import {LocalAtmTwoTone} from "@material-ui/icons";
 
+/**
+ * Renders a <GameCurrencyRightBar /> component
+ * component is used to display game currency value and clickable game currency button
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function GameCurrencyRightBar() {
 
     const useStyles = makeStyles(() => ({

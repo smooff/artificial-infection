@@ -23,7 +23,8 @@ export const TravelRestrictionState = atom({
     },
 });
 
-//selector pre prepocet dovery
+//selector which returns number of active measurements  in TravelRestrictionState.js
+//used for trust breakpoint checks
 export const TravelRestrictionMeasuresSelector = selector({
     key: 'TravelRestrictionMeasuresSelector',
     get: ({get}) => {
@@ -41,7 +42,6 @@ export const TravelRestrictionMeasuresSelector = selector({
     },
 });
 
-//selector pre prepocet dovery
 export const TravelRestrictionLockDownSelector = selector({
     key: 'TravelRestrictionLockDownSelector',
     get: ({get}) => {

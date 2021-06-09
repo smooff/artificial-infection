@@ -19,7 +19,13 @@ import Img16 from '../../images/tutorialImages/16.jpg';
 import Img17 from '../../images/tutorialImages/17.jpg';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-
+/**
+ * Renders a <TutorialImageCarousel /> component
+ * component is used to display game tutorial (image carousel)
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function TutorialImageCarousel() {
 
     const images = [

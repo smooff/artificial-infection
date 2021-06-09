@@ -7,7 +7,15 @@ import Divider from "@material-ui/core/Divider";
 import {useRecoilState} from "recoil";
 import {mapContainerState} from "../../data/map/MapContainerState";
 
-
+/**
+ * Renders a <SingleCountryModal /> component
+ * component is used to display game messages
+ * @param props
+ * @param props.singleCountryData - contains data (name, population, ...) for single country
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function SingleCountryModal(props) {
     const useStyles = makeStyles(() => ({
         textCentering:{

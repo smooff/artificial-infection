@@ -8,6 +8,7 @@ export const CureState = atom({
 
         WorkForce: 0,
         WorkForcePrice: 6,
+        //price of this measurement is split in two currencies - main currency (upper price) and medical units price
         WorkForcePriceMedUnits: 4,
         WorkForceDelta: 0.2 * deltaPerMeasurementStrength,
 
@@ -41,7 +42,8 @@ export const CureState = atom({
     },
 });
 
-//selector pre prepocet dovery
+//selector which returns number of active measurements  in CureState.js
+//used for trust breakpoint checks
 export const CureMeasuresSelector = selector({
     key: 'CureMeasuresSelector',
     get: ({get}) => {

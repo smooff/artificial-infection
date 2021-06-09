@@ -4,7 +4,16 @@ import {useRecoilValue} from "recoil";
 import {GraphDataState} from "../../data/GraphDataState";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
-
+/**
+ * Renders a <GraphContainer /> component
+ * component is used to display global graph, which shows 4 compartments
+ * @param props
+ * @param props.dataWidth - contains actual window width
+ * @param props.dataHeight - contains actual window height
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function GraphContainer({dataWidth, dataHeight}) {
     //vyber typu grafu
     const [graphType, setGraphType] = useState(() => ['infectious']);

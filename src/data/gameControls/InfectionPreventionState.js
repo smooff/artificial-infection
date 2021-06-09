@@ -67,7 +67,8 @@ export const InfectionPreventionState = atom({
     },
 });
 
-//selector pre prepocet dovery
+//selector which returns number of active measurements  in InfectionPrevention.js
+//used for trust breakpoint checks
 export const InfectionPreventionMeasuresSelector = selector({
     key: 'InfectionPreventionMeasuresSelector',
     get: ({get}) => {

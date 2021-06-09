@@ -7,7 +7,15 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import {NewMessagesCounter} from "../../data/messages/NewMessagesCounter";
 
-
+/**
+ * Renders a <MessageModal /> component
+ * component is used to display game messages
+ * @param props
+ * @param props.dataSelector - contains messages
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function MessageModal({dataSelector}) {
     const useStyles = makeStyles(() => ({
         title: {

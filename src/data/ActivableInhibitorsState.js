@@ -1,6 +1,8 @@
 import {atom} from "recoil";
 
-//urcuje pocet aktivovanych inhibitorov (spomalovacov) sirenia nakazy a smrtnosti
+/**
+ * represents global state value for inhibitors, which is slows the infection spread and mortality (beta and delta param.)
+ */
 export const ActivableInhibitorsState = atom({
     key: 'ActivableInhibitorsState',
     default: {

@@ -1,5 +1,11 @@
 import {atom, selector} from "recoil";
 
+/**
+ * represents global state value for Region travel measurements
+ * these measurements are used for decreasing spread across new countries (infecting new countries)
+ * default value is object, that contains objects with key, which determines region affected
+ * inside these multiple objects are prices like  bordersPrice: 6, and variables which determines if the specific measurement is activated, like borders: 0,
+ */
 export const RegionTravelRestrictionState = atom({
     key: 'RegionTravelRestrictionState',
     default: {
@@ -46,8 +52,8 @@ export const RegionTravelRestrictionState = atom({
     },
 });
 
-
-//selector pre prepocet dovery
+//selector which returns number of closed borders/airports/seaports
+//used for trust breakpoint checks
 export const RegionTravelRestrictionMeasuresSelector = selector({
     key: 'RegionTravelRestrictionMeasuresSelector',
     get: ({get}) => {
@@ -68,7 +74,7 @@ export const RegionTravelRestrictionMeasuresSelector = selector({
     },
 });
 
-//selector pre prepocet dovery
+//same as above
 export const RegionBordersSelector = selector({
     key: 'RegionBordersSelector',
     get: ({get}) => {
@@ -83,7 +89,6 @@ export const RegionBordersSelector = selector({
     },
 });
 
-//selector pre prepocet dovery
 export const RegionAirportsSelector = selector({
     key: 'RegionAirportsSelector',
     get: ({get}) => {
@@ -98,7 +103,6 @@ export const RegionAirportsSelector = selector({
     },
 });
 
-//selector pre prepocet dovery
 export const RegionSeaportsSelector = selector({
     key: 'RegionSeaportsSelector',
     get: ({get}) => {

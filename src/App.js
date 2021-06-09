@@ -6,11 +6,17 @@ import {Route, Switch} from "react-router-dom";
 import MainPage from "./pages/mainPage/MainPage";
 import {RecoilRoot} from "recoil";
 
-
+/**
+ * Renders a <App /> component
+ * component is used to wrap whole application
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function App() {
     return (
         <Router>
-            {/*vsetko co je v recoilroute, dane komponenty mozu zdielat recoil state*/}
+            {/*everything insade recoilroot, those components (whole tree) are allowed to use recoil states*/}
             <RecoilRoot>
                 <Switch>
                     <Route exact path="/">

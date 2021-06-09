@@ -65,18 +65,29 @@ import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
 import Typography from "@material-ui/core/Typography";
 import {GameStartState} from "../../data/GameStartState";
 
-
+/**
+ * Renders a <MainPage /> component
+ * component is used as main page (page for playing)
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function MainPage() {
 
+    //width of drawer component on right side of the screen
     let drawerWidth = 240;
 
     const {height, width} = useWindowDimensions();
 
+    //breakpoint for changing drawer width
     const mobileDrawerBreakpoint = 820;
-
     if (width < mobileDrawerBreakpoint) {
         drawerWidth = 200;
     }
+
+    /**
+     * styling of specific components
+     */
     const useStyles = makeStyles(() => ({
         downInfoBar: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -126,18 +137,22 @@ function MainPage() {
 
     const classes = useStyles();
 
-    //herny cas a interakcie s nim
+    //setter for setting game flow (running or paused)
     const [, setGameFlow] = useRecoilState(GameFlowState);
+    //setter for setting time for interval
     const [, setIntervalSpeed] = useRecoilState(GameIntervalState);
 
+    //color of buttons, which handle game flow
     const [pauseColor, setPauseColor] = useState("primary");
     const [unpauseColor, setUnpauseColor] = useState("default");
     const [forwardColor, setForwardColor] = useState("default");
-
     const [pauseOutline, setPauseOutline] = useState("contained");
     const [unpauseOutline, setUnpauseOutline] = useState("outlined");
     const [forwardOutline, setForwardOutline] = useState("outlined");
 
+    /**
+     * arrow function for pausing game
+     */
     const gamePause = useCallback(() => {
         setGameFlow(false);
 
@@ -149,7 +164,9 @@ function MainPage() {
         setUnpauseOutline("outlined");
         setForwardOutline("outlined");
     }, [setGameFlow])
-
+    /**
+     * arrow function for unpausing game
+     */
     const gameUnpause = () => {
         setGameFlow(true);
 
@@ -164,6 +181,9 @@ function MainPage() {
         setIntervalSpeed(2500);
     }
 
+    /**
+     * arrow function for speeding the game
+     */
     const gameForward = () => {
         setGameFlow(true);
 
@@ -178,7 +198,7 @@ function MainPage() {
         setIntervalSpeed(1000);
     }
 
-    //modal zoznam krajin
+    //modal for countries list
     const [openCountriesList, setOpenCountriesList] = React.useState(false);
     const handleClickOpenCountriesList = () => {
         gamePause();
@@ -189,7 +209,7 @@ function MainPage() {
         setOpenCountriesList(false);
     };
 
-    //opatrenia modal 1
+    //measurements modal 1
     const [openTravelRestriction, setOpenTravelRestriction] = React.useState(false);
     const handleClickOpenTravelRestriction = () => {
         setOpenTravelRestriction(true);
@@ -198,7 +218,7 @@ function MainPage() {
         setOpenTravelRestriction(false);
     };
 
-    //opatrenia modal2
+    //measurements modal 2
     const [openTracingTesting, setOpenTracingTesting] = React.useState(false);
     const handleClickOpenTracingTesting = () => {
         setOpenTracingTesting(true);
@@ -207,7 +227,7 @@ function MainPage() {
         setOpenTracingTesting(false);
     };
 
-    //opatrenia modal3
+    //measurements modal 3
     const [openInfectionPrevention, setOpenInfectionPrevention] = React.useState(false);
     const handleClickOpenInfectionPrevention = () => {
         setOpenInfectionPrevention(true);
@@ -216,7 +236,7 @@ function MainPage() {
         setOpenInfectionPrevention(false);
     };
 
-    //opatrenia modal4
+    //measurements modal 4
     const [openCure, setOpenCure] = React.useState(false);
     const handleClickOpenCure = () => {
         setOpenCure(true);
@@ -225,7 +245,7 @@ function MainPage() {
         setOpenCure(false);
     };
 
-    //opatrenia modal5
+    //measurements modal 5
     const [openCommunication, setOpenCommunication] = React.useState(false);
     const handleClickOpenCommunication = () => {
         setOpenCommunication(true);
@@ -234,7 +254,7 @@ function MainPage() {
         setOpenCommunication(false);
     };
 
-    //opatrenia modal6
+    //measurements modal6
     const [openVaccine, setOpenVaccine] = React.useState(false);
     const handleClickOpenVaccine = () => {
         setOpenVaccine(true);
@@ -243,7 +263,7 @@ function MainPage() {
         setOpenVaccine(false);
     };
 
-    //modal7 - graf
+    //modal7 - graph
     const [openGraph, setOpenGraph] = React.useState(false);
     const handleClickOpenGraph = () => {
         setOpenGraph(true);
@@ -253,7 +273,7 @@ function MainPage() {
     };
 
 
-    // modal8 - herna dovera
+    // modal8 - game trust
     const [openTrust, setOpenTrust] = React.useState(false);
     const handleClickOpenTrust = () => {
         setOpenTrust(true);
@@ -262,7 +282,7 @@ function MainPage() {
         setOpenTrust(false);
     };
 
-    //modal9 - spravy
+    //modal9 - game messages
     const [openMessages, setOpenMessages] = React.useState(false);
     const handleClickOpenMessages = () => {
         setOpenMessages(true);
@@ -271,7 +291,7 @@ function MainPage() {
         setOpenMessages(false);
     };
 
-    //modal10 - navigovanie na welcome page
+    //modal10 - navigation to welcome page
     const [openPageNavigation, setOpenPageNavigation] = React.useState(false);
     const handleClickOpenPageNavigation = () => {
         setOpenPageNavigation(true);
@@ -298,7 +318,7 @@ function MainPage() {
         };
     }, [gameOver, gamePause]);
 
-    //mapa data - farba
+    //map data - color
     const [mapColor, setMapColor] = useRecoilState(mapColorDataState);
     const handleMapColor = (event, newColor) => {
         setMapColor(newColor);
@@ -311,12 +331,14 @@ function MainPage() {
             <main className={classes.content}>
                 <Grid container direction="row" justify="center" alignItems="center">
 
+                    {/*map wrapper*/}
                     <Grid item xs={12} className={classes.appBar}>
                         <MapContainer/>
                     </Grid>
 
                     <Grid container direction="row" justify="space-around" alignItems="center" spacing={1}
                           className={classes.downInfoBar}>
+                        {/*components with compartment stats at the bottom*/}
                         <Grid item xs={6} md={3}>
                             <BottomInfoBar name="Náchylní" dataSelector={susceptiblesSelector}/>
                         </Grid>
@@ -336,7 +358,7 @@ function MainPage() {
 
             <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}
                     anchor="right">
-
+                {/*buttons for map color change*/}
                 <ToggleButtonGroup value={mapColor} exclusive onChange={handleMapColor}
                                    className={classes.toggleButtonGroup}>
                     <ToggleButton value="infectious" className={classes.toggleButton}>
@@ -355,6 +377,7 @@ function MainPage() {
                 <Divider/>
 
                 <List>
+                    {/*game time wrapper*/}
                     <ListItem button>
                         <Tooltip title="Herný dátum">
                             <ListItemText>
@@ -362,6 +385,7 @@ function MainPage() {
                             </ListItemText>
                         </Tooltip>
                     </ListItem>
+                    {/*game flow buttons*/}
                     <ListItem button
                               className={width < mobileDrawerBreakpoint ? classes.gameSpeedButtonsWrapperMobile : classes.gameSpeedButtonsWrapper}>
                         <Tooltip title="Stopnutie hry">
@@ -386,11 +410,13 @@ function MainPage() {
 
                     <Divider/>
 
+                    {/*game trust wrapper*/}
                     <ListItem button>
                         <ListItemText onClick={handleClickOpenTrust}>
                             <GameTrust trustState={GameTrustState}/>
                         </ListItemText>
                     </ListItem>
+                    {/*game currency wrapper*/}
                     <ListItem button>
                         <ListItemText>
                             <GameCurrencyRightBar/>
@@ -400,6 +426,7 @@ function MainPage() {
 
                 <Divider/>
 
+                {/*game measurements wrapper*/}
                 <List>
                     <ListItem button onClick={handleClickOpenTravelRestriction}>
                         <AirplanemodeInactive className={classes.drawerIcons}/>
@@ -429,15 +456,19 @@ function MainPage() {
 
                 <Divider/>
 
+
                 <List>
+                    {/*coutnries table wrapper*/}
                     <ListItem button onClick={handleClickOpenCountriesList}>
                         <ListAltTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Prehľad všetkých krajín"/>
                     </ListItem>
+                    {/*graph wrapper*/}
                     <ListItem button onClick={handleClickOpenGraph}>
                         <PollTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Globálny graf"/>
                     </ListItem>
+                    {/*gamme messages wrapper*/}
                     <ListItem button onClick={handleClickOpenMessages}>
                         <EmailTwoTone className={classes.drawerIcons}/>
                         <MessageWrapper/>
@@ -447,6 +478,7 @@ function MainPage() {
                 <Divider/>
 
                 <List>
+                    {/*navigation wrapper*/}
                     <ListItem button onClick={handleClickOpenPageNavigation}>
                         <ExitToAppTwoTone className={classes.drawerIcons}/>
                         <ListItemText primary="Návrat na úvodnú stránku"/>
@@ -454,6 +486,8 @@ function MainPage() {
                 </List>
 
             </Drawer>
+
+            {/*SET OF DIALOGS (MODALS) THAT OPENS UP AFTER TRIGGERING SPECIFIC BUTTON*/}
 
             <Dialog fullWidth={true} maxWidth={"lg"} onClose={handleClickCloseCountriesList} open={openCountriesList}>
                 <DialogTitle onClose={handleClickCloseCountriesList}>
@@ -532,7 +566,7 @@ function MainPage() {
                                pointsInfected={infectiousSelector} pointsSusceptibles={susceptiblesSelector}/>
             </Dialog>
 
-            {/*kontrola ci je (mobilne) zariadenie otocene horizontalne*/}
+            {/*check if (mobile) device has right orientation - horizontal*/}
             <ResponsiveDesign/>
 
             <Dialog fullWidth={true} maxWidth={"xs"} open={openGameStartModal}>

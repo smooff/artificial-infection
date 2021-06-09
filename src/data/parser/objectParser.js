@@ -215,7 +215,7 @@ const data = fs.readFileSync('./path', 'utf8')
 
 let countries = JSON.parse(data);
 
-//sluzi na parsovanie objektov - na vytvorenie MapContainerState.js
+//used for parsing objects - for creating MapContainerState.js
 
 
 countries.forEach(country => {

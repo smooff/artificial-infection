@@ -11,6 +11,13 @@ import {BetaState} from "../../data/parameters/BetaState";
 import {DeltaState} from "../../data/parameters/DeltaState";
 import MuiAlert from "@material-ui/lab/Alert";
 
+/**
+ * Renders a <GameCurrencyModal /> component
+ * component is used to display game currency modal, which contains game currency, medical units, etc.
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function GameCurrencyModal() {
     const useStyles = makeStyles(() => ({
         itemAlign: {

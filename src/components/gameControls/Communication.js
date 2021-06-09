@@ -13,7 +13,19 @@ import {DeltaState} from "../../data/parameters/DeltaState";
 import {GameTrustState} from "../../data/gameTrust/GameTrustState";
 import PriceInfoSingleMeasurement from "./PriceInfoSingleMeasurement";
 
+/**
+ * Renders a <Communication /> component
+ * component is used to display measurements (type Communication) inside a modal
+ * all other measurements modal has similar structure (Cure.js,InfectionPrevention.js,RegionTravelRestriction.js,TracingTesting.js,TravelRestriction.js,Vaccine.js)
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function Communication() {
+    /**
+     * used for styling specific components
+     * this kind of styling is used nearly in every component in the app
+     */
     const useStyles = makeStyles(() => ({
         activationButtons: {
             textAlign: "center",
@@ -28,41 +40,71 @@ function Communication() {
     }));
     const classes = useStyles();
 
-    //sprava pre jednotlive opatrenie
+    /**
+     * value (and setter), which stores text for specific measurement
+     */
     const [text, setText] = useState("pre zobrazenie popisu klikni na opatrenie");
+    /**
+     * value (and setter), which stores price for specific measurement
+     */
     const [price, setPrice] = useState("pre zobrazenie ceny klikni na opatrenie");
 
-    //data s opatreniami
+    /**
+     * value (and setter), which stores global measures of specific type
+     */
     const [measuresActualState, setMeasuresActualState] = useRecoilState(CommunicationState);
 
-    //dovera
+    /**
+     * setter, which sets game trust state - after activating specific measurement
+     */
     const [, setTrustValue] = useRecoilState(GameTrustState);
 
-    //herna mena
+    /**
+     * value (and setter), which stores main game currency
+     */
     const [gameCurrency, setGameCurrency] = useRecoilState(GameCurrencyState);
 
-    //beta parameter
+    /**
+     * setter, which sets beta parameter after activating specific measurement
+     */
     const [, setBetaParameter] = useRecoilState(BetaState);
-    //delta parameter
+    /**
+     * setter, which sets delta parameter after activating specific measurement
+     */
     const [, setDeltaParameter] = useRecoilState(DeltaState);
 
-    //alert po aktivacii/deaktivacii--------------------
-    //po uspesnom pokuse o aktivaciu
+    /**
+     * value, which determines if measurement activating was successful
+     */
     const [openCommunicationSuccess, setOpenCommunicationSuccess] = React.useState(false);
+    /**
+     * arrow function, which provide successful activation of measurement - opening modal
+     */
     const handleOpenSuccess = () => {
         setOpenCommunicationSuccess(true);
     };
+    /**
+     * arrow function, which provide successful activation of measurement - closing modal
+     */
     const handleCloseSuccess = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpenCommunicationSuccess(false);
     };
-    //po neuspensom pokuse o aktivaciu
+    /**
+     * value, which determines if measurement activating was not successful
+     */
     const [openCommunicationFailure, setOpenCommunicationFailure] = React.useState(false);
+    /**
+     * arrow function, which provide non-successful activation of measurement - opening modal
+     */
     const handleOpenFailure = () => {
         setOpenCommunicationFailure(true);
     };
+    /**
+     * arrow function, which provide non-successful activation of measurement - closing modal
+     */
     const handleCloseFailure = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -70,15 +112,24 @@ function Communication() {
         setOpenCommunicationFailure(false);
     };
 
+    /**
+     * value (and setter), which stores modal message - activation process
+     */
     const [modalMessage, setModalMessage] = useState();
 
+    /**
+     * Renders a <MuiAlert /> component
+     * component is used to display message if the measurement was activated or not
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
-    //----------------------------------------------
-
-    //stylovanie buttonov po klinuti
+    /**
+     * value (and setter), which specifies color of the button for specific meaurement
+     */
     const [buttonEducateCommunicateColor, setButtonEducateCommunicateColor] = useState("default");
     const [buttonGovernmentHelpsVulnerableColor, setButtonGovernmentHelpsVulnerableColor] = useState("default");
     const [buttonEmergencyStateColor, setButtonEmergencyStateColor] = useState("default");
@@ -90,6 +141,9 @@ function Communication() {
     const [buttonInternationalHelpColor, setButtonInternationalHelpColor] = useState("default");
     const [buttonInformationCampaignColor, setButtonInformationCampaignColor] = useState("default");
 
+    /**
+     * value (and setter), which specifies if button with specific measurement was clicked
+     */
     const [showEducateCommunicate, setShowEducateCommunicate] = React.useState(false);
     const [showGovernmentHelpsVulnerable, setShowGovernmentHelpsVulnerable] = React.useState(false);
     const [showEmergencyState, setShowEmergencyState] = React.useState(false);
@@ -101,6 +155,13 @@ function Communication() {
     const [showInternationalHelp, setShowInternationalHelp] = React.useState(false);
     const [showInformationCampaign, setShowInformationCampaign] = React.useState(false);
 
+    /**
+     * arrow function that handles click on specific measurement button
+     * @param textMessage - text of specific measurement
+     * @param buttonNumber - all buttons have own numbers - for coloring
+     * @param buttonPrice - price of specific measurement
+     * @returns {null}
+     */
     const handleButtonClick = (textMessage, buttonNumber, buttonPrice) => {
         setText(textMessage);
         setPrice(buttonPrice);
@@ -339,7 +400,11 @@ function Communication() {
                 return null;
         }
     }
-    //funckia pre navrat hodnot do resultu
+    /**
+     * arrow function that determines which button is activated, and based on that it renders sub-buttons for activation/deactivation
+     * @param param - button number (id), which determines which button was clicked
+     * @returns {JSX.Element|null}
+     */
     const renderSwitch = (param) => {
         switch (param) {
             case 1:
@@ -377,29 +442,43 @@ function Communication() {
         }
     }
 
-    //aktivacne/deaktivacne tlacidla po kliknuti na dane opatrenie
+    //arrow function for wrapping buttons
     const Results = (c) => (
         <Grid className={classes.activationButtons}>
             {renderSwitch(c.cislo)}
         </Grid>
     )
 
-    //action-handlers pre aktivacie/deaktivacie----------
+    /**
+     * arrow function, which is used for activating specific measurement - EducateCommunicate
+     */
     const handleActivationEducateCommunicate = () => {
+        //check if there is enough main game currency for activation
         if (measuresActualState.EducateCommunicatePrice <= gameCurrency) {
+            //check if the measurement is not already activated
             if (measuresActualState.EducateCommunicate === 0) {
+                //activation of measurement - set measurement state to 1, and deactivate measurement tree lock
                 setMeasuresActualState((prevStats) => {
                     return {...prevStats, EducateCommunicate: 1, EducateCommunicateActive: false};
                 });
+                //decrease game currency
                 setGameCurrency(prev => (prev - measuresActualState.EducateCommunicatePrice));
+                //change global beta parameter
                 setBetaParameter(prev => (prev - measuresActualState.EducateCommunicateBeta));
+                //change global delta parameter
                 setDeltaParameter(prev => (prev - measuresActualState.EducateCommunicateDelta));
+                //set message - successful activation
                 setModalMessage("Aktivoval si opatrenie - Vzdelávanie a komunikácia s verejnosťou.");
+                //increase game trust
                 setTrustValue(prev => (prev + 4));
+                //call function, which tells that activation was successful
                 handleOpenSuccess();
             }
+            //if there is not enough currency
         } else {
+            //set message - non-successful activation
             setModalMessage("Nemáš dostatok hernej meny na aktivovanie opatrenia.");
+            //call function, which tells that activation was non-successful
             handleOpenFailure();
         }
     }
@@ -708,29 +787,34 @@ function Communication() {
             handleOpenSuccess();
         }
     }
-    //-----------------------------------------
-
 
     return (
         <DialogContent dividers>
+            {/*renders successful message*/}
             <Snackbar open={openCommunicationSuccess} autoHideDuration={6000} onClose={handleCloseSuccess}>
                 <Alert onClose={handleCloseSuccess} severity="success">
                     {modalMessage}
                 </Alert>
             </Snackbar>
+            {/*renders non-successful message*/}
             <Snackbar open={openCommunicationFailure} autoHideDuration={6000} onClose={handleCloseFailure}>
                 <Alert onClose={handleCloseFailure} severity="warning">
                     {modalMessage}
                 </Alert>
             </Snackbar>
+            {/*general information about measurement type*/}
             <Typography gutterBottom>
                 Aktiváciou týchto opatrení sa znižuje smrtnosť a šírenie nákazy.
             </Typography>
             <Divider/>
+            {/*grid wrapping measurements*/}
             <Grid container>
+                {/*renders price and text of measurement*/}
                 <PriceInfoSingleMeasurement price={price} text={text}/>
 
+                {/*grid wrapping button of one specific measurement*/}
                 <Grid item xs={12} className={classes.actionButtons}>
+                    {/*renders button with styled color, size...*/}
                     <Button className={classes.buttonSize} color={buttonEducateCommunicateColor}
                             variant={measuresActualState.EducateCommunicate === 1 ? "contained" : "outlined"}
                             onClick={() => {
@@ -738,6 +822,7 @@ function Communication() {
                             }}>
                         Vzdelávanie a komunikácia s verejnosťou
                     </Button>
+                    {/*renders activation/deactivation buttons after clicking measurement button*/}
                     {showEducateCommunicate ? <Results cislo={1}/> : null}
                 </Grid>
 

@@ -1,6 +1,15 @@
 import React from 'react';
 import {useRecoilValue} from "recoil";
 
+/**
+ * Renders a <DateRightBar /> component
+ * component is used to display date (game time)
+ * @param props
+ * @param props.dateState - containes actual value of game time
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function DateRightBar({dateState}) {
     const days = useRecoilValue(dateState);
 

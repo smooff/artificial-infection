@@ -7,11 +7,19 @@ import Divider from "@material-ui/core/Divider";
 import ResponsiveDesign, {useWindowDimensions} from "../ResponsiveDesign";
 import TutorialImageCarousel from "../../components/tutorialImageCarousel/TutorialImageCarousel";
 
-
+/**
+ * Renders a <WelcomePage /> component
+ * component is used as welcome page
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function WelcomePage() {
 
     const {height, width} = useWindowDimensions();
-
+    /**
+     * styling of specific components
+     */
     const useStyles = makeStyles(() => ({
         inviteModal: {
             padding: "10px"
@@ -61,6 +69,7 @@ function WelcomePage() {
         setOpenTutorial(false);
     };
 
+    //about modal
     const [openAbout, setOpenAbout] = React.useState(false);
     const handleClickOpenAbout = () => {
         setOpenAbout(true);

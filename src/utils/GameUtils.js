@@ -1,24 +1,35 @@
+/**
+ * function for infecting new countries
+ * @param currentCountry - contains current country
+ * @param allCountries - contains all countries
+ * @param regionRestrictions - contains region restrictions (from measurements) for decreasing chance of infection
+ * @param countries - new object, where are new infected countries set - this object is used then to set the main object
+ * @param infectingNewCountry - function for infecting new country
+ * @param countryCodes - country codes of all coutnries
+ * @param compartmentsRecalculateValues - function for recalculating compartments
+ */
 export const infectionSpread = (currentCountry, allCountries, regionRestrictions, countries, infectingNewCountry, countryCodes, compartmentsRecalculateValues) => {
 
+    //check if country is infected
     if (allCountries[currentCountry].infectivity === 1) {
 
-        //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
+        //check if country fulfills requirements needed for infecting
         if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0003 || allCountries[currentCountry].Infectious > 10000) && allCountries[currentCountry].Infectious > 15) {
 
-            //INFIKOVANIE CEZ HRANICE
+            //INFECTING BY BORDERS
             allCountries[currentCountry].border.forEach(element => {
-                //check ci target krajina moze byt nakazena
+                //check if targeted country can be infected
                 if (allCountries[element].infectivity === 0) {
-                    //iteracia cez RegionTravelRestrictionState
+                    //iterating in RegionTravelRestrictionState
                     for (const region in regionRestrictions) {
                         if (allCountries[element].region === region) {
                             if (regionRestrictions.hasOwnProperty(region)) {
-                                //check ci su hranice v regione otvorene, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je "normalna"
+                                //check if borders in region are opened - if yes chance for infecting is "normal"
                                 if (regionRestrictions[region].borders === 0) {
                                     if (Math.random() < 0.006) {
                                         countries[element] = infectingNewCountry(element, "border");
                                     }
-                                    //check ci su hranice v regione uzavrete, ak ano, tak pravdepodobnost infikovania novej krajiny cez hranice je mensia
+                                    //check if borders in region are closed - if yes chance for infecting is "lower"
                                 } else if (regionRestrictions[region].borders === 1) {
                                     if (Math.random() < 0.003) {
                                         countries[element] = infectingNewCountry(element, "border");
@@ -31,27 +42,27 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
             });
         }
 
-        //INFIKOVANIE CEZ REGION A SUBREGION
+        //INFECTING BY REGIONS AND SUBREGIONS
         for (const property in allCountries) {
             if (allCountries.hasOwnProperty(property)) {
-                //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
+                //check if country fulfills requirements needed for infecting
                 if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0004 || allCountries[currentCountry].Infectious > 35000) && allCountries[currentCountry].Infectious > 20) {
 
                     //REGION
                     if (allCountries[property].region === allCountries[currentCountry].region) {
                         if (allCountries[property].infectivity === 0) {
-                            //check ci su v regione otvorene hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v regione je "normalna"
+                            //check if borders in region are opened - if yes chance for infecting is "normal"
                             if (regionRestrictions[allCountries[property].region].borders === 0) {
                                 if (Math.random() < 0.002) {
                                     countries[property] = infectingNewCountry(property, "region");
-                                    //break pre for, aby sa v jednom for infikovala len jedna nova krajina, tym znizime vysoky prirastok novo-nakazenych krajin
+                                    //breaking for, so we wont let infect more countries in for loop, decrease of new infections
                                     break;
                                 }
-                                //check ci su v regione uzavrete hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v regione je "mensia"
+                                //check if borders in region are closed - if yes chance for infecting is "lower"
                             } else if (regionRestrictions[allCountries[property].region].borders === 1) {
                                 if (Math.random() < 0.001) {
                                     countries[property] = infectingNewCountry(property, "region");
-                                    //break pre for, aby sa v jednom for infikovala len jedna nova krajina, tym znizime vysoky prirastok novo-nakazenych krajin
+                                    //breaking for, so we wont let infect more countries in for loop, decrease of new infections
                                     break;
                                 }
                             }
@@ -59,18 +70,18 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                     }
                 }
 
-                //check ci krajina povodu splna pocet infikovanych na infikovanie novej krajiny
+                //check if country fulfills requirements needed for infecting
                 if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 20000) && allCountries[currentCountry].Infectious > 20) {
                     //SUBREGION
                     if (allCountries[property].subregion === allCountries[currentCountry].subregion) {
                         if (allCountries[property].infectivity === 0) {
-                            //check ci su v regione otvorene hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v subregione je "normalna"
+                            //check if borders in region are opened - if yes chance for infecting is "normal"
                             if (regionRestrictions[allCountries[property].region].borders === 0) {
                                 if (Math.random() < 0.003) {
                                     countries[property] = infectingNewCountry(property, "subregion");
                                     break;
                                 }
-                                //check ci su v regione uzavrete hranice, ak ano, tak pravdepodobnost infikovania novej krajiny v subregione je mensia
+                                //check if borders in region are closed - if yes chance for infecting is "lower"
                             } else if (regionRestrictions[allCountries[property].region].borders === 1) {
                                 if (Math.random() < 0.002) {
                                     countries[property] = infectingNewCountry(property, "subregion");
@@ -82,23 +93,23 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                 }
             }
         }
-        //infikovanie cez LETISKA
+        //INFECTING BY ARIPORTS
         if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.00035 || allCountries[currentCountry].Infectious > 15000) && allCountries[currentCountry].Infectious > 25) {
 
-            //vyber krajiny na nakazanie
+            //choosing country to infect
             const pickCountryToInfectViaPlanes = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
-            //check ci uz nie je nakazena
+            //check if it is not infected already
             if (allCountries[pickCountryToInfectViaPlanes].infectivity === 0) {
                 for (const regionFromInfecting in regionRestrictions) {
                     if (regionRestrictions.hasOwnProperty(regionFromInfecting)) {
                         if (allCountries[currentCountry].region === regionFromInfecting) {
-                            //check ci ma krajina povodu otvorene letiska
+                            //check if origin country has open airports
                             if (regionRestrictions[regionFromInfecting].airports === 0) {
                                 if (Math.random() < 0.008) {
                                     for (const regionToInfect in regionRestrictions) {
                                         if (regionRestrictions.hasOwnProperty(regionToInfect)) {
                                             if (allCountries[pickCountryToInfectViaPlanes].region === regionToInfect) {
-                                                //check ci ma vybrana krajina na infikovanie otvorene letiska
+                                                //check if destination country has open airports
                                                 if (regionRestrictions[regionToInfect].airports === 0) {
                                                     countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes, "airTraffic");
                                                 } else if (regionRestrictions[regionToInfect].airports === 1) {
@@ -115,7 +126,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                                     for (const regionToInfect in regionRestrictions) {
                                         if (regionRestrictions.hasOwnProperty(regionToInfect)) {
                                             if (allCountries[pickCountryToInfectViaPlanes].region === regionToInfect) {
-                                                //check ci ma vybrana krajina na infikovanie otvorene letiska
+                                                //check if destination country has open airports
                                                 if (regionRestrictions[regionToInfect].airports === 0) {
                                                     countries[pickCountryToInfectViaPlanes] = infectingNewCountry(pickCountryToInfectViaPlanes, "airTraffic");
                                                 } else if (regionRestrictions[regionToInfect].airports === 1) {
@@ -134,23 +145,23 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
             }
         }
 
-        //infikovanie cez PRISTAVY
+        //INFECTING BY SEAPORTS
         if ((allCountries[currentCountry].Infectious > allCountries[currentCountry].Population * 0.0005 || allCountries[currentCountry].Infectious > 17000) && allCountries[currentCountry].Infectious > 30) {
 
-            //vyber krajiny na nakazanie
+            //choosing country to infect
             const pickCountryToInfectViaShips = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
-            //check ci uz nie je nakazena
+            //check if it is not infected already
             if (allCountries[pickCountryToInfectViaShips].infectivity === 0) {
                 for (const regionFromInfecting in regionRestrictions) {
                     if (regionRestrictions.hasOwnProperty(regionFromInfecting)) {
                         if (allCountries[currentCountry].region === regionFromInfecting) {
-                            //check ci ma krajina povodu otvorene letiska
+                            //check if origin country has open seaports
                             if (regionRestrictions[regionFromInfecting].seaports === 0) {
                                 if (Math.random() < 0.005) {
                                     for (const regionToInfect in regionRestrictions) {
                                         if (regionRestrictions.hasOwnProperty(regionToInfect)) {
                                             if (allCountries[pickCountryToInfectViaShips].region === regionToInfect) {
-                                                //check ci ma vybrana krajina na infikovanie otvorene letiska
+                                                //check if destination country has open seaports
                                                 if (regionRestrictions[regionToInfect].seaports === 0) {
                                                     countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips, "seaTraffic");
                                                 } else if (regionRestrictions[regionToInfect].seaports === 1) {
@@ -167,7 +178,7 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
                                     for (const regionToInfect in regionRestrictions) {
                                         if (regionRestrictions.hasOwnProperty(regionToInfect)) {
                                             if (allCountries[pickCountryToInfectViaShips].region === regionToInfect) {
-                                                //check ci ma vybrana krajina na infikovanie otvorene letiska
+                                                //check if destination country has open seaports
                                                 if (regionRestrictions[regionToInfect].seaports === 0) {
                                                     countries[pickCountryToInfectViaShips] = infectingNewCountry(pickCountryToInfectViaShips, "seaTraffic");
                                                 } else if (regionRestrictions[regionToInfect].seaports === 1) {
@@ -188,7 +199,29 @@ export const infectionSpread = (currentCountry, allCountries, regionRestrictions
         countries[currentCountry] = compartmentsRecalculateValues(currentCountry);
     }
 }
-
+/**
+ * function for handling game trust
+ * @param infectiousCountriesNumber - number of infected countries
+ * @param cureMeasuresNumber - number of activated measurements of type Cure
+ * @param communicationMeasuresNumber - number of activated measurements of type Communication
+ * @param infectionPreventionMeasuresNumber - number of activated measurements of type Infection Prevention
+ * @param tracingTestingMeasuresNumber - number of activated measurements of type Tracing and testing
+ * @param allTravelRestrictionMeasuresNumber - number of activated measurements of type Travel restriction
+ * @param vaccineMeasuresNumber - number of activated measurements of type Vaccine
+ * @param deceasedWorlWideNumber - global number of deceased
+ * @param days - game time
+ * @param lockDownMeasureState - determines if lockdown is activated
+ * @param strictMeasuresTime - contains how long (game time) have been strict measurements activated
+ * @param setStrictMeasuresTime - reset game time for strict measurements
+ * @param bordersMeasureState - determines if borders are closed
+ * @param airportsMeasureState - determines if airports are closed
+ * @param seaportsMeasureState - determines if seaports are closed
+ * @param trustValue - contains game trust
+ * @param setGameOverState - sets game end
+ * @param setTrustValue - sets game trust
+ * @param setTrustMessages - sets game trust messages
+ * @returns {null}
+ */
 export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, communicationMeasuresNumber,
                                 infectionPreventionMeasuresNumber, tracingTestingMeasuresNumber, allTravelRestrictionMeasuresNumber,
                                 vaccineMeasuresNumber, deceasedWorlWideNumber, days, lockDownMeasureState, strictMeasuresTime,
@@ -197,6 +230,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
     let triggerPoint = 0;
     let trustDecrease = 0;
     let messageString = "";
+    //BREAKPOINTS CHECKING VARIOUS SITUATIONS
     if (infectiousCountriesNumber > 10 && (cureMeasuresNumber === 0 && communicationMeasuresNumber === 0 && infectionPreventionMeasuresNumber === 0
         && tracingTestingMeasuresNumber === 0 && allTravelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
         trustDecrease += 4;
@@ -219,38 +253,38 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
         messageString = messageString.concat(" ● Nakazilo sa príliš veľa krajín, dôvera klesá z dôvodu slabej komunikácie s obyvateľmi. Aktivuj opatrenie zo sekcie Komunikácia. \n");
     }
 
-    //1 milion
+    //1 million
     if (deceasedWorlWideNumber > 1000000 && (cureMeasuresNumber === 0 && communicationMeasuresNumber === 0 && infectionPreventionMeasuresNumber === 0
         && tracingTestingMeasuresNumber === 0 && allTravelRestrictionMeasuresNumber === 0 && vaccineMeasuresNumber === 0)) {
         trustDecrease += 3;
         triggerPoint++;
         messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí bez akéhokoľvek aktivovaného opatrenia. Aktivuj nejaké opatrenie. \n");
     }
-    //2 milion
+    //2 millions
     if (deceasedWorlWideNumber > 2000000 && cureMeasuresNumber === 0) {
         trustDecrease += 3;
         triggerPoint++;
         messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj viacero opatrení zo sekcie Liečba. \n");
     }
-    //10 milionov
+    //10 millions
     if (deceasedWorlWideNumber > 10000000 && cureMeasuresNumber < 2) {
         trustDecrease += 3;
         triggerPoint++;
         messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj viacero opatrení zo sekcie Liečba. \n");
     }
-    //100 milionov
+    //100 millions
     if (deceasedWorlWideNumber > 100000000 && cureMeasuresNumber < 3) {
         trustDecrease += 3;
         triggerPoint++;
         messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu slabej liečby. Aktivuj opatrenie zo sekcie Liečba. \n");
     }
-    //150 milionov
+    //150 millions
     if (deceasedWorlWideNumber > 150000000 && vaccineMeasuresNumber === 0) {
         trustDecrease += 3;
         triggerPoint++;
         messageString = messageString.concat(" ● Zahynulo príliš veľa ľudí, dôvera klesá z dôvodu nevyvíjania vakcíny. Aktivuj opatrenie zo sekcie Vakcína. \n");
     }
-    //cca 75% populacie mrtva
+    //approx 75% population deceased
     if (deceasedWorlWideNumber > 5500000000 && cureMeasuresNumber < 5 && vaccineMeasuresNumber === 0 && communicationMeasuresNumber < 6 && infectionPreventionMeasuresNumber < 3) {
         trustDecrease += 1;
         triggerPoint++;
@@ -273,20 +307,20 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
         messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi. Aktivuj opatrenia zo sekcie Komunikácia. \n");
     }
 
-    //kazdych 30 dni sa strhne dovera za lockdown ale aj za aktivaciu lockdownu
+    //every 30 days, trust is decreased if lockdown is active or is being activated
     if (lockDownMeasureState !== 0) {
-        //jednorazova aktivacia strhne 7 dovery
+        //one time activation
         if (strictMeasuresTime.lockdown === 0) {
             trustDecrease += 7;
             triggerPoint++;
             messageString = messageString.concat(" ● Dôvera klesla z dôvodu akitvácie lockdownu. \n");
         }
-        //kazdych 30 dni
+        //every 30 days
         if (strictMeasuresTime.lockdown === 30) {
             trustDecrease += 7;
             triggerPoint++;
 
-            //ak je lockdown aktivny a nie su opatrenia z komunikacie - > strhne este viac
+            // if lockdown is active + no measurements = even higher trust decrease
             if (communicationMeasuresNumber < 1) {
                 trustDecrease += 1;
                 messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas lockdownu. \n");
@@ -315,7 +349,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
         }
     }
 
-    //kazdych 25 dni sa strhne dovera za uzatvorenie hranic ale aj za aktivaciu uzavretia hranic
+    //every 25 days, trust is decreased if borders are closed or are being closed
     if (bordersMeasureState !== 0) {
         if (strictMeasuresTime.borders === 0) {
             trustDecrease += 4;
@@ -343,7 +377,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
                     return null;
             }
 
-            //ak su hranice zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+            //if borders are closed + no active measurements from communication = even higher trust decrease
             if (communicationMeasuresNumber < 1) {
                 trustDecrease += 1;
                 messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých hraníc. \n");
@@ -373,7 +407,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
         }
     }
 
-    //kazdych 25 dni sa strhne dovera za uzatvorenie letisk ale aj za aktivaciu uzavretia letisk
+    //every 25 days, trust is decreased if airports are closed or are being closed
     if (airportsMeasureState !== 0) {
         if (strictMeasuresTime.airports === 0) {
             trustDecrease += 4;
@@ -401,7 +435,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
                     return null;
             }
 
-            //ak su letiska zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+            //if airports are closed + no active measurements from communication = even higher trust decrease
             if (communicationMeasuresNumber < 1) {
                 trustDecrease += 1;
                 messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých letísk. \n");
@@ -431,7 +465,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
         }
     }
 
-    //kazdych 25 dni sa strhne dovera za uzatvorenie pristavov ale aj za aktivaciu uzavretia pristavov
+    //every 25 days, trust is decreased if seaports are closed or are being closed
     if (seaportsMeasureState !== 0) {
         if (strictMeasuresTime.seaports === 0) {
             trustDecrease += 4;
@@ -459,7 +493,7 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
                     return null;
             }
 
-            //ak su pristavy zatvorene a nie su opatrenia z komunikacie - > strhne este viac
+            //if seaports are closed + no active measurements from communication = even higher trust decrease
             if (communicationMeasuresNumber < 1) {
                 trustDecrease += 1;
                 messageString = messageString.concat(" ● Dôvera klesá z dôvodu slabej komunikácie s obyvateľmi počas uzavretých prístavov. \n");
@@ -509,7 +543,14 @@ export const gameTrustHandle = (infectiousCountriesNumber, cureMeasuresNumber, c
     }
 
 }
-
+/**
+ * arrow function for handling game over
+ * @param recoveredWorldData - global data of recovered
+ * @param susceptibleWorldData - global data of susceptible
+ * @param infectiousWorldData global data of infected
+ * @param days - game time
+ * @param setGameOverState - setting game over
+ */
 export const gameOver = (recoveredWorldData, susceptibleWorldData, infectiousWorldData, days, setGameOverState) => {
     if (recoveredWorldData > 1000000) {
         setGameOverState((prevStats) => {
@@ -525,9 +566,17 @@ export const gameOver = (recoveredWorldData, susceptibleWorldData, infectiousWor
         });
     }
 }
-
+/**
+ * arrow function for adding game currency
+ * @param infectiousWorldData - global data of infected
+ * @param infectedBreakpoints - infected number breakpoints
+ * @param clickableGameCurrency - clickable game currency
+ * @param days - game time
+ * @param setClickAbleGameCurrency - setting clickable game currency
+ * @param setInfectedBreakpoints - setting infected number breakpoints
+ */
 export const addCurrency = (infectiousWorldData, infectedBreakpoints, clickableGameCurrency, days, setClickAbleGameCurrency, setInfectedBreakpoints) => {
-    //pridanie docasnej meny za kazdych 50mil infikovanych
+    //adding clickable currency for every 50mil. infected
     if (infectiousWorldData > infectedBreakpoints) {
         if (infectiousWorldData < 1000000000) {
             if (clickableGameCurrency < 10) {
@@ -536,7 +585,7 @@ export const addCurrency = (infectiousWorldData, infectedBreakpoints, clickableG
             setInfectedBreakpoints(prev => (prev + 50000000))
         }
     }
-    //pridanie docasnej hernej meny kazdych 20 dni
+    //adding clickable currency every 20 days (game time)
     if ((days % 20) === 0) {
         if (days > 0 && days < 100) {
             if (clickableGameCurrency < 10) {
@@ -555,9 +604,17 @@ export const addCurrency = (infectiousWorldData, infectedBreakpoints, clickableG
         }
     }
 }
-
+/**
+ * arrow function for infecting first country
+ * @param pickFirstInfectedCountry - value, if first country was already infected
+ * @param countryCodes - all codes of countries
+ * @param allCountries - all countries
+ * @param countries - new object, where are new infected countries set - this object is used then to set the main object
+ * @param infectingNewCountry - function for infecting coutnry
+ * @param setPickFirstInfectedCountry - setting value, which determines if first country was infected
+ */
 export const infectFirstCountry = (pickFirstInfectedCountry, countryCodes, allCountries, countries, infectingNewCountry, setPickFirstInfectedCountry) => {
-    //nahodne nakazenie prvej krajiny
+    //random infection
     if (pickFirstInfectedCountry === 0) {
         const firstCountry = countryCodes[Math.floor(Math.random() * Object.keys(allCountries).length)];
         countries[firstCountry] = infectingNewCountry(firstCountry, "initial");
@@ -565,23 +622,35 @@ export const infectFirstCountry = (pickFirstInfectedCountry, countryCodes, allCo
     }
 }
 
+/**
+ * function for getting random number in range
+ * @param min
+ * @param max
+ * @returns {number}
+ */
 export function getRandomNumberInRange(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
+/**
+ * function for initializing vaccine development time
+ * @param vaccineState - vaccine measurement state
+ * @param setVaccineState - setter for vaccine measurement state
+ */
 export const vaccineInitialization = (vaccineState, setVaccineState) => {
 
-    //1095 dni = 3 roky, 2920 dni = 8 rokov
+    //1095 days = 3 years, 2920 days = 8 years
     const vaccineStep1Start = 1095;
     const vaccineStep1End = 2920;
-    //730 dni = 2 roky, 3650 dni = 10 rokov
+    //730 days = 2 years, 3650 days = 10 years
     const vaccineStep2Start = 730;
     const vaccineStep2End = 3650;
-    //365 dni = 1 rok, 730 dni = 2 roky
+    //365 days = 1 years, 730 days = 2 years
     const vaccineStep3Start = 365;
     const vaccineStep3End = 730;
 
     //inicializacia casu vakciny (tradicny vyvoj)
+    //initializing development time (traditional development)
     if (vaccineState.InitializeVaccineTime === false) {
         let step1 = getRandomNumberInRange(vaccineStep1Start, vaccineStep1End);
         let step2 = getRandomNumberInRange(vaccineStep2Start, vaccineStep2End);
@@ -599,17 +668,29 @@ export const vaccineInitialization = (vaccineState, setVaccineState) => {
     }
 }
 
+/**
+ * function for handling vaccine events
+ * @param vaccineState - vaccine measurement state
+ * @param days - game time
+ * @param setGammaParameter - setter for gamma parameter
+ * @param setMessages - setter for game messages
+ * @param setVaccineState - setter for vaccine measurement state
+ */
 export const gameVaccineHandle = (vaccineState, days, setGammaParameter, setMessages, setVaccineState) => {
 
+    //first development time initialization
     vaccineInitialization(vaccineState, setVaccineState);
 
+    //if development is finished - recover the remaining population
     if (vaccineState.vaccineDevelopmentFinished === true) {
         setGammaParameter(0.49);
     }
 
+    //whole development time
     let maxDevelopmentTime = vaccineState.step1Time + vaccineState.step2Time + vaccineState.step3Time;
-    //prepocet casu vyvoja vakciny od zaciatku jej vyvoja
+    //vaccine development
     if (vaccineState.ActivationVaccineDevelopment === 1) {
+        //handler for over exceeding development time by activating vaccine measurements at the end of the development
         if (vaccineState.actualDevelopmentTime > maxDevelopmentTime) {
             setMessages((prevStats) => ([...prevStats, {
                 name: "Vakcína",
@@ -625,10 +706,11 @@ export const gameVaccineHandle = (vaccineState, days, setGammaParameter, setMess
                 };
             });
         }
+        //incrementing development time
         if (vaccineState.actualDevelopmentTime < maxDevelopmentTime) {
             let actualVaccineTime = vaccineState.actualDevelopmentTime + 1;
 
-            //check ci bude vakcina v tejto iteracii vynajdena
+            //check if vaccine development will be finished in next iteration
             if (actualVaccineTime === maxDevelopmentTime) {
                 setMessages((prevStats) => ([...prevStats, {
                     name: "Vakcína",
@@ -645,12 +727,14 @@ export const gameVaccineHandle = (vaccineState, days, setGammaParameter, setMess
                 });
             }
 
+            //setting dev. time
             setVaccineState((prevStats) => {
                 return {
                     ...prevStats,
                     actualDevelopmentTime: actualVaccineTime,
                 };
             });
+            //handler for setting over exceeded dev. time
         } else if (vaccineState.actualDevelopmentTime > maxDevelopmentTime) {
             setVaccineState((prevStats) => {
                 return {
@@ -662,14 +746,28 @@ export const gameVaccineHandle = (vaccineState, days, setGammaParameter, setMess
     }
 }
 
+/**
+ * function for recalculating susceptible
+ * @param vaccineDevelopmentFinished - value, which determines if vaccine dev. is finished
+ * @param S - number of susceptible (single country)
+ * @param I - number of infectious (single country)
+ * @param N - population (single country)
+ * @param gammaParameter - gamma parameter
+ * @param betaParameter - beta parameter
+ * @returns {[number]}
+ */
 export const susceptibleCalculate = (vaccineDevelopmentFinished, S, I, N, gammaParameter, betaParameter) => {
     let newSusceptible;
+    //if vaccine dev. is finished
     if (vaccineDevelopmentFinished === true) {
+        //"transfer" susceptible to recovered - recalculation
         newSusceptible = (S - Math.ceil(gammaParameter * S));
     } else {
+        //"transfer" susceptible to infected - recalculation
         newSusceptible = (S - Math.ceil((betaParameter * S * I) / N));
     }
 
+    //check for susceptible dropping under 0
     if (newSusceptible < 0) {
         newSusceptible = 0;
     }
@@ -677,34 +775,55 @@ export const susceptibleCalculate = (vaccineDevelopmentFinished, S, I, N, gammaP
     return [newSusceptible];
 }
 
+/**
+ * function for recalculating infectious
+ * @param S - number of susceptible (single country)
+ * @param I - number of infectious (single country)
+ * @param N - population (single country)
+ * @param betaParameter - beta parameter
+ * @param gammaParameter - gamma parameter
+ * @param deltaParameter - delta parameter
+ * @param infArrayState - array, which contains 3 previous values of infectious (single country)
+ * @param vaccineDevelopmentFinished - value, which determines if vaccine dev. is finished
+ * @returns {(number|number|unknown[])[]|(number|*|number[])[]} - newInfectious - new infectious,
+ *                                                                infectiousUnderZero - previous state of inf. before dropping under 0,
+ *                                                                infectiousPushToRD - if this number is 0, force "transfer" based on low number of inf.
+ *                                                                infectiousBiggerThanPopulation - check if inf. is bigger than population,
+ *                                                                infArrayLocal - previous infectious state,
+ *                                                                LoopPushToRD - forcing "transfer" to rec./dec. based on looping inf.
+ */
 export const infectiousCalculate = (S, I, N, betaParameter, gammaParameter, deltaParameter, infArrayState, vaccineDevelopmentFinished) => {
+    //if development is finished "transfer" infectious to recovered
     if (vaccineDevelopmentFinished === true) {
         let newInfectious = I - Math.ceil(gammaParameter * I);
+        //drop under zero check
         if (newInfectious < 0) {
             newInfectious = 0;
         }
         return [newInfectious, 0, I, 0, [10, 11, 12], 0];
     }
 
+    //recalculation for new infectious - "transfer" infectious to deceased and recovered(rec. has param. 0 - no real transfer)
     let newInfectious = (I + Math.ceil((betaParameter * S * I) / N)) - Math.round(gammaParameter * I) - Math.round(deltaParameter * I);
 
     let infectiousBiggerThanPopulation = 0;
     let infectiousUnderZero = 0;
+    //handler for infectious over exceeding population number
     if (newInfectious > N) {
         newInfectious = N - Math.round(gammaParameter * N) - Math.round(deltaParameter * N);
         infectiousBiggerThanPopulation = 1;
-    }//ak infekcny padnu pod nulu
+    }//handler if infectious drop under 0
     else if (newInfectious < 0) {
         infectiousUnderZero = newInfectious;
         newInfectious = 0;
-    }//ak S padne pod nulu po tom co ich I ma celych zobrat
+    }//handler if susceptible drops under 0 after "transfer" to infectious
     else if ((S - Math.ceil((betaParameter * S * I) / N)) < 0) {
         newInfectious = (I + S - Math.round(gammaParameter * I) - Math.round(deltaParameter * I));
     }
 
     const infectiousPushToRD = I - newInfectious;
     if ((I - newInfectious) === 0) {
-        //ak uz do I neprichadza nic, tak aby dokazalo vytiahnut z I do R/D (aby vynulovalo I)
+        //handler if there is no "transfer" to infectious, so infectious can be reduced
         if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
             newInfectious = (I + Math.ceil((betaParameter * S * I) / N) - Math.ceil(gammaParameter * I) - Math.ceil(deltaParameter * I));
 
@@ -716,32 +835,37 @@ export const infectiousCalculate = (S, I, N, betaParameter, gammaParameter, delt
     }
 
     let LoopPushToRD = 0;
-    //ak S je velke cislo a I sa blizi k nule ale nikdy ju nedosiahne (pretoze do I prichadzaju cez ceil)
-    //kopirovanie State pola do Local pola, pracujeme s Local polom ktore returneme a to sa nasetuje do State
+    //handler scenario: susceptible is big number, infectious number is approaching to 0 however infectious will not reach 0 - because infectious
+    // are "transferring" using Math.ceil
+
+    //State array copied to lcoal array, after managing local array we return it to the State
     let infArrayLocal = Array.from(infArrayState);
     infArrayLocal.push(newInfectious);
-    //ak je po pushnuti hodnoty infekcnych pole vacsie ako 3 tak vyhodi posledny prvok (udrziavanie pola o velkosti 3)
+    //if array has 3 elements, the last one is popped out (3element size array)
     if (infArrayLocal.length > 3) {
         infArrayLocal.shift();
-        //check ci su hodnoty infekcnych zacyklene (napr. pomale tahanie z S do I, v pripade ked I sa blizilo k nule)
+        //check if infectious are looping (e.g. slow "transfer" from susceptible to infectious, in case infectious are close to 0)
         if (infArrayLocal[0] === infArrayLocal[1] && infArrayLocal[1] === infArrayLocal[2]) {
-            //check pre nulu, pretoze ta nas nezaujima
+            //check for 0 value
             if (infArrayLocal[0] !== 0) {
+                //force decrease infectious
                 newInfectious = newInfectious - 10;
                 LoopPushToRD = 1;
 
+                //drop under 0 check
                 if (newInfectious < 0) {
                     infectiousUnderZero = newInfectious;
                     newInfectious = 0;
                     LoopPushToRD = 2;
                 }
             }
-            //check ci su hodnoty infekcnych zacyklene, a zaroven gamma a delta su schopne tahat kazdu druhu iteraciu -> cyklenie 8,9,8 / 9,8,9
+            //check if infectious are looping (e.g. delta (and gamma) are decreasing only every second iteration - looping 8,9,8 / 9,8,9)
         } else if (infArrayLocal[0] === infArrayLocal[2] && infArrayLocal[0] < infArrayLocal[1] && infArrayLocal[0] < 20) {
             if (infArrayLocal[0] !== 0) {
                 newInfectious = newInfectious - 10;
                 LoopPushToRD = 1;
 
+                //drop under 0 check
                 if (newInfectious < 0) {
                     infectiousUnderZero = newInfectious;
                     newInfectious = 0;
@@ -753,36 +877,59 @@ export const infectiousCalculate = (S, I, N, betaParameter, gammaParameter, delt
     return [newInfectious, infectiousUnderZero, infectiousPushToRD, infectiousBiggerThanPopulation, infArrayLocal, LoopPushToRD];
 }
 
+/**
+ * function for recalculating recovered
+ * @param S - number of susceptible (single country)
+ * @param I - number of infectious (single country)
+ * @param R - number of recovered (single country)
+ * @param N - population (single country)
+ * @param gammaParameter - gamma parameter
+ * @param deltaParameter - delta parameter
+ * @param infectiousUnderZero - control different behaviour after inf. dropping under 0
+ * @param LoopPushToRD - forcing "transfer" to rec./dec. based on looping inf.
+ * @param infectiousBiggerThanPopulation - control different behaviour after inf. over exceed population
+ * @param infectiousPushToRD - if this number is 0, force "transfer" based on low number of inf.
+ * @param vaccineDevelopmentFinished - value, which determines if vaccine dev. is finished
+ * @returns {number|*} - returns new recovered
+ */
 export const recoveredCalculate = (S, I, R, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation, infectiousPushToRD, vaccineDevelopmentFinished) => {
+    //if vaccine development finished
     if (vaccineDevelopmentFinished === true) {
         let newRecovered;
 
+        //"transfer" check from sus. to rec. - if sus. drop under 0
         let checkSusDropUnderZero = (S - Math.ceil(gammaParameter * S));
+        //recalculating new recovered from sus.
         let transferFromSus = Math.ceil(gammaParameter * S);
+        //if sus. drops under 0 while recalculating
         if (checkSusDropUnderZero < 0) {
             transferFromSus = S;
         }
 
+        //"transfer" check from inf. to rec. - if inf. drop under 0
         let checkInfDropUnderZero = (I - Math.ceil(gammaParameter * I));
+        //recalculating new recovered from inf.
         let transferFromInf = Math.ceil(gammaParameter * I);
+        //if inf. drops under 0 while recalculating
         if (checkInfDropUnderZero < 0) {
             transferFromInf = I;
         }
 
+        //new recovered is sum of "transfer" from susceptible and infectious
         newRecovered = (R + transferFromSus + transferFromInf);
 
         return newRecovered
     }
-    //if funkcny v pripade presunu z kompartmentu I do R,
-    //kde I sa dostava do zapornej hodnoty a je potrebne to vykompenzovat v R (aj v D) upravenym-znizenym pripocitanim
+
+    //in case "transfer" from inf. to rec., when happens that inf. drops under 0 and we need to fix "transfer" by lowering
     if (infectiousUnderZero < 0) {
         let splitInfectiousUnderZero = infectiousUnderZero / (gammaParameter + deltaParameter);
         let recoveredReduction = Math.round(gammaParameter * splitInfectiousUnderZero);//-1
         let newRecovered = R - recoveredReduction;
 
-        //pre pripad ze presun z I do D bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
-        //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
-        //UPDATE: prepocet nastava len z I do D, R ostava zachovane
+        //handler if "transfer" from inf. to rec. was forced based on looping (sus. to inf.)
+        //if forcing makes inf. drop under 0 - fix
+        //UPDATE: "transfer" is only from inf. to dec., rec. is the same
         if (LoopPushToRD === 2) {
             if (gammaParameter !== 0) {
                 return Math.round(R + gammaParameter * I);
@@ -790,6 +937,7 @@ export const recoveredCalculate = (S, I, R, N, gammaParameter, deltaParameter, i
             return R;
         }
 
+        //if params. are same
         if (gammaParameter === deltaParameter) {
             return R;
         }
@@ -797,20 +945,23 @@ export const recoveredCalculate = (S, I, R, N, gammaParameter, deltaParameter, i
         return newRecovered;
     }
 
-    //(tak ako vyssie len neskocia I pod nulu) pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I
-    //UPDATE: prepocet nastava len z I do D, R ostava zachovane
+    //same as above - but inf. will not drop under 0 (case that "transfer" from inc. to rec. was forced based on looping)
+    //UPDATE: "transfer" is only from inf. to dec., rec. is the same
     if (LoopPushToRD === 1) {
-        //pre pripad zacyklenia 9,9,9
+        //case looping 9,9,9 inf.
         //let zotaveny=Math.round(R + gammaParameter * I)+10;
         return R;
     }
 
+    //if infectious are bigger than population
     if (infectiousBiggerThanPopulation === 1) {
         return Math.round(gammaParameter * N);
     }
 
+    //force "transfer" from inf. based on low number of inf.
     if (infectiousPushToRD === 0) {
         if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
+            //check if inf. are not just 1, if yes, compartment with higher parameter will take him
             if (I === 1) {
                 if (gammaParameter > deltaParameter) {
                     return Math.ceil(R + gammaParameter * I);
@@ -822,21 +973,37 @@ export const recoveredCalculate = (S, I, R, N, gammaParameter, deltaParameter, i
         }
     }
 
+    //return new recovered
     return Math.round(R + gammaParameter * I);
 }
 
+/**
+ * function for recalculating deceased
+ * @param I - number of susceptible (single country)
+ * @param D - number of susceptible (single country)
+ * @param N - population (single country)
+ * @param gammaParameter - gamma parameter
+ * @param deltaParameter - delta parameter
+ * @param infectiousUnderZero - control different behaviour after inf. dropping under 0
+ * @param LoopPushToRD - forcing "transfer" to rec./dec. based on looping inf.
+ * @param infectiousBiggerThanPopulation - control different behaviour after inf. over exceed population
+ * @param infectiousPushToRD - if this number is 0, force "transfer" based on low number of inf.
+ * @param vaccineDevelopmentFinished - value, which determines if vaccine dev. is finished
+ * @returns {number|*} - returns new deceased
+ */
 export const deceasedCalculate = (I, D, N, gammaParameter, deltaParameter, infectiousUnderZero, LoopPushToRD, infectiousBiggerThanPopulation, infectiousPushToRD, vaccineDevelopmentFinished) => {
+    //if vaccine development finished
     if (vaccineDevelopmentFinished === true) {
         return D;
     }
-    //rovnake osetrenie ako vo funkcii vyssie
+    //in case "transfer" from inf. to rec., when happens that inf. drops under 0 and we need to fix "transfer" by lowering
     if (infectiousUnderZero < 0) {
         let splitInfectiousUnderZero = infectiousUnderZero / (gammaParameter + deltaParameter);
         let deceasedReduction = Math.round(deltaParameter * splitInfectiousUnderZero);
         let newDeceased = D - deceasedReduction;
 
-        //pre pripad ze presun z I do R bol vynuteny na zaklade zacyklenia z S do I (S=400m,I=9 a I pomaly taha z S aj ked by nemalo)
-        //je to kompenzacia ked pri vynuteni ukoncenia zacyklenia I skocia pod nulu
+        //handler if "transfer" from inf. to dec. was forced based on looping (sus. to inf.)
+        //if forcing makes inf. drop under 0 - fix
         if (LoopPushToRD === 2) {
             return Math.round(D + deltaParameter * I) + 10 + infectiousUnderZero;
         }
@@ -845,18 +1012,22 @@ export const deceasedCalculate = (I, D, N, gammaParameter, deltaParameter, infec
         }
         return newDeceased;
     }
-    //(tak ako vyssie len neskocia I pod nulu) pre pripad ze presun z I do D bol vynuteny na zaklade zacyklenia z S do I
-    //pre pripad zacyklenia 9,9,9 ale aj  8,9,8 / 9,8,9
+
+    //same as above - but inf. will not drop under 0 (case that "transfer" from inc. to dec. was forced based on looping)
+    //in case of looping 9,9,9 and 8,9,8 / 9,8,9 inf.
     if (LoopPushToRD === 1) {
         return Math.round(D + deltaParameter * I) + 10;
     }
 
+    //if infectious are bigger than population
     if (infectiousBiggerThanPopulation === 1) {
         return Math.round(deltaParameter * N);
     }
 
+    //force "transfer" from inf. based on low number of inf.
     if (infectiousPushToRD === 0) {
         if ((Math.round(gammaParameter * I) + Math.round(deltaParameter * I)) === 0) {
+            //check if inf. are not just 1, if yes, compartment with higher parameter will take him
             if (I === 1) {
                 if (deltaParameter > gammaParameter) {
                     return Math.ceil(D + deltaParameter * I);
@@ -867,6 +1038,6 @@ export const deceasedCalculate = (I, D, N, gammaParameter, deltaParameter, infec
             return Math.ceil(D + deltaParameter * I);
         }
     }
-
+    //return new deceased
     return Math.round(D + deltaParameter * I);
 }

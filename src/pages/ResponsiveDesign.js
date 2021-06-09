@@ -2,7 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Dialog, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
-
+/**
+ * function for getting window dimensions
+ * @returns {{width: number, height: number}}
+ */
 export function getWindowDimensions() {
     const {innerWidth: width, innerHeight: height} = window;
     return {
@@ -11,6 +14,10 @@ export function getWindowDimensions() {
     };
 }
 
+/**
+ * function for handling resizing window
+ * @returns {{width: number, height: number}}
+ */
 export function useWindowDimensions() {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -26,6 +33,13 @@ export function useWindowDimensions() {
     return windowDimensions;
 }
 
+/**
+ * Renders a <ResponsiveDesign /> component
+ * component is used to display warning, if device has wrong screen orientation
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function ResponsiveDesign() {
 
     const {height, width} = useWindowDimensions();

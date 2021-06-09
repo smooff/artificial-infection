@@ -3,58 +3,61 @@ import {atom, selector} from "recoil";
 export const VaccineState = atom({
     key: 'VaccineState',
     default: {
-        //pre uvodne nainicializovanie casu pre tradicny vyvoj vakciny
+        //value, which determines if the vaccine time has been initialized
         InitializeVaccineTime: false,
 
-        //hodnota urcujuca ci je vakcina vyvinuta
+        //value, which determines if the vaccine development has been finished
         vaccineDevelopmentFinished: false,
 
-        //cas vyjadrujuci o aktualnom stave vyvoja  - jeho pocitanie sa zacne po aktivacii ActivationVaccineDevelopment
+        //value, which stores actual game time of vaccine development
+        //increase after activating ActivationVaccineDevelopment
         actualDevelopmentTime: 0,
 
-        //nadväzujuce opatrenia
+        //measurements creating specific tree of measurm.
         step1: 0,
         step2: 0,
         step3: 0,
 
-        //cas opatreni - sucet tychto casov je celkovy cas na vyvoj vakciny
+        //value of game time for finishing certain vaccine development step
+        //sum of these three - total vaccine development time
         step1Time: 0,
         step2Time: 0,
         step3Time: 0,
 
-        //cena
+        //price
         step1Price: 6,
         step2Price: 6,
         step3Price: 6,
 
+        //price medical units (secondary game currency)
         step1PriceMedUnits: 6,
         step2PriceMedUnits: 6,
         step3PriceMedUnits: 6,
 
-        //pre povolenie pouzitia dalsich buttonov
+        //value, which determines if next measurements in tree can be accessed (activated)
         DevelopmentProcessTree: true,
         Step1Tree: true,
         Step2Tree: true,
         Step3Tree: true,
 
-        //uvodne opatrenie pre zacatie vyvoja
+        //first measurement in tree - activates the development
         ActivationVaccineDevelopment: 0,
         VaccineDevelopmentPrice: 5,
         VaccineDevelopmentPriceMedUnits: 5,
 
-        //jedno z dvoch poslednych opatreni v strome opatreni (aktivovatelne az po aktivacii vsetkych ostatnych)
+        //one of two last measurements in measur. tree - activable only after all above are already activated
         FinanceVaccineDevelopment: 0,
         FinanceVaccineDevelopmentPrice: 6,
         FinanceVaccineDevelopmentPriceMedUnits: 7,
         FinanceVaccineDevelopmentTree: true,
 
-        //druhe z dvoch poslednych opatreni v strome opatreni (aktivovatelne az po aktivacii vsetkych ostatnych)
+        //one of two last measurements in measur. tree - activable only after all above are already activated
         InternationalCooperation: 0,
         InternationalCooperationPrice: 6,
         InternationalCooperationPriceMedUnits: 7,
         InternationalCooperationTree: true,
 
-        //neobmedzene opatrenie
+        //infinite measurement
         SuperDevelopmentPriceMedUnits: 12,
 
         recalculateTimeForPlayer: 0,
@@ -62,7 +65,8 @@ export const VaccineState = atom({
     },
 });
 
-//selector pre prepocet dovery
+//selector which returns number of active measurements  in VaccineState.js
+//used for trust breakpoint checks
 export const VaccineMeasuresSelector = selector({
     key: 'VaccineMeasuresSelector',
     get: ({get}) => {

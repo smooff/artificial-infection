@@ -5,6 +5,13 @@ import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 
+/**
+ * Renders a <PagesNavigationModal /> component
+ * component is used to display navigation between pages
+ * @returns {JSX.Element}
+ * @constructor
+ * @component
+ */
 function PagesNavigationModal() {
 
     const useStyles = makeStyles(() => ({

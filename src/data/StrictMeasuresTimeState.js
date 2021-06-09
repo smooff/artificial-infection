@@ -1,7 +1,11 @@
 import {atom} from "recoil";
 
-//sluzi ako stav urcujuci kolko dni je aktivovany lockdown, ...
-//je to pre prepocet dovery
+/**
+ *  represents global state value for some of the strict measurements
+ *  default is object containing variables, those variables are set to 0
+ *  after activating specific measurements, those variables will be set to 1
+ *  this state is used for game trust breakpoints check
+ */
 export const StrictMeasuresTimeState = atom({
     key: 'StrictMeasuresTimeState',
     default: {
